@@ -1,0 +1,27 @@
+[package]
+name = "lazyui-ratatui"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Lazygit-style panels for Ratatui: rounded windows named with their focus key, corner notes, arrows between windows, scrolling one-line fields"
+license = "Apache-2.0"
+repository = "https://github.com/lutianyu2001/lazyui-ratatui"
+documentation = "https://docs.rs/lazyui-ratatui"
+readme = "README.md"
+keywords = ["ratatui", "lazygit", "tui", "widget", "panel"]
+categories = ["command-line-interface"]
+
+[dependencies]
+ratatui = { version = "0.30.2", default-features = false }
+unicode-segmentation = "1.13.3"
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+pedantic = { level = "deny", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+# #[must_use] on every builder method and getter is more noise than help here.
+must_use_candidate = "allow"
+return_self_not_must_use = "allow"
