@@ -40,16 +40,15 @@ impl<'a> Field<'a> {
     }
 
     /// Draws the field over `area`'s first row and returns where the cursor goes. Only
-    /// the part of `area` inside `buf` is drawn on; if none is, the cursor goes to
+    /// the part of that row inside `buf` is drawn on; if none is, the cursor goes to
     /// `area`'s top left corner.
     pub fn render(self, area: Rect, buf: &mut Buffer) -> Position {
         let corner = area.as_position();
-        let area = area.intersection(buf.area);
+        let area = Rect { height: area.height.min(1), ..area }.intersection(buf.area);
         if area.is_empty() {
             return corner;
         }
-        let row = Rect { height: area.height.min(1), ..area };
-        buf.set_style(row, self.style);
+        buf.set_style(area, self.style);
         let view = Self::view(self.text, self.cursor, usize::from(area.width));
         let marker = self.style.add_modifier(Modifier::REVERSED);
         let x = area.x + u16::from(view.left);
