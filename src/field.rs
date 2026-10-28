@@ -51,16 +51,16 @@ impl<'a> Field<'a> {
         buf.set_style(area, self.style);
         let view = Self::view(self.text, self.cursor, usize::from(area.width));
         let marker = self.style.add_modifier(Modifier::REVERSED);
-        let x = area.x + u16::from(view.left);
+        let x = area.x.saturating_add(u16::from(view.left));
         if view.left {
             buf.set_string(area.x, area.y, "<", marker);
         }
         buf.set_stringn(x, area.y, view.shown, width(view.shown), self.style);
         if view.right {
-            buf.set_string(area.x + area.width - 1, area.y, ">", marker);
+            buf.set_string(area.right().saturating_sub(1), area.y, ">", marker);
         }
         let col = u16::try_from(view.cursor).unwrap_or(0);
-        Position::new(area.x + col.min(area.width.saturating_sub(1)), area.y)
+        Position::new(area.x.saturating_add(col.min(area.width.saturating_sub(1))), area.y)
     }
 
     /// The part of `text` a field `w` cells wide shows with the cursor (a char index)
@@ -77,31 +77,31 @@ impl<'a> Field<'a> {
         if total < w {
             return FieldView { left: false, shown: text, right: false, cursor: before };
         }
-        if before + 2 <= w {
+        if before.saturating_add(2) <= w {
             let shown = take_width(text, w.saturating_sub(1));
             return FieldView { left: false, shown, right: true, cursor: before };
         }
         // Scrolled: `<` in the first cell, and the cursor's cell before `>` or at the end.
         let at_end = before == total;
         let right_cell = !at_end && w >= 2;
-        let col = w - 1 - usize::from(right_cell);
+        // None of these saturate: `w` is at least 1, and at least 2 with `right_cell`.
+        let col = w.saturating_sub(1).saturating_sub(usize::from(right_cell));
         let left = col > 0;
-        let skip = before.saturating_sub(col - usize::from(left));
+        let skip = before.saturating_sub(col.saturating_sub(usize::from(left)));
         let mut rest = text;
-        let mut skipped = 0;
-        for (i, g) in text.grapheme_indices(true) {
+        let mut skipped: usize = 0;
+        for g in text.graphemes(true) {
             if skipped >= skip {
-                rest = &text[i..];
                 break;
             }
-            skipped += grapheme_width(g);
-            rest = &text[i + g.len()..];
+            skipped = skipped.saturating_add(grapheme_width(g));
+            rest = &rest[g.len()..];
         }
-        let fits = w - usize::from(left) - usize::from(right_cell);
+        let fits = w.saturating_sub(usize::from(left)).saturating_sub(usize::from(right_cell));
         let shown = take_width(rest, fits);
-        let right = right_cell && skipped + width(shown) < total;
-        // Saturating: with the cursor inside a grapheme, `skipped` can pass `before`.
-        let cursor = (usize::from(left) + before).saturating_sub(skipped);
+        let right = right_cell && skipped.saturating_add(width(shown)) < total;
+        // Saturating for real: with the cursor inside a grapheme, `skipped` can pass `before`.
+        let cursor = before.saturating_add(usize::from(left)).saturating_sub(skipped);
         FieldView { left, shown, right, cursor }
     }
 }

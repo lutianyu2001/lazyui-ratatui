@@ -148,6 +148,12 @@ The examples in this README are also in the crate documentation, where they are
 compiled and run as doctests; `tests/readme.rs` checks that both places show the same
 code.
 
+The crate forbids `unsafe` code, and Clippy rejects arithmetic that doesn't say how it
+handles overflow. `tests/no_panic.rs` uses [proptest](https://crates.io/crates/proptest)
+to draw random text into random areas and buffers, some next to `u16::MAX`, and checks
+that nothing panics and nothing is drawn outside the area. Set `PROPTEST_CASES` to run
+more cases than the default 256.
+
 ## Compatibility
 
 Tested on:

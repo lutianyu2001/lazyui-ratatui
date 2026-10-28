@@ -135,6 +135,11 @@ cargo clippy --all-targets
 
 README 里的示例同样写在 crate 文档中，在那里作为 doctest 编译并运行；`tests/readme.rs` 检查两处的代码一致。
 
+crate 禁止 `unsafe` 代码，Clippy 拒绝没有写明如何处理溢出的算术。`tests/no_panic.rs` 用
+[proptest](https://crates.io/crates/proptest) 把随机文本画进随机的区域和缓冲区（其中一些
+紧挨 `u16::MAX`），检查没有 panic、也没有画到区域之外。设置 `PROPTEST_CASES` 可以跑比默认
+256 个更多的用例。
+
 ## 兼容性
 
 测试环境：

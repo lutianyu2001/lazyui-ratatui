@@ -16,13 +16,12 @@ pub fn width(s: &str) -> usize {
 
 /// The longest prefix of `s` that fits in `w` cells.
 pub fn take_width(s: &str, w: usize) -> &str {
-    let mut used = 0;
+    let mut used: usize = 0;
     for (i, g) in s.grapheme_indices(true) {
-        let gw = grapheme_width(g);
-        if used + gw > w {
+        used = used.saturating_add(grapheme_width(g));
+        if used > w {
             return &s[..i];
         }
-        used += gw;
     }
     s
 }

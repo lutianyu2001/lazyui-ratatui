@@ -71,17 +71,18 @@ impl Widget for Window<'_> {
         let style = self.border.add_modifier(Modifier::BOLD);
         corner(buf, area, area.y, &self.label(), style);
         if area.height >= 2 {
-            corner(buf, area, area.y + area.height - 1, self.note, style);
+            corner(buf, area, area.bottom().saturating_sub(1), self.note, style);
         }
     }
 }
 
 /// `text` at the right end of border row `y`, one `─` away from the corner.
 fn corner(buf: &mut Buffer, area: Rect, y: u16, text: &str, style: Style) {
-    let w = width(text);
-    if w > 0 && w + 4 <= usize::from(area.width) {
-        let x = area.x + area.width - 2 - u16::try_from(w).unwrap_or(0);
-        buf.set_stringn(x, y, text, w, style);
+    let fits =
+        u16::try_from(width(text)).ok().filter(|&w| w > 0 && w.saturating_add(4) <= area.width);
+    if let Some(w) = fits {
+        let x = area.right().saturating_sub(w.saturating_add(2));
+        buf.set_stringn(x, y, text, usize::from(w), style);
     }
 }
 
@@ -92,6 +93,8 @@ fn corner(buf: &mut Buffer, area: Rect, y: u16, text: &str, style: Style) {
 pub fn arrow_down(buf: &mut Buffer, x: u16, upper: Rect, lower: Rect, style: Style) {
     let inside = |r: Rect| x > r.x && x.saturating_add(1) < r.right();
     let (from, to) = (upper.bottom(), lower.y);
+    // The upper window's bottom border, once its height is known not to be 0.
+    let border = from.saturating_sub(1);
     let screen = buf.area;
     let on_screen = |y| screen.contains(Position::new(x, y));
     if upper.height == 0
@@ -99,12 +102,12 @@ pub fn arrow_down(buf: &mut Buffer, x: u16, upper: Rect, lower: Rect, style: Sty
         || from > to
         || !inside(upper)
         || !inside(lower)
-        || !on_screen(from - 1)
+        || !on_screen(border)
         || !on_screen(to)
     {
         return;
     }
-    buf.set_string(x, from - 1, "┬", style);
+    buf.set_string(x, border, "┬", style);
     for y in from..to {
         buf.set_string(x, y, "│", style);
     }

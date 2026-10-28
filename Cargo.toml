@@ -16,12 +16,19 @@ ratatui = { version = "0.30.2", default-features = false }
 unicode-segmentation = "1.13.3"
 
 [lints.rust]
+unsafe_code = "forbid"
 unsafe_op_in_unsafe_fn = "deny"
 
 [lints.clippy]
 pedantic = { level = "deny", priority = -1 }
 unwrap_used = "deny"
 expect_used = "deny"
+# Overflowing u16 coordinates would panic in a debug build and draw in the wrong place in a
+# release one, so arithmetic says how it handles overflow.
+arithmetic_side_effects = "deny"
 # #[must_use] on every builder method and getter is more noise than help here.
 must_use_candidate = "allow"
 return_self_not_must_use = "allow"
+
+[dev-dependencies]
+proptest = "1.12.0"

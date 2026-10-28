@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc f67717d3dd37c2ba00ffd38256650fe63fb756ba25664c308c1ea2eea04b8205 # shrinks to mut buf = Buffer {     area: Rect { x: 65511, y: 65521, width: 17, height: 1 },     content: [         "                 ",     ],     styles: [         x: 0, y: 0, fg: Reset, bg: Reset, modifier: NONE,     ] }, area = Rect { x: 65511, y: 65518, width: 1, height: 4 }, text = "", cursor = 0
