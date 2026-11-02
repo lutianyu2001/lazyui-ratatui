@@ -43,7 +43,8 @@ impl<'a> Window<'a> {
         self
     }
 
-    /// The area inside the border.
+    /// The area inside the border of a window drawn on `area`. Of an `area` that reaches
+    /// outside the buffer, give the part inside it: that is where `render` draws the border.
     pub fn inner(&self, area: Rect) -> Rect {
         Block::bordered().inner(area)
     }
@@ -94,8 +95,9 @@ pub(crate) fn corner_place(area: Rect, width: usize) -> Option<(u16, u16)> {
 
 /// Joins `upper` to the window `lower` under it with an arrow at column `x`: `┬` on the
 /// upper window's bottom border, `│` across any rows between, `▼` on the lower one's
-/// top border. Does nothing if `x` isn't on both borders, `lower` isn't below, or the
-/// arrow would leave the buffer.
+/// top border. Does nothing if `x` isn't on both borders as the buffer cuts them off, so
+/// that it never lands on a corner, if `lower` isn't below, or if the arrow would leave the
+/// buffer.
 pub fn arrow_down(buf: &mut Buffer, x: u16, upper: Rect, lower: Rect, style: Style) {
     let Some((border, to)) = arrow_ends(x, upper, lower, buf.area) else { return };
     buf.set_string(x, border, "┬", style);
@@ -107,7 +109,11 @@ pub fn arrow_down(buf: &mut Buffer, x: u16, upper: Rect, lower: Rect, style: Sty
 
 /// The rows of an arrow's two ends at column `x`, if it can be drawn on `screen`.
 pub(crate) fn arrow_ends(x: u16, upper: Rect, lower: Rect, screen: Rect) -> Option<(u16, u16)> {
-    let inside = |r: Rect| x > r.x && x.saturating_add(1) < r.right();
+    // A window cut off by the screen's edge has its corners there.
+    let inside = |r: Rect| {
+        let r = r.intersection(screen);
+        x > r.x && x.saturating_add(1) < r.right()
+    };
     let (from, to) = (upper.bottom(), lower.y);
     // The upper window's bottom border, once its height is known not to be 0.
     let border = from.saturating_sub(1);
@@ -187,6 +193,10 @@ mod tests {
         ] {
             assert_eq!(arrow_ends(x, upper, lower, screen), None, "{why}");
         }
+        // Windows cut off by the buffer have their corners at its edge.
+        let wide = (Rect::new(0, 0, 20, 3), Rect::new(0, 3, 20, 3));
+        assert_eq!(arrow_ends(10, wide.0, wide.1, screen), Some((2, 3)));
+        assert_eq!(arrow_ends(11, wide.0, wide.1, screen), None);
         // Rows between the windows are the arrow's too.
         let lower = Rect::new(0, 5, 12, 1);
         assert_eq!(arrow_ends(6, upper, lower, screen), Some((2, 5)));

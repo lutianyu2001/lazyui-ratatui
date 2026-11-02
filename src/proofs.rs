@@ -56,7 +56,8 @@ fn an_arrow_joins_the_borders_of_both_windows() {
         assert!(upper.height > 0 && lower.height > 0);
         assert_eq!(bottom, lower.y);
         for window in [upper, lower] {
-            // On the border, off its corners.
+            // On the border, off its corners, which the screen's edge may have moved.
+            let window = window.intersection(screen);
             assert!(window.x < x && x + 1 < window.right());
         }
     }
@@ -67,6 +68,7 @@ fn an_arrow_is_drawn_when_nothing_stops_it() {
     let (x, upper, lower, screen) = (kani::any(), any_rect(), any_rect(), any_rect());
     kani::assume(upper.height > 0 && lower.height > 0 && upper.bottom() <= lower.y);
     for window in [upper, lower] {
+        let window = window.intersection(screen);
         kani::assume(window.x < x && u32::from(x) + 1 < u32::from(window.right()));
     }
     kani::assume(screen.contains(Position::new(x, upper.bottom() - 1)));
