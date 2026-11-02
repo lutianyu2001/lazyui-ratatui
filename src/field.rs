@@ -68,13 +68,11 @@ impl<'a> Field<'a> {
     /// The part of `text` a field `w` cells wide shows with the cursor (a char index)
     /// visible: from the start while the cursor fits before the last cell, else scrolled
     /// so it sits in the cell before the `>` (or the last cell, at the end of the text).
-    /// In a field too narrow for a marker beside the cursor's cell, the marker goes.
+    /// In a field too narrow for a marker beside the cursor's cell, the marker goes. A
+    /// cursor inside a grapheme is shown before it, as a terminal has no cell for it there.
     pub fn view(text: &str, cursor: usize, w: usize) -> FieldView<'_> {
         let total = width(text);
-        // Capped: a char can take more cells alone than in the grapheme it ends up in, as
-        // U+231A does followed by U+FE0E, and then the chars before the cursor would take
-        // more cells than the whole text.
-        let before = width(&text.chars().take(cursor).collect::<String>()).min(total);
+        let before = cells_before(text, cursor);
         if w == 0 {
             return FieldView { left: false, shown: "", right: false, cursor: 0 };
         }
@@ -100,6 +98,20 @@ impl<'a> Field<'a> {
         let right = right_cell && skipped.saturating_add(width(shown)) < total;
         FieldView { left, shown, right, cursor: scrolled_cursor(before, left, skipped) }
     }
+}
+
+/// The cells before char `cursor`, in whole graphemes: a char's width alone says nothing
+/// of the grapheme it ends up in (U+231A takes two cells, and one followed by U+FE0E).
+fn cells_before(text: &str, cursor: usize) -> usize {
+    let (mut chars, mut cells) = (0_usize, 0_usize);
+    for g in text.graphemes(true) {
+        chars = chars.saturating_add(g.chars().count());
+        if chars > cursor {
+            break;
+        }
+        cells = cells.saturating_add(grapheme_width(g));
+    }
+    cells
 }
 
 /// Where the cursor goes for column `col` of a field drawn on `area`: on `area`, whatever
@@ -136,11 +148,10 @@ pub(crate) fn scroll(before: usize, total: usize, w: usize) -> Scroll {
 }
 
 /// The cursor's column in a scrolled field that leaves `skipped` cells of text out on the
-/// left, for a cursor `before` cells into the text: the first cell of text, not the `<`,
-/// when `skipped` passes `before`, as it can with the cursor inside a grapheme.
+/// left, for a cursor `before` cells into the text. Whole graphemes are left out, and the
+/// cursor is between two, so `skipped` stops at `before` at the latest.
 pub(crate) fn scrolled_cursor(before: usize, left: bool, skipped: usize) -> usize {
-    let left = usize::from(left);
-    before.saturating_add(left).saturating_sub(skipped).max(left)
+    before.saturating_add(usize::from(left)).saturating_sub(skipped)
 }
 
 #[cfg(test)]
@@ -226,26 +237,28 @@ mod tests {
     }
 
     #[test]
-    fn a_cursor_inside_a_grapheme_stays_in_the_field() {
+    fn a_cursor_inside_a_grapheme_goes_before_it() {
         // Two cells alone, one with U+FE0E: the char before the cursor is wider than the text.
         let text = "\u{231a}\u{fe0e}";
         assert_eq!((width("\u{231a}"), width(text)), (2, 1));
         for w in 2..4 {
-            assert_eq!(Field::view(text, 1, w).cursor, 1, "{w} cells");
+            assert_eq!(Field::view(text, 1, w).cursor, 0, "{w} cells");
         }
-        assert_eq!(Field::view("a\u{231a}\u{fe0e}", 2, 3).cursor, 2);
+        // Moving the cursor right through a grapheme never moves it left.
+        let columns = (0..=4).map(|c| Field::view("a\u{231a}\u{fe0e}b", c, 10).cursor);
+        assert_eq!(columns.collect::<Vec<_>>(), [0, 1, 1, 2, 3]);
     }
 
     #[test]
     fn a_cursor_inside_a_grapheme_keeps_off_the_marker() {
         // The cursor between the heart and U+FE0F: the grapheme is left out whole, which
         // leaves out a cell more than the text before the cursor takes.
-        let v = Field::view("a\u{2764}\u{fe0f}bcd", 2, 3);
-        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "b", true, 1));
+        let v = Field::view("ab\u{2764}\u{fe0f}bcd", 3, 3);
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "", true, 1));
         // One grapheme of 170 cells, with the cursor partway through it.
         let text = format!("{}\u{7911}", "\u{1100}".repeat(85));
         let v = Field::view(&text, 36, 61);
-        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "\u{7911}", false, 1));
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (false, "", true, 0));
     }
 
     #[test]
@@ -254,10 +267,9 @@ mod tests {
         let text = format!("ab{}", "\u{1100}".repeat(8));
         let v = Field::view(&text, 10, 6);
         assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "", false, 1));
-        // With the cursor inside it, the cursor is past what is shown, but in the field.
+        // With the cursor inside it, the cursor is just after what is shown.
         let v = Field::view(&text, 3, 6);
-        assert_eq!((v.left, v.shown, v.right), (false, "ab", true));
-        assert!(v.cursor < 5, "{v:?}");
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (false, "ab", true, 2));
     }
 
     #[test]

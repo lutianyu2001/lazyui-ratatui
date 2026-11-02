@@ -23,12 +23,9 @@ fuzz_target!(|input: (Vec<u16>, u16, u8, bool)| {
         assert_eq!((v.left, v.shown, v.right, v.cursor), (false, "", false, 0), "{what}");
         return;
     }
-    // Off the markers, on the text shown or just after it; only a grapheme wider than two
-    // cells that does not fit can leave a gap between that text and the cursor.
+    // Off the markers, on the text shown or just after it.
     assert!(v.cursor < w - right, "{what}");
-    assert!(left <= v.cursor, "{what}");
-    let narrow = s.graphemes(true).all(|g| width(g) <= 2);
-    assert!(!narrow || v.cursor <= left + shown, "{what}");
+    assert!(left <= v.cursor && v.cursor <= left + shown, "{what}");
 
     // A piece of the text, cut between graphemes.
     let start = v.shown.as_ptr() as usize - s.as_ptr() as usize;
@@ -49,10 +46,11 @@ fuzz_target!(|input: (Vec<u16>, u16, u8, bool)| {
         assert!(v.right || width(after) == 0, "{what}");
     }
 
-    // With the cursor on a grapheme boundary inside what is shown, its column is that of
+    // The cursor is at the start of its grapheme, among the text shown, in the column of
     // the text before it.
     let at = s.char_indices().nth(cursor).map_or(s.len(), |(i, _)| i);
-    if (start..=end).contains(&at) && (at == s.len() || bounds.contains(&at)) {
-        assert_eq!(v.cursor, left + width(&s[start..at]), "{what}");
-    }
+    let at =
+        if at == s.len() { at } else { bounds.iter().copied().rfind(|&b| b <= at).unwrap_or(0) };
+    assert!((start..=end).contains(&at), "{what}");
+    assert_eq!(v.cursor, left + width(&s[start..at]), "{what}");
 });

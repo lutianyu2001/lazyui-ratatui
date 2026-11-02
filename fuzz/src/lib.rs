@@ -78,7 +78,8 @@ impl AnyRect {
     }
 }
 
-/// A buffer small enough to go through cell by cell: at `x`, `y` anywhere on the screen.
+/// A buffer small enough to go through cell by cell: at `x`, `y` anywhere on the screen, as a
+/// rectangle written out, so that its edges may lie past `u16::MAX` too.
 #[derive(Arbitrary, Debug, Clone, Copy)]
 pub struct AnyBuffer {
     x: u16,
@@ -90,8 +91,11 @@ pub struct AnyBuffer {
 
 impl AnyBuffer {
     pub fn buffer(self) -> Buffer {
-        let (x, y) = if self.far { (self.x, self.y) } else { (self.x % 8, self.y % 8) };
-        Buffer::empty(Rect::new(x, y, u16::from(self.w % 64), u16::from(self.h % 16)))
+        let (width, height) = (u16::from(self.w % 64), u16::from(self.h % 16));
+        if self.far {
+            return Buffer::empty(Rect { x: self.x, y: self.y, width, height });
+        }
+        Buffer::empty(Rect { x: self.x % 8, y: self.y % 8, width, height })
     }
 }
 
