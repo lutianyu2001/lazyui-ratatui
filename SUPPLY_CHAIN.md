@@ -23,9 +23,9 @@ dependencies. The rest are only used by the tests, or by features that are not t
 The audits are imported from seven organizations: Mozilla, Google, the Bytecode Alliance, Zcash,
 ISRG, Embark Studios and Ariel OS. This project has written no audit of its own.
 
-**55 crates are exempted**, which means nobody has recorded an audit of them here. They include
-crates this library runs: `ratatui` itself is not covered by an imported audit, so the exemption
-list in `supply-chain/config.toml` is the list of what is still unread.
+**55 crates are exempted.** The maintainer has looked through them and keeps them exempted, but no
+audit of them is on record. They include crates this library runs, Ratatui itself among them; the
+list is in `supply-chain/config.toml`.
 
 ### `unsafe` in the Dependencies
 

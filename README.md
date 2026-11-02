@@ -53,9 +53,9 @@ Note: "Lazy" in the name refers to lazygit, not lazy evaluation.
 - Arrows that join a window to one below it (`┬`, `│`, `▼`)
 - One-line text fields that scroll to keep the cursor visible and mark cut-off text
   with a highlighted `<` / `>`, as readline's horizontal-scroll-mode does
-- Widths measured per grapheme, the way Ratatui draws text, so CJK text and common
-  emoji line up (a terminal can still disagree with Ratatui on rarer sequences; see
-  [SECURITY.md](SECURITY.md))
+- Widths measured per grapheme, the way Ratatui draws text, so CJK text and single
+  emoji line up; what terminals measure differently is replaced as it is drawn, so joined
+  emoji and flags show plainer (see [SECURITY.md](SECURITY.md))
 - Safe at any size: areas that are empty or reach outside the buffer are clipped
   instead of causing a panic
 
@@ -70,9 +70,9 @@ sizes a terminal should never have.
 
 | Audit | What was done | Result |
 |---|---|---|
-| Threat model | text from others: terminal escapes, text reordering, overrunning a window, very long text; sizes and cursors out of range | 5 bugs found and fixed; what is left is below |
+| Threat model | text from others: terminal escapes, text reordering, overrunning a window, very long text; sizes and cursors out of range | 7 problems found and fixed; what is left is below |
 | `unsafe` code | forbidden in this crate | none |
-| Dependencies | 40 crates at run and build time: sources, licenses and known vulnerabilities with cargo-deny, audit records with cargo-vet | no advisory; 27 of all 82 audited by others, 55 exempted, none audited here |
+| Dependencies | 40 crates at run and build time: sources, licenses and known vulnerabilities with cargo-deny, audit records with cargo-vet | no advisory; 27 of all 82 audited by others, 55 exempted by the maintainer |
 | Miri | undefined behavior in the 18 unit tests of all three modules | none found |
 | Fuzzing | 4 targets, one hour each: text widths, a field's layout, a field drawn into a buffer, windows and arrows drawn into a buffer, with what each must draw checked | 93 million runs, no failure |
 | Kani proofs | 7 proofs of the layout arithmetic, for every value of the integers, with no bound | 7 of 7 pass |
@@ -97,13 +97,13 @@ What this says, and what it doesn't:
   what the tests, the fuzzing and the proofs are for.
 - `unsafe` code in the dependencies is out of this crate's hands: it is counted in
   [SUPPLY_CHAIN.md](SUPPLY_CHAIN.md) and rests on their authors and on audits on record. Ratatui
-  itself is among the 55 crates exempted, so nobody has audited it for this project.
+  itself is among the 55 crates exempted, so no audit of it is on record here.
 - Fuzzing samples inputs, it proves nothing. The proofs cover integers only: text goes through
   Unicode tables that are out of Kani's reach, so nothing about text is proved.
-- **A terminal can disagree with Ratatui on a text's width, and then text leaves its window on the
-  screen.** This was seen on tmux 3.4 with 92 bytes of text. Programs that show untrusted text have
-  to replace such sequences and cap the length of what they draw, see
-  [SECURITY.md](SECURITY.md#known-remaining-risks).
+- `Field` and `Window` replace the text that terminals measure differently from Ratatui, so that
+  it cannot leave its window. This was measured on tmux 3.4 alone: of 400,000 random texts, 140,589
+  disagreed before and none after. Other terminals, and text a program draws with other widgets
+  without `text::sanitize`, are not covered, see [SECURITY.md](SECURITY.md#known-remaining-risks).
 - `FieldView::shown` and `take_width` return text as it came, control characters included, and
   look-alike text is drawn as it is. [SECURITY.md](SECURITY.md#what-the-crate-leaves-to-the-program)
   has the whole list of what is left to the program.
@@ -188,6 +188,7 @@ assert_eq!((view.shown, view.cursor), ("6789", 5));
 | `text::width` | Cells a string takes in a `Buffer` |
 | `text::take_width` | The longest prefix of a string that fits in a number of cells |
 | `text::grapheme_width` | Cells one grapheme takes; 0 for control characters, which Ratatui skips |
+| `text::sanitize` | Text as terminals can be trusted to draw it, in the same cells; for what other widgets draw |
 
 Full documentation is on [docs.rs](https://docs.rs/lazyui-ratatui).
 
