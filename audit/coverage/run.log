@@ -3,22 +3,22 @@ $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo
 warning: --branch option is unstable
 info: cargo-llvm-cov currently setting cfg(coverage) and cfg(coverage_nightly); you can opt-out it by passing --no-cfg-coverage and --no-cfg-coverage-nightly
    Compiling lazyui-ratatui v0.1.0 (.)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.83s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.63s
      Running unittests src/lib.rs (target/llvm-cov-target/debug/build/lazyui-ratatui/e61ee9779da2ff0f/out/lazyui_ratatui-e61ee9779da2ff0f)
 
 running 18 tests
 test field::tests::a_cursor_inside_a_grapheme_goes_before_it ... ok
+test field::tests::a_scrolled_cursor_never_lands_on_the_left_marker ... ok
 test field::tests::a_grapheme_too_wide_to_show_leaves_the_cursor_in_the_field ... ok
 test field::tests::a_cursor_inside_a_grapheme_keeps_off_the_marker ... ok
-test field::tests::a_scrolled_cursor_never_lands_on_the_left_marker ... ok
 test field::tests::narrow_fields_leave_out_markers_without_a_cell ... ok
 test field::tests::markers_show_what_is_cut_off ... ok
 test field::tests::nothing_is_drawn_outside_the_area_or_the_buffer ... ok
-test field::tests::render_draws_highlighted_markers ... ok
 test field::tests::short_text_has_no_markers ... ok
+test field::tests::render_draws_highlighted_markers ... ok
 test text::tests::widths_match_what_ratatui_draws ... ok
-test window::tests::a_name_too_wide_is_left_out ... ok
 test window::tests::a_text_on_the_border_needs_a_cell_beside_each_corner ... ok
+test window::tests::a_name_too_wide_is_left_out ... ok
 test window::tests::a_window_one_row_high_has_no_note ... ok
 test window::tests::each_condition_of_an_arrow_counts_by_itself ... ok
 test window::tests::arrows_join_stacked_windows ... ok
@@ -32,8 +32,8 @@ test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fin
 
 running 5 tests
 test arrows_stay_in_their_column ... ok
-test views_fit_their_width ... ok
 test take_width_takes_a_prefix_that_fits ... ok
+test views_fit_their_width ... ok
 test fields_stay_in_their_first_row ... ok
 test windows_stay_in_their_area ... ok
 
