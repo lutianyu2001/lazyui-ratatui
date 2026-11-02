@@ -86,7 +86,9 @@ fn corner(buf: &mut Buffer, area: Rect, y: u16, text: &str, style: Style) {
 /// Where a text `width` cells wide starts on a border of `area`, and its width, if there is
 /// a text and it leaves the corners and a `─` beside each.
 pub(crate) fn corner_place(area: Rect, width: usize) -> Option<(u16, u16)> {
-    let w = u16::try_from(width).ok().filter(|&w| w > 0 && w.saturating_add(4) <= area.width)?;
+    let w = u16::try_from(width).ok().filter(|&w| w > 0)?;
+    // Not saturating: next to `u16::MAX`, that would let a text run over the corners.
+    w.checked_add(4).filter(|&cells| cells <= area.width)?;
     Some((area.right().saturating_sub(w.saturating_add(2)), w))
 }
 
@@ -201,6 +203,10 @@ mod tests {
         assert_eq!(corner_place(area, 7), None);
         assert_eq!(corner_place(area, 0), None);
         assert_eq!(corner_place(area, 1 << 16), None);
+        // A width that with the four cells would pass `u16::MAX`, in the widest area.
+        let area = Rect::new(0, 0, u16::MAX, 2);
+        assert_eq!(corner_place(area, 65531), Some((2, 65531)));
+        assert_eq!(corner_place(area, 65532), None);
     }
 
     #[test]
