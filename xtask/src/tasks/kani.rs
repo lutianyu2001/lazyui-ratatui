@@ -13,7 +13,7 @@ use crate::tasks::limit;
 // Per project: the limit, and where the most a proof took was read.
 /// The memory limit of each Kani proof, unless `RUST_XTASK_MEMORY` says otherwise: 4G, or
 /// 1.5 times the most a proof took, whichever is larger. The most was 35 MiB
-/// (an_arrow_joins_the_borders_of_both_windows's, on 2026-11-02); set it again when the
+/// (`an_arrow_joins_the_borders_of_both_windows`, on 2026-11-02); set it again when the
 /// proofs change.
 pub const MEMORY: &str = "4G";
 

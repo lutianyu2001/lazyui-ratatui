@@ -360,12 +360,15 @@ struct Agent(Duration);
 
 impl Agent {
     /// The JSON at `url`, posting `body` if there is one. Over https alone, redirects too,
-    /// and without the settings of a ~/.curlrc (`-q`, which must come first).
+    /// and without the settings of a ~/.curlrc (`-q`, which must come first). A URL with
+    /// crates.io's `next_page` in it is taken literally, or `[1-999]` there would be 999
+    /// requests with `--max-time` for each. Replies stop at 10 MiB, as with ureq.
     fn json(&self, url: &str, body: Option<&str>) -> Result<Value, String> {
         let failed = |e: &dyn std::fmt::Display| format!("{url}: {e}");
         let mut curl = Command::new("curl");
         curl.args(["-q", "--silent", "--show-error", "--fail", "--location"]);
         curl.args(["--proto", "=https", "--proto-redir", "=https"]);
+        curl.args(["--globoff", "--max-filesize", "10485760"]);
         curl.arg("--max-time").arg(self.0.as_secs().to_string());
         curl.args(["--user-agent", USER_AGENT]);
         if body.is_some() {

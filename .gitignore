@@ -1,7 +1,6 @@
 /target
 *.pending-snap
 *.snap.new
-# Into .gitignore.
 # audit/ is committed: the results of the security audit. Not the locks of the runs
 # in progress, nor what an interrupted one left.
 /audit/lock
