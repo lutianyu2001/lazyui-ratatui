@@ -10,6 +10,12 @@ documentation = "https://docs.rs/lazyui-ratatui"
 readme = "README.md"
 keywords = ["ratatui", "lazygit", "tui", "widget", "panel"]
 categories = ["command-line-interface"]
+# What the security audit keeps in the repository: run logs and cargo vet's records.
+exclude = ["audit/", "supply-chain/"]
+
+[workspace]
+members = [".", "xtask"]
+exclude = ["fuzz"]
 
 [dependencies]
 ratatui = { version = "0.30.2", default-features = false }
@@ -18,6 +24,7 @@ unicode-segmentation = "1.13.3"
 [lints.rust]
 unsafe_code = "forbid"
 unsafe_op_in_unsafe_fn = "deny"
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(kani)'] }
 
 [lints.clippy]
 pedantic = { level = "deny", priority = -1 }
@@ -32,3 +39,7 @@ return_self_not_must_use = "allow"
 
 [dev-dependencies]
 proptest = "1.12.0"
+
+# Only what this workspace builds: a library's users set their own.
+[profile.release]
+overflow-checks = true

@@ -1,0 +1,4 @@
+# Into .cargo/config.toml.
+# The security audit: cargo xtask <task> (see SECURITY.md).
+[alias]
+xtask = "run --quiet --package xtask --"

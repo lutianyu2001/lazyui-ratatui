@@ -1,0 +1,17 @@
+# The dependency part of the security audit (see SECURITY.md): cargo xtask deny.
+
+[advisories]
+unmaintained = "all"
+yanked = "deny"
+
+[licenses]
+# Only those in the dependency tree; when a dependency goes, what only it used goes too.
+allow = ["Apache-2.0", "MIT", "Unicode-3.0", "Zlib"]
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
