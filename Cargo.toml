@@ -10,8 +10,19 @@ documentation = "https://docs.rs/lazyui-ratatui"
 readme = "README.md"
 keywords = ["ratatui", "lazygit", "tui", "widget", "panel"]
 categories = ["command-line-interface"]
-# What the security audit keeps in the repository: run logs and cargo vet's records.
-exclude = ["audit/", "supply-chain/"]
+# What the security audit keeps in the repository, and what only the repository's tools read.
+exclude = [
+    "audit/",
+    "supply-chain/",
+    ".cargo/",
+    ".github/",
+    ".gitignore",
+    "clippy.toml",
+    "deny.toml",
+    "rustfmt.toml",
+    "SECURITY.md",
+    "SUPPLY_CHAIN.md",
+]
 
 [workspace]
 members = [".", "xtask"]

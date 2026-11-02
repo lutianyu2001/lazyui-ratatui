@@ -1,16 +1,13 @@
 name: Verify
 
-# The security audit of SECURITY.md, kept out of the pipeline that builds and tests:
-# after each push to main, each task that the commit does not already hold a standing
-# result for (cargo xtask needed) runs as on a workstation, with the tools and the nightly
-# toolchain pinned in xtask/src/pins.rs. A newer push cancels the run in progress. The
-# results are committed back to audit/ by the last job, the only one that may write; the
-# code under test runs in jobs that cannot.
+# The security audit of SECURITY.md, kept out of the pipeline that builds and tests. It is
+# started by hand, on purpose: never on a push, as it takes hours and a push does not need
+# it. Each task that the commit does not already hold a standing result for (cargo xtask
+# needed) runs as on a workstation, with the tools and the nightly toolchain pinned in
+# xtask/src/pins.rs. A newer run cancels the one in progress. The results are committed back
+# to audit/ by the last job, the only one that may write; the code under test runs in jobs
+# that cannot.
 on:
-  push:
-    # Per project: the repository's default branch, which the record job below pushes to.
-    branches: [main]
-    paths-ignore: ["audit/**"]
   workflow_dispatch:
 
 concurrency: { group: "verify-${{ github.ref }}", cancel-in-progress: true }
@@ -35,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Project code runs here, with no use for the token.
+          persist-credentials: false
       # 0: a run is needed; 1: the committed result stands; anything else is an error.
       - id: needed
         run: |

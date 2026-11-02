@@ -226,12 +226,19 @@ const READ_AS_DATA: [&str; 0] = [];
 // would ask for an hour of fuzzing.
 const READ_BY_TESTS: [&str; 2] = ["README.md", "README/README_CN.md"];
 
+// Per project: what only Kani compiles (`#[cfg(kani)]`), which no other task can find changed.
+const PROOFS: [&str; 1] = ["src/proofs.rs"];
+
 /// Whether a change to `path` can change what `task` finds, besides the tools pinned for
 /// it. Documentation, CI and the results themselves change nothing.
 fn affects(task: &str, path: &str) -> bool {
     let under = |names: &[&str]| {
         names.iter().any(|n| path == *n || path.strip_prefix(n).is_some_and(|p| p.starts_with('/')))
     };
+    // Kani's list of proofs is all that a run parses with it, where a project has it.
+    if PROOFS.contains(&path) || path == "xtask/src/json.rs" {
+        return task == "kani";
+    }
     let module = |t: &str| format!("xtask/src/tasks/{t}.rs");
     // The dependencies, the toolchain, how the tasks run and the task's own code: not the
     // other tasks' code, nor what changes no run (how runs are recorded and kept apart, and
@@ -407,13 +414,17 @@ fn run(root: &Path, task: &str, args: &[String], opts: Opts) -> Outcome {
     };
     let dir = run.dir().to_owned();
     let result = tasks::run(root, task, &dir, &plan);
-    let outcome = match result {
+    let outcome = match result.and_then(|()| run.moved().map_or(Ok(()), Err)) {
         Ok(()) => Outcome::Succeeded,
         Err(e) => Outcome::Failed(e),
     };
     let line = format!("xtask: {task}: {outcome}");
     record::note(&line);
-    run.finish(&outcome.to_string(), &plan.params, &pins(task));
+    if let Err(e) = run.finish(&outcome.to_string(), &plan.params, &pins(task)) {
+        let outcome = Outcome::Failed(format!("its results were not kept: {e}"));
+        eprintln!("xtask: {task}: {outcome}");
+        return outcome;
+    }
     if opts.record {
         eprintln!("xtask: {task}: output kept in audit/{task}/");
         if root.join("audit").join(task).join(record::LAST).is_dir() {
@@ -462,6 +473,7 @@ mod tests {
             assert_eq!(reads(path), Vec::<&str>::new(), "{path}");
         }
         assert_eq!(reads("xtask/src/tasks/kani.rs"), only(&["kani"]));
+        assert_eq!(reads("xtask/src/json.rs"), only(&["kani"]));
         assert_eq!(reads("xtask/src/tasks/fuzz.rs"), only(&["fuzz"]));
         // Per project: paths of this project, by the rows of the table in the skill.
         assert_eq!(reads("README.md"), only(&["coverage"]));
@@ -475,7 +487,7 @@ mod tests {
         assert_eq!(reads("fuzz/Cargo.lock"), only(&["deny", "fuzz"]));
         assert_eq!(reads("fuzz/fuzz_targets/view.rs"), only(&["fuzz"]));
         assert_eq!(reads("tests/no_panic.rs"), only(&["coverage"]));
-        assert_eq!(reads("src/proofs.rs"), only(&["geiger", "miri", "coverage", "kani", "fuzz"]));
+        assert_eq!(reads("src/proofs.rs"), only(&["kani"]));
         assert_eq!(reads("src/lib.rs"), only(&["geiger", "miri", "coverage", "kani", "fuzz"]));
         let code = only(&["geiger", "miri", "coverage", "kani", "fuzz"]);
         assert_eq!(reads("src/field.rs"), code);

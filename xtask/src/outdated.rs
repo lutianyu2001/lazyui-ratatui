@@ -53,6 +53,43 @@ impl std::fmt::Display for Due {
     }
 }
 
+/// `text` from a server or an error, safe to print: without what would act on the terminal or
+/// reorder the line.
+fn printable(text: &str) -> String {
+    let harmful = |c: char| {
+        c.is_control()
+            || matches!(c, '\u{61c}' | '\u{200e}' | '\u{200f}' | '\u{202a}'..='\u{202e}')
+            || matches!(c, '\u{2066}'..='\u{2069}')
+    };
+    text.chars().map(|c| if harmful(c) { '?' } else { c }).collect()
+}
+
+/// The ids in an OSV reply. A reply of another shape is an error: read as no vulnerabilities,
+/// it would let a vulnerable tool through.
+fn advisory_ids(reply: &Value) -> Result<Vec<String>, String> {
+    if reply.as_object().is_none() {
+        return Err("the OSV reply is not an object".to_owned());
+    }
+    let listed = &reply["vulns"];
+    let Some(vulns) = listed.as_array() else {
+        if reply.as_object().is_some_and(|fields| fields.contains_key("vulns")) {
+            return Err("the OSV reply's vulns is not a list".to_owned());
+        }
+        return if reply["next_page_token"].as_str().is_some_and(|t| !t.is_empty()) {
+            Err("the OSV reply has more pages and nothing on this one".to_owned())
+        } else {
+            Ok(Vec::new())
+        };
+    };
+    vulns
+        .iter()
+        .map(|v| {
+            let id = v["id"].as_str().ok_or("an OSV advisory has no id")?;
+            Ok(printable(id))
+        })
+        .collect()
+}
+
 /// `cargo xtask outdated`. Exits with 2 when updates are due and it cannot ask, so that
 /// CI shows it, and when a pinned version has a known vulnerability and nothing to update
 /// to yet, whether it asked or not.
@@ -69,13 +106,13 @@ pub fn main(root: &Path, args: &[String]) -> ExitCode {
     let (due, waiting) = match due(Duration::from_secs(30), releases) {
         Ok(found) => found,
         Err(e) => {
-            eprintln!("xtask: {e}");
+            eprintln!("xtask: {}", printable(&e));
             return ExitCode::FAILURE;
         }
     };
     let _ = remember_check(root, &due, releases);
     for w in &waiting {
-        println!("{w}");
+        println!("{}", printable(w));
     }
     if due.is_empty() {
         println!(
@@ -89,7 +126,7 @@ pub fn main(root: &Path, args: &[String]) -> ExitCode {
         return ExitCode::SUCCESS;
     }
     for d in &due {
-        println!("{d}");
+        println!("{}", printable(&d.to_string()));
     }
     let stuck = due.iter().any(|d| d.to.is_none());
     if !io::stdin().is_terminal() {
@@ -136,7 +173,7 @@ fn update(root: &Path, due: &[Due]) -> Result<usize, String> {
             match settle(to) {
                 Ok(to) => to,
                 Err(e) => {
-                    eprintln!("xtask: {e}");
+                    eprintln!("xtask: {}", printable(&e));
                     continue;
                 }
             }
@@ -346,12 +383,7 @@ fn vulnerabilities(agent: &Agent, krate: &str, version: &str) -> Result<Vec<Stri
     let query =
         format!(r#"{{"package":{{"name":{krate},"ecosystem":"crates.io"}},"version":{version}}}"#);
     let reply = agent.json("https://api.osv.dev/v1/query", Some(&query))?;
-    Ok(reply["vulns"]
-        .as_array()
-        .into_iter()
-        .flatten()
-        .filter_map(|v| v["id"].as_str().map(str::to_owned))
-        .collect())
+    advisory_ids(&reply)
 }
 
 /// Per project: the system's curl, there being no HTTP crate among the dependencies. The
@@ -408,7 +440,7 @@ fn get_json(agent: &Agent, url: &str) -> Result<Value, String> {
 }
 
 fn ask(question: &str) -> bool {
-    print!("{question} [y/N] ");
+    print!("{} [y/N] ", printable(question));
     let _ = io::stdout().flush();
     let mut answer = String::new();
     io::stdin().lock().read_line(&mut answer).is_ok() && matches!(answer.trim(), "y" | "Y" | "yes")
@@ -479,6 +511,28 @@ fn today() -> i64 {
 #[cfg(test)]
 #[allow(clippy::unwrap_used)]
 mod tests {
+    fn reply(text: &str) -> crate::json::Value {
+        crate::json::parse(text).unwrap_or_else(|e| panic!("{text}: {e}"))
+    }
+
+    #[test]
+    fn what_comes_from_a_server_cannot_act_on_the_terminal() {
+        assert_eq!(super::printable("RUSTSEC\u{1b}[2J\u{9b}\u{202e}-1 é文"), "RUSTSEC?[2J??-1 é文");
+    }
+
+    #[test]
+    fn an_osv_reply_is_read_only_in_its_known_shape() {
+        let ids = |text: &str| super::advisory_ids(&reply(text));
+        assert_eq!(ids("{}"), Ok(Vec::new()));
+        assert_eq!(ids(r#"{"vulns":[{"id":"RUSTSEC-1"}]}"#), Ok(vec!["RUSTSEC-1".to_owned()]));
+        assert_eq!(ids(r#"{"vulns":[]}"#), Ok(Vec::new()));
+        for bad in
+            ["[]", "null", r#"{"vulns":{}}"#, r#"{"vulns":[{}]}"#, r#"{"next_page_token":"x"}"#]
+        {
+            assert!(ids(bad).is_err(), "{bad}");
+        }
+    }
+
     use super::*;
 
     #[test]
