@@ -27,6 +27,35 @@ fn buffer() -> impl Strategy<Value = Buffer> {
         .prop_map(|(x, y, w, h)| Buffer::empty(Rect::new(x, y, w, h)))
 }
 
+/// A buffer and an area, mostly a few cells from it: picked apart, the two rarely meet, and
+/// then nothing is drawn at all.
+fn buffer_and_area() -> impl Strategy<Value = (Buffer, Rect)> {
+    let near = (buffer(), 0..8u16, 0..4u16, 0..24u16, 0..24u16, 0..4u16, 0..4u16).prop_map(
+        |(buf, x, y, w, h, left, up)| {
+            let (at_x, at_y) = (
+                buf.area.x.saturating_sub(left).saturating_add(x),
+                buf.area.y.saturating_sub(up).saturating_add(y),
+            );
+            (buf, Rect::new(at_x, at_y, w, h))
+        },
+    );
+    prop_oneof![1 => (buffer(), rect()), 3 => near]
+}
+
+/// A buffer, a column and two windows, mostly from the buffer's top left corner with one
+/// over the other, so that an arrow gets drawn.
+fn arrow() -> impl Strategy<Value = (Buffer, u16, Rect, Rect)> {
+    let joined = (buffer(), 0..24u16, 0..24u16, 0..4u16, 0..3u16, 0..4u16).prop_map(
+        |(buf, along, w, upper_height, gap, lower_height)| {
+            let Position { x, y } = buf.area.as_position();
+            let upper = Rect::new(x, y, w, upper_height);
+            let lower = Rect::new(x, upper.bottom().saturating_add(gap), w, lower_height);
+            (buf, x.saturating_add(along), upper, lower)
+        },
+    );
+    prop_oneof![1 => (buffer(), coord(), rect(), rect()), 3 => joined]
+}
+
 /// Text mixing ASCII, wide characters, emoji, combining accents and control characters.
 fn text() -> impl Strategy<Value = String> {
     let special = prop::sample::select(vec![
@@ -60,8 +89,7 @@ fn changed_outside(
 proptest! {
     #[test]
     fn windows_stay_in_their_area(
-        mut buf in buffer(),
-        area in rect(),
+        (mut buf, area) in buffer_and_area(),
         (key, name, note) in (text(), text(), text()),
     ) {
         let blank = buf.clone();
@@ -71,7 +99,7 @@ proptest! {
     }
 
     #[test]
-    fn arrows_stay_in_their_column(mut buf in buffer(), x in coord(), upper in rect(), lower in rect()) {
+    fn arrows_stay_in_their_column((mut buf, x, upper, lower) in arrow()) {
         let blank = buf.clone();
         arrow_down(&mut buf, x, upper, lower, Style::new());
         let between = |p: Position| p.x == x && p.y >= upper.y && p.y <= lower.y;
@@ -79,7 +107,7 @@ proptest! {
     }
 
     #[test]
-    fn fields_stay_in_their_first_row(mut buf in buffer(), area in rect(), text in text(), cursor in 0..32usize) {
+    fn fields_stay_in_their_first_row((mut buf, area) in buffer_and_area(), text in text(), cursor in 0..32usize) {
         let blank = buf.clone();
         let at = Field::new(&text, cursor).render(area, &mut buf);
         let row = Rect { height: area.height.min(1), ..area };
