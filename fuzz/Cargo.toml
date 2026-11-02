@@ -1,0 +1,48 @@
+[package]
+name = "lazyui-ratatui-fuzz"
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+arbitrary = { version = "1.4.2", features = ["derive"] }
+lazyui-ratatui = { path = ".." }
+libfuzzer-sys = "0.4.12"
+ratatui = { version = "0.30.2", default-features = false }
+unicode-segmentation = "1.13.3"
+
+# Not part of the main workspace (its Cargo.toml excludes this directory).
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "text"
+path = "fuzz_targets/text.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "view"
+path = "fuzz_targets/view.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "field"
+path = "fuzz_targets/field.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "window"
+path = "fuzz_targets/window.rs"
+test = false
+doc = false
+bench = false

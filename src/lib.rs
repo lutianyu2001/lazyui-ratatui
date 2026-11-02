@@ -50,7 +50,11 @@
 //! assert_eq!((view.shown, view.cursor), ("6789", 5));
 //! ```
 
+#![forbid(unsafe_code)]
+
 mod field;
+#[cfg(kani)]
+mod proofs;
 pub mod text;
 mod window;
 

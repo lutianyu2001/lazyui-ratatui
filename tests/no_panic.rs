@@ -30,10 +30,22 @@ fn buffer() -> impl Strategy<Value = Buffer> {
 /// Text mixing ASCII, wide characters, emoji, combining accents and control characters.
 fn text() -> impl Strategy<Value = String> {
     let special = prop::sample::select(vec![
-        '文', '件', '❤', '\u{fe0f}', '\u{301}', 'ｶ', 'ﾞ', '\t', '\u{1b}', '\0',
+        '文', '件', '❤', '\u{fe0f}', '\u{301}', 'ｶ', 'ﾞ', '\t', '\u{1b}', '\0', '\u{231a}',
+        '\u{fe0e}', '\u{1100}', '\u{202e}', '\u{2066}', '\u{200f}', '\u{9b}',
     ]);
     let c = prop_oneof![3 => prop::char::range('a', 'z'), 2 => special, 1 => any::<char>()];
     prop::collection::vec(c, 0..24).prop_map(String::from_iter)
+}
+
+/// Cells holding what must not reach a terminal: C0 and C1 controls, and the controls that
+/// reorder text.
+fn unclean(buf: &Buffer) -> Vec<Position> {
+    let bad = |c: char| {
+        c.is_control()
+            || matches!(c, '\u{61c}' | '\u{200e}' | '\u{200f}' | '\u{202a}'..='\u{202e}')
+            || matches!(c, '\u{2066}'..='\u{2069}')
+    };
+    buf.area.positions().filter(|&p| buf[p].symbol().chars().any(bad)).collect()
 }
 
 /// Cells of `after` outside `kept` that differ from `before`.
@@ -55,6 +67,7 @@ proptest! {
         let blank = buf.clone();
         Window::new().name(&key, &name).note(&note).render(area, &mut buf);
         prop_assert_eq!(changed_outside(&blank, &buf, |p| area.contains(p)), []);
+        prop_assert_eq!(unclean(&buf), []);
     }
 
     #[test]
@@ -77,6 +90,7 @@ proptest! {
         } else {
             prop_assert!(drawn.contains(at), "cursor {at:?} outside {drawn:?}");
         }
+        prop_assert_eq!(unclean(&buf), []);
     }
 
     #[test]
