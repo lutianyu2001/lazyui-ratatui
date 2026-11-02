@@ -98,9 +98,7 @@ impl<'a> Field<'a> {
         }
         let shown = take_width(rest, fits);
         let right = right_cell && skipped.saturating_add(width(shown)) < total;
-        // Saturating for real: with the cursor inside a grapheme, `skipped` can pass `before`.
-        let cursor = before.saturating_add(usize::from(left)).saturating_sub(skipped);
-        FieldView { left, shown, right, cursor }
+        FieldView { left, shown, right, cursor: scrolled_cursor(before, left, skipped) }
     }
 }
 
@@ -135,6 +133,14 @@ pub(crate) fn scroll(before: usize, total: usize, w: usize) -> Scroll {
     let skip = before.saturating_sub(col.saturating_sub(usize::from(left)));
     let fits = w.saturating_sub(usize::from(left)).saturating_sub(usize::from(right_cell));
     Scroll { left, right_cell, skip, fits }
+}
+
+/// The cursor's column in a scrolled field that leaves `skipped` cells of text out on the
+/// left, for a cursor `before` cells into the text: the first cell of text, not the `<`,
+/// when `skipped` passes `before`, as it can with the cursor inside a grapheme.
+pub(crate) fn scrolled_cursor(before: usize, left: bool, skipped: usize) -> usize {
+    let left = usize::from(left);
+    before.saturating_add(left).saturating_sub(skipped).max(left)
 }
 
 #[cfg(test)]
@@ -228,6 +234,18 @@ mod tests {
             assert_eq!(Field::view(text, 1, w).cursor, 1, "{w} cells");
         }
         assert_eq!(Field::view("a\u{231a}\u{fe0e}", 2, 3).cursor, 2);
+    }
+
+    #[test]
+    fn a_cursor_inside_a_grapheme_keeps_off_the_marker() {
+        // The cursor between the heart and U+FE0F: the grapheme is left out whole, which
+        // leaves out a cell more than the text before the cursor takes.
+        let v = Field::view("a\u{2764}\u{fe0f}bcd", 2, 3);
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "b", true, 1));
+        // One grapheme of 170 cells, with the cursor partway through it.
+        let text = format!("{}\u{7911}", "\u{1100}".repeat(85));
+        let v = Field::view(&text, 36, 61);
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "\u{7911}", false, 1));
     }
 
     #[test]
