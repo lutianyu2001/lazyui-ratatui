@@ -236,7 +236,11 @@ fn replace_path(text: &[u8], from: &[u8], to: &[u8]) -> Vec<u8> {
 pub fn files(root: &Path) -> Result<Vec<(String, String)>, String> {
     let index = git(root, &["rev-parse", "--git-path", "index"])
         .ok_or("not in a git repository: the runs are recorded by the commit they ran on")?;
-    let temp = std::env::temp_dir().join(format!("xtask-index-{}", std::process::id()));
+    // Under target/, not the shared temporary directory, where another user could put a
+    // link at this name beforehand.
+    let dir = root.join("target").join("audit");
+    fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
+    let temp = dir.join(format!("index-{}", std::process::id()));
     // A copy keeps what git knows of the files, so that it rereads only the changed ones.
     let _ = fs::copy(root.join(index), &temp);
     let with_index = |args: &[&str]| {
