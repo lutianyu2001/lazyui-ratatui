@@ -150,6 +150,9 @@ for a commit.
 longer stands, one job each, and its last job commits the results to `audit/`. That job is the only
 one that may write, and it runs no project code. The rest have `contents: read`.
 
+GitHub Actions is off on this repository for now. Until it is turned on, neither workflow runs, and
+the results come from runs on the maintainer's machine.
+
 `.github/workflows/advisories.yml` runs daily, since a new advisory needs no change to the
 repository: it runs `cargo xtask deny --no-record` and checks the pinned tools for known
 vulnerabilities, and weekly whether they are due for an update.

@@ -14,6 +14,7 @@ scrolling one-line text fields.
 
 - [Overview](#overview)
 - [Features](#features)
+- [Security Audit](#security-audit)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -57,6 +58,58 @@ Note: "Lazy" in the name refers to lazygit, not lazy evaluation.
   [SECURITY.md](SECURITY.md))
 - Safe at any size: areas that are empty or reach outside the buffer are clipped
   instead of causing a panic
+
+## Security Audit
+
+This is an audit by the project's maintainer, not by a third party, and it is no promise that the
+crate has no bugs. It covers the versions in `Cargo.lock` at the commit named below.
+
+The crate draws text and nothing else: it starts no process and opens no file or socket. So the
+audit asks what someone who controls the text a program draws can do with it, and what happens at
+sizes a terminal should never have.
+
+| Audit | What was done | Result |
+|---|---|---|
+| Threat model | text from others: terminal escapes, text reordering, overrunning a window, very long text; sizes and cursors out of range | 5 bugs found and fixed; what is left is below |
+| `unsafe` code | forbidden in this crate | none |
+| Dependencies | 40 crates at run and build time: sources, licenses and known vulnerabilities with cargo-deny, audit records with cargo-vet | no advisory; 27 of all 82 audited by others, 55 exempted, none audited here |
+| Miri | undefined behavior in the 18 unit tests of all three modules | none found |
+| Fuzzing | 4 targets, one hour each: text widths, a field's layout, a field drawn into a buffer, windows and arrows drawn into a buffer, with what each must draw checked | 93 million runs, no failure |
+| Kani proofs | 7 proofs of the layout arithmetic, for every value of the integers, with no bound | 7 of 7 pass |
+| Branch coverage | tests, on all three modules | 58 of 62 branches reached; the other 4 are a test's own assertions failing |
+| Review | the code, the threat model and the audit's own tooling reviewed apart from their writing, and the old and new code compared on the same inputs | findings fixed, or listed in SECURITY.md |
+
+The proofs, all with no bound on their integers, as run on 2026-11-02 at commit `0247190` with Kani 0.68.0:
+
+| Proof | What holds | Time (s) | Peak memory (MiB) |
+|---|---|---|---|
+| `a_text_on_the_border_leaves_the_corners_alone` | a name or note takes exactly its width, with a `─` and the corner left on each side | <1 | 22 |
+| `an_arrow_stays_on_the_screen` | every row of an arrow is on the screen | <1 | 27 |
+| `an_arrow_joins_the_borders_of_both_windows` | an arrow runs from the upper window's bottom border to the lower one's top border, off their corners | 1 | 49 |
+| `an_arrow_is_drawn_when_nothing_stops_it` | with both borders on the screen, off their corners, the arrow is drawn | 1 | 49 |
+| `the_cursor_goes_on_the_field` | the cursor is on the field, whatever its column | <1 | 21 |
+| `a_scrolled_field_uses_its_cells_exactly` | markers and text add up to the field's width | <1 | 22 |
+| `a_scrolled_cursor_keeps_off_the_markers` | a scrolled cursor is never on a marker | 2 | 21 |
+
+What this says, and what it doesn't:
+
+- Rust rules out memory errors in this crate. It does not rule out mistakes in its logic, which is
+  what the tests, the fuzzing and the proofs are for.
+- `unsafe` code in the dependencies is out of this crate's hands: it is counted in
+  [SUPPLY_CHAIN.md](SUPPLY_CHAIN.md) and rests on their authors and on audits on record. Ratatui
+  itself is among the 55 crates exempted, so nobody has audited it for this project.
+- Fuzzing samples inputs, it proves nothing. The proofs cover integers only: text goes through
+  Unicode tables that are out of Kani's reach, so nothing about text is proved.
+- **A terminal can disagree with Ratatui on a text's width, and then text leaves its window on the
+  screen.** This was seen on tmux 3.4 with 92 bytes of text. Programs that show untrusted text have
+  to replace such sequences and cap the length of what they draw, see
+  [SECURITY.md](SECURITY.md#known-remaining-risks).
+- `FieldView::shown` and `take_width` return text as it came, control characters included, and
+  look-alike text is drawn as it is. [SECURITY.md](SECURITY.md#what-the-crate-leaves-to-the-program)
+  has the whole list of what is left to the program.
+
+The results of each check are committed with the code in `audit/<task>/`, and SECURITY.md says how
+to run them.
 
 ## Prerequisites
 
