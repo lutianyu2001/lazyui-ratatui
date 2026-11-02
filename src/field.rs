@@ -152,7 +152,7 @@ pub(crate) fn scroll(before: usize, total: usize, w: usize) -> Scroll {
 /// left, for a cursor `before` cells into the text. Whole graphemes are left out, and the
 /// cursor is between two, so `skipped` stops at `before` at the latest.
 pub(crate) fn scrolled_cursor(before: usize, left: bool, skipped: usize) -> usize {
-    before.saturating_add(usize::from(left)).saturating_sub(skipped)
+    before.saturating_sub(skipped).saturating_add(usize::from(left))
 }
 
 #[cfg(test)]
@@ -287,5 +287,13 @@ mod tests {
             let at = Field::new("0123456789", 10).render(area, &mut buf);
             assert_eq!((&buf, at), (&blank, area.as_position()), "{area:?}");
         }
+    }
+
+    #[test]
+    fn a_scrolled_cursor_never_lands_on_the_left_marker() {
+        // No text has this many cells; the column holds for every integer all the same.
+        assert_eq!(scrolled_cursor(usize::MAX, true, usize::MAX), 1);
+        assert_eq!(scrolled_cursor(7, true, 4), 4);
+        assert_eq!(scrolled_cursor(7, false, 7), 0);
     }
 }
