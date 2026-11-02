@@ -44,7 +44,8 @@
 - 圆角窗口：右上角显示焦点键和名称（`[1] Files`），右下角可加一条注释，两者都使用边框的样式
 - 箭头：把一个窗口连到它下方的窗口（`┬`、`│`、`▼`）
 - 单行文本框：文本过长时滚动以保持光标可见，并用高亮的 `<` / `>` 标出被截断的一侧，与 readline 的 horizontal-scroll-mode 相同
-- 按字素簇计算宽度，与 Ratatui 绘制文本的方式一致，中日韩文字和 emoji 都能对齐
+- 按字素簇计算宽度，与 Ratatui 绘制文本的方式一致，中日韩文字和常见 emoji 都能对齐
+  （终端在较少见的序列上仍可能与 Ratatui 不一致，见 [SECURITY.md](../SECURITY.md)）
 - 任意尺寸下都安全：区域为空或超出 buffer 时会被裁剪，不会 panic
 
 ## 前置要求
@@ -120,7 +121,7 @@ assert_eq!((view.shown, view.cursor), ("6789", 5));
 | `arrow_down` | 在第 `x` 列从一个窗口向下画 `┬` / `│` / `▼` 到下一个窗口；`x` 不在两个边框上时什么都不画 |
 | `Field` | 单行文本框；`new(text, cursor)` 的光标是字符索引，`render(area, buf)` 返回终端光标应在的位置 |
 | `FieldView` | `Field::view(text, cursor, width)` 的返回值：可见文本、两侧标记和光标所在列 |
-| `text::width` | 字符串在屏幕上占的格数 |
+| `text::width` | 字符串在 `Buffer` 里占的格数 |
 | `text::take_width` | 字符串能放进指定格数的最长前缀 |
 | `text::grapheme_width` | 单个字素簇占的格数；控制字符为 0，因为 Ratatui 会跳过它们 |
 

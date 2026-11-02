@@ -52,8 +52,9 @@ Note: "Lazy" in the name refers to lazygit, not lazy evaluation.
 - Arrows that join a window to one below it (`┬`, `│`, `▼`)
 - One-line text fields that scroll to keep the cursor visible and mark cut-off text
   with a highlighted `<` / `>`, as readline's horizontal-scroll-mode does
-- Widths measured per grapheme, the way Ratatui draws text, so CJK text and emoji
-  line up
+- Widths measured per grapheme, the way Ratatui draws text, so CJK text and common
+  emoji line up (a terminal can still disagree with Ratatui on rarer sequences; see
+  [SECURITY.md](SECURITY.md))
 - Safe at any size: areas that are empty or reach outside the buffer are clipped
   instead of causing a panic
 
@@ -131,7 +132,7 @@ assert_eq!((view.shown, view.cursor), ("6789", 5));
 | `arrow_down` | Draws `┬` / `│` / `▼` at column `x` from one window down to the next; does nothing if `x` is not on both borders |
 | `Field` | One-line text field; `new(text, cursor)` takes the cursor as a char index, `render(area, buf)` returns where the terminal cursor goes |
 | `FieldView` | What `Field::view(text, cursor, width)` returns: the visible text, both markers and the cursor's column |
-| `text::width` | Cells a string takes on screen |
+| `text::width` | Cells a string takes in a `Buffer` |
 | `text::take_width` | The longest prefix of a string that fits in a number of cells |
 | `text::grapheme_width` | Cells one grapheme takes; 0 for control characters, which Ratatui skips |
 
