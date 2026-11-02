@@ -39,19 +39,23 @@ fn a_text_on_the_border_leaves_the_corners_alone() {
 #[kani::proof]
 fn an_arrow_stays_on_the_screen() {
     let (x, upper, lower, screen) = (kani::any(), any_rect(), any_rect(), any_rect());
-    if let Some((top, bottom)) = arrow_ends(x, upper, lower, screen) {
+    let ends = arrow_ends(x, upper, lower, screen);
+    kani::cover!(ends.is_some());
+    if let Some((top, bottom)) = ends {
+        assert!(top < bottom);
         // Every row it draws on, not only its ends.
         let y: u16 = kani::any();
         kani::assume(top <= y && y <= bottom);
         assert!(screen.contains(Position::new(x, y)));
-        assert!(top < bottom);
     }
 }
 
 #[kani::proof]
 fn an_arrow_joins_the_borders_of_both_windows() {
     let (x, upper, lower, screen) = (kani::any(), any_rect(), any_rect(), any_rect());
-    if let Some((top, bottom)) = arrow_ends(x, upper, lower, screen) {
+    let ends = arrow_ends(x, upper, lower, screen);
+    kani::cover!(ends.is_some());
+    if let Some((top, bottom)) = ends {
         assert_eq!(top + 1, upper.bottom());
         assert!(upper.height > 0 && lower.height > 0);
         assert_eq!(bottom, lower.y);

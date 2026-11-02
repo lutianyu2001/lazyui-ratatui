@@ -67,7 +67,8 @@ impl<'a> Field<'a> {
 
     /// The part of `text` a field `w` cells wide shows with the cursor (a char index)
     /// visible: from the start while the cursor fits before the last cell, else scrolled
-    /// so it sits in the cell before the `>` (or the last cell, at the end of the text).
+    /// so it sits by the `>` as near as whole graphemes allow (or in the last cell, at the
+    /// end of the text).
     /// In a field too narrow for a marker beside the cursor's cell, the marker goes. A
     /// cursor inside a grapheme is shown before it, as a terminal has no cell for it there.
     pub fn view(text: &str, cursor: usize, w: usize) -> FieldView<'_> {

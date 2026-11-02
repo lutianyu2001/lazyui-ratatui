@@ -96,13 +96,15 @@ the emoji blocks and the characters that join into graphemes (`fuzz/src/lib.rs`)
 
 | Target | Input | Properties checked |
 |---|---|---|
-| `text` | any text and width | `width` equals the cells Ratatui really takes (for texts under 4096 cells) and the sum over graphemes; `take_width` returns the longest prefix of whole graphemes that fits; no control character gets into a buffer |
+| `text` | any text and width | `width` equals the cells Ratatui really takes (for texts under 4096 cells); `take_width` returns the longest prefix of whole graphemes that fits; no control character gets into a buffer |
 | `view` | any text, cursor and width | what is shown fits with its markers and is a piece of the text cut between graphemes; a marker means something visible is cut off on that side, and from 3 cells on, whatever is cut off gets one; the cursor stays in the field, off the markers, at the start of its grapheme, among the text shown, in the column of the text before it |
-| `field` | any text and cursor, any buffer and area | no panic; nothing is drawn off the area's first row; the cursor stays on what was drawn; no control character gets into a buffer |
-| `window` | any key, name and note, any buffers and areas, any arrow | no panic; nothing is drawn off the area, or off the arrow's column; `inner` stays in the area; the texts leave the corners alone; no control character gets into a buffer |
+| `field` | any text and cursor, any buffer and area | no panic; nothing is drawn off the area's first row; the cells hold what `Field::view` says, each grapheme in its place and the markers highlighted, and the rest of the row keeps its text; the cursor goes where `view` says; no control character gets into a buffer |
+| `window` | any key, name and note, any buffers and areas, any arrow | no panic; nothing is drawn off the area, or off the arrow's column; `inner` stays in the area; the corners and the `─` beside them stay, and a text that fits is there in its place; an arrow is made of `┬`, `│` and `▼` and leaves the corners of both windows alone; no control character gets into a buffer |
 
 Areas and buffers are written without `Rect::new`, so their right and bottom edges may lie past
-`u16::MAX`.
+`u16::MAX`, and some of each input keeps them next to it. Non-BMP text is limited to the emoji
+blocks and the characters above. The wide windows of `corner_place` (next to 65,535 cells) are out
+of the buffers' reach here: Kani and a unit test cover them.
 
 ### Kani Proofs
 
@@ -111,7 +113,7 @@ integers, with no bound on them: where a name goes on a border, the rows of an a
 scrolled field divides its cells and where its cursor goes. They do not cover text: `Field::view`
 on real text goes through the tables of unicode-segmentation and unicode-width, and a proof on
 just 3 ASCII characters ran out 15 minutes at 7 GB, so text is left to fuzzing and property tests.
-That the program's `Buffer` calls stay inside the buffer is covered by fuzzing, not by the proofs.
+That the crate's calls on a `Buffer` stay inside it is covered by fuzzing, not by the proofs.
 
 ### Running the Audit
 

@@ -2,8 +2,10 @@
 //! buffer that untrusted text was drawn into.
 
 use arbitrary::Arbitrary;
+use lazyui_ratatui::text::width;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Position, Rect};
+use unicode_segmentation::UnicodeSegmentation;
 
 /// Characters that take part in grapheme clusters or in what a width depends on, which plain
 /// mutations would seldom put together.
@@ -65,16 +67,22 @@ pub struct AnyRect {
 }
 
 impl AnyRect {
-    pub fn rect(self) -> Rect {
-        Rect { x: self.x, y: self.y, width: self.w, height: self.h }
-    }
-
-    /// Near the buffers' coordinates, as most rectangles are, unless `far`.
+    /// Near the buffers' coordinates, as most rectangles are; with `far`, next to `u16::MAX`,
+    /// where the buffers then are too, and of any size half of the time.
     pub fn near(self, far: bool) -> Rect {
-        if far {
-            return self.rect();
+        if !far {
+            return Rect {
+                x: self.x % 64,
+                y: self.y % 16,
+                width: self.w % 64,
+                height: self.h % 16,
+            };
         }
-        Rect { x: self.x % 64, y: self.y % 16, width: self.w % 64, height: self.h % 16 }
+        let (x, y) = (end(self.x), end(self.y));
+        if self.w & 1 == 0 {
+            return Rect { x, y, width: self.w, height: self.h };
+        }
+        Rect { x, y, width: self.w % 128, height: self.h % 16 }
     }
 }
 
@@ -93,10 +101,15 @@ impl AnyBuffer {
     pub fn buffer(self) -> Buffer {
         let (width, height) = (u16::from(self.w % 64), u16::from(self.h % 16));
         if self.far {
-            return Buffer::empty(Rect { x: self.x, y: self.y, width, height });
+            return Buffer::empty(Rect { x: end(self.x), y: end(self.y), width, height });
         }
         Buffer::empty(Rect { x: self.x % 8, y: self.y % 8, width, height })
     }
+}
+
+/// A coordinate next to `u16::MAX`.
+fn end(v: u16) -> u16 {
+    u16::MAX - v % 128
 }
 
 /// What must not reach a terminal, whatever was drawn: C0 and C1 controls, which ratatui
@@ -115,6 +128,30 @@ pub fn assert_clean(buf: &Buffer) {
         let symbol = buf[p].symbol();
         assert!(!symbol.chars().any(reaches_no_terminal), "{p:?}: {symbol:?}");
     }
+}
+
+/// `text` is in row `y` from column `x`, each grapheme in its cell, without the ones that a
+/// `Buffer` leaves out.
+pub fn assert_drawn(buf: &Buffer, x: u16, y: u16, text: &str) {
+    let mut column = x;
+    for g in text.graphemes(true) {
+        let cells = width(g);
+        if cells > 0 {
+            assert_eq!(buf[(column, y)].symbol(), g, "at {column} of {text:?}");
+            column += u16::try_from(cells).expect("what fits in a row");
+        }
+    }
+}
+
+/// The four corners of a window drawn on `area`.
+pub fn corners(area: Rect) -> [(Position, &'static str); 4] {
+    let (right, bottom) = (area.right() - 1, area.bottom() - 1);
+    [
+        (Position::new(area.x, area.y), "╭"),
+        (Position::new(right, area.y), "╮"),
+        (Position::new(area.x, bottom), "╰"),
+        (Position::new(right, bottom), "╯"),
+    ]
 }
 
 /// Every cell of `after` not `kept` is as it was in `before`.

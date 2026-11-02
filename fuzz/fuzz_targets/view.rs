@@ -31,7 +31,6 @@ fuzz_target!(|input: (Vec<u16>, u16, u8, bool)| {
     let start = v.shown.as_ptr() as usize - s.as_ptr() as usize;
     let end = start + v.shown.len();
     let (before, after) = (&s[..start], &s[end..]);
-    assert_eq!(s, format!("{before}{}{after}", v.shown), "{what}");
     let bounds: Vec<usize> = s.grapheme_indices(true).map(|(i, _)| i).collect();
     for cut in [start, end] {
         assert!(cut == s.len() || bounds.contains(&cut), "{what}");

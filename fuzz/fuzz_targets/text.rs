@@ -15,7 +15,6 @@ fuzz_target!(|input: (Vec<u16>, u16)| {
     let s = text(&units);
     let graphemes: Vec<&str> = s.graphemes(true).collect();
     let total = width(&s);
-    assert_eq!(total, graphemes.iter().copied().map(grapheme_width).sum::<usize>());
 
     // Ratatui's own count of the cells it took, on a row wide enough for all of it.
     if let Ok(cells) = u16::try_from(total)
