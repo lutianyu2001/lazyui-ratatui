@@ -1,0 +1,15 @@
+# Rust as tokens, the rest as git blobs (1)
+6b27964b1ca2f9679a4d7e566c1bab26c9d1f27d	.cargo/config.toml
+a84e31416750c562ff56673bfacd76e3a9d4a213	Cargo.lock
+8c65fb85625ff9ed721e185d3d65323d815e7d48	Cargo.toml
+1f0d1f95cfee3b877c031aef6119d5c57bb7d3f9	src/field.rs
+9f2e7a05f9def4dc53e329cd0b1c651447e4382f	src/lib.rs
+5b835cbc8cbf1fd98e742f1a77ea28872014c343	src/proofs.rs
+6d4a03f3c0f325db222e298ed8e89bec6a963d4e	src/text.rs
+9a05bc7d726233432fe3ccb5fb76df389d29567d	src/window.rs
+7fbb68dc9524a82087ff3b1de1e4de776885b353	xtask/Cargo.toml
+8bb30a1bb00092b48a0137de1fea07f3da69ceeb	xtask/src/json.rs
+7cd2339f8533cdd58c79ea6af12862ecc9ad825d	xtask/src/main.rs
+c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
+6458207511510903ec649899c08bf1ffbb46642e	xtask/src/tasks/kani.rs
+171917aad0222375043b3fbf17d60ac79566b69f	xtask/src/tasks/mod.rs

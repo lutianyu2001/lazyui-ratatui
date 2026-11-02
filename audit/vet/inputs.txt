@@ -1,0 +1,13 @@
+# Rust as tokens, the rest as git blobs (1)
+6b27964b1ca2f9679a4d7e566c1bab26c9d1f27d	.cargo/config.toml
+a84e31416750c562ff56673bfacd76e3a9d4a213	Cargo.lock
+8c65fb85625ff9ed721e185d3d65323d815e7d48	Cargo.toml
+2772ccb21f3b87f003ba51035a8ccee603c019aa	supply-chain/audits.toml
+a7067135224d2d7a5a184d09e581b96814da2a15	supply-chain/config.toml
+7a2ca355cba13559a6e6a5ec2bcda66d0ac4ec07	supply-chain/imports.lock
+7fbb68dc9524a82087ff3b1de1e4de776885b353	xtask/Cargo.toml
+8bb30a1bb00092b48a0137de1fea07f3da69ceeb	xtask/src/json.rs
+7cd2339f8533cdd58c79ea6af12862ecc9ad825d	xtask/src/main.rs
+c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
+171917aad0222375043b3fbf17d60ac79566b69f	xtask/src/tasks/mod.rs
+c67c76e148a59e0c5aa9c4553ece4c187d56e02f	xtask/src/tasks/vet.rs

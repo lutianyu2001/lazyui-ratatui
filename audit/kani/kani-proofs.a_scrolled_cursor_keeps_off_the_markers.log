@@ -1,0 +1,66 @@
+$ cargo kani --lib --harness proofs::a_scrolled_cursor_keeps_off_the_markers --exact -Z unstable-options --harness-timeout 1800s
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+Checking harness proofs::a_scrolled_cursor_keeps_off_the_markers...
+CBMC 6.11.0 (cbmc-6.11.0)
+CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/5fb194e8f606ed60/out/lazyui_ratatui-5fb194e8f606ed60__RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs39a_scrolled_cursor_keeps_off_the_markers.out
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 16 object bits, 48 offset bits (user-specified)
+Starting Bounded Model Checking
+Runtime Symex: 0.00802991s
+size of program expression: 523 steps
+slicing removed 200 assignments
+Generated 4 VCC(s), 4 remaining after simplification
+Runtime Postprocess Equation: 0.000162561s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.00389834s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 6.02e-06s
+Solving with CaDiCaL 3.0.0
+4119 variables, 12441 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.000894175s
+Runtime decision procedure: 0.00489361s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+4120 variables, 12442 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 2.24548s
+Runtime decision procedure: 2.24554s
+
+RESULTS:
+Check 1: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.1
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: src/proofs.rs:114:40 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+
+Check 2: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.2
+	 - Status: SUCCESS
+	 - Description: "assertion failed: left <= column && column < w - right"
+	 - Location: src/proofs.rs:114:5 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+
+
+SUMMARY:
+ ** 0 of 2 failed
+
+VERIFICATION:- SUCCESSFUL
+Verification Time: 2.291234s
+
+Manual Harness Summary:
+Complete - 1 successfully verified harnesses, 0 failures, 1 total.
+xtask: peak memory in bytes: 21909504

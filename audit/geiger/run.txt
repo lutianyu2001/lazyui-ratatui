@@ -1,0 +1,6 @@
+result: succeeded
+started: 2026-11-02 18:35 UTC
+seconds: 11
+commit: 8ed5335f489fbd9d80371324ce8d555efa978a77
+args: 
+tools: cargo-geiger 0.14.0

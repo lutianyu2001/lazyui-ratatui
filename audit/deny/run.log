@@ -1,0 +1,41 @@
+$ cargo deny --locked --workspace check
+warning[duplicate]: found 2 duplicate entries for crate 'syn'
+   ┌─ ./Cargo.lock:57:1
+   │  
+57 │ ╭ syn 2.0.119 registry+https://github.com/rust-lang/crates.io-index
+58 │ │ syn 3.0.9 registry+https://github.com/rust-lang/crates.io-index
+   │ ╰───────────────────────────────────────────────────────────────┘ lock entries
+   │  
+   ├ syn v2.0.119
+     └── strum_macros v0.28.0
+         └── strum v0.28.0
+             ├── ratatui-core v0.1.2
+             │   ├── ratatui v0.30.2
+             │   │   └── lazyui-ratatui v0.1.0
+             │   └── ratatui-widgets v0.3.2
+             │       └── ratatui v0.30.2 (*)
+             └── ratatui-widgets v0.3.2 (*)
+   ├ syn v3.0.9
+     ├── darling_core v0.24.1
+     │   ├── darling v0.24.1
+     │   │   └── instability v0.3.14
+     │   │       ├── ratatui v0.30.2
+     │   │       │   └── lazyui-ratatui v0.1.0
+     │   │       └── ratatui-widgets v0.3.2
+     │   │           └── ratatui v0.30.2 (*)
+     │   └── darling_macro v0.24.1
+     │       └── darling v0.24.1 (*)
+     ├── darling_macro v0.24.1 (*)
+     ├── instability v0.3.14 (*)
+     └── thiserror-impl v2.0.21
+         └── thiserror v2.0.21
+             ├── kasuari v0.4.13
+             │   └── ratatui-core v0.1.2
+             │       ├── ratatui v0.30.2 (*)
+             │       └── ratatui-widgets v0.3.2 (*)
+             └── ratatui-core v0.1.2 (*)
+
+advisories ok, bans ok, licenses ok, sources ok
+$ cargo deny --locked --manifest-path fuzz/Cargo.toml check advisories sources
+advisories ok, sources ok
+xtask: deny: succeeded

@@ -1,0 +1,299 @@
+$ cargo kani --lib --harness proofs::a_text_on_the_border_leaves_the_corners_alone --exact -Z unstable-options --harness-timeout 1800s
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+Checking harness proofs::a_text_on_the_border_leaves_the_corners_alone...
+CBMC 6.11.0 (cbmc-6.11.0)
+CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/4fe107ee6e7e7ca2/out/lazyui_ratatui-4fe107ee6e7e7ca2__RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs45a_text_on_the_border_leaves_the_corners_alone.out
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 16 object bits, 48 offset bits (user-specified)
+Starting Bounded Model Checking
+aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs line 714 column 15 function std::result::Result::<u16, std::num::TryFromIntError>::ok thread 0
+aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 1574 column 5 function std::option::Option::<u16>::filter::<{closure@src/window.rs:90:46: 90:50}> thread 0
+aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 2869 column 15 function <std::option::Option<u16> as std::ops::Try>::branch thread 0
+aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 1574 column 5 function std::option::Option::<u16>::filter::<{closure@src/window.rs:92:29: 92:37}> thread 0
+aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 2869 column 15 function <std::option::Option<u16> as std::ops::Try>::branch thread 0
+aborting path on assume(false) at file src/lib.rs line 0 column 0 function window::corner_place thread 0
+aborting path on assume(false) at file src/proofs.rs line 25 column 1 function proofs::a_text_on_the_border_leaves_the_corners_alone thread 0
+Runtime Symex: 0.0346326s
+size of program expression: 2240 steps
+slicing removed 1328 assignments
+Generated 90 VCC(s), 24 remaining after simplification
+Runtime Postprocess Equation: 0.000564153s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.00465997s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 5.2e-06s
+Solving with CaDiCaL 3.0.0
+5162 variables, 11552 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.000238581s
+Runtime decision procedure: 0.00506413s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+5163 variables, 11553 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.00376817s
+Runtime decision procedure: 0.00384089s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+5164 variables, 11554 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 0.176233s
+Runtime decision procedure: 0.17629s
+
+RESULTS:
+Check 1: <std::option::Option<(u16, u16)> as std::ops::FromResidual<std::option::Option<std::convert::Infallible>>>::from_residual.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:2883:15 in function <std::option::Option<(u16, u16)> as std::ops::FromResidual<std::option::Option<std::convert::Infallible>>>::from_residual
+
+Check 2: proofs::a_text_on_the_border_leaves_the_corners_alone.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: src/proofs.rs:25:1 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 3: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.1
+	 - Status: SUCCESS
+	 - Description: "assertion failed: width == 0 || width.saturating_add(4) > usize::from(area.width)"
+	 - Location: src/proofs.rs:35:9 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 4: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.2
+	 - Status: SUCCESS
+	 - Description: "assertion failed: usize::from(w) == width"
+	 - Location: src/proofs.rs:29:9 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 5: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.3
+	 - Status: SUCCESS
+	 - Description: "assertion failed: w > 0"
+	 - Location: src/proofs.rs:30:9 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 6: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.4
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:32:22 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 7: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.5
+	 - Status: SUCCESS
+	 - Description: "assertion failed: x >= area.x + 2"
+	 - Location: src/proofs.rs:32:9 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 8: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.6
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:33:20 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 9: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.7
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:33:20 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 10: proofs::a_text_on_the_border_leaves_the_corners_alone.assertion.8
+	 - Status: SUCCESS
+	 - Description: "assertion failed: x + w + 2 == area.right()"
+	 - Location: src/proofs.rs:33:9 in function proofs::a_text_on_the_border_leaves_the_corners_alone
+
+Check 11: std::option::Option::<u16>::filter::<{closure@src/window.rs:92:29: 92:37}>.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1574:5 in function std::option::Option::<u16>::filter::<{closure@src/window.rs:92:29: 92:37}>
+
+Check 12: std::result::Result::<u16, std::num::TryFromIntError>::ok.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:714:15 in function std::result::Result::<u16, std::num::TryFromIntError>::ok
+
+Check 13: window::corner_place.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: src/lib.rs:0:0 in function window::corner_place
+
+Check 14: <std::option::Option<u16> as std::ops::Try>::branch.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:2869:15 in function <std::option::Option<u16> as std::ops::Try>::branch
+
+Check 15: core::num::<impl u16>::checked_add.arithmetic_overflow.1
+	 - Status: SUCCESS
+	 - Description: "attempt to compute `unchecked_add` which would overflow"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:942:31 in function core::num::<impl u16>::checked_add
+
+Check 16: std::option::Option::<u16>::filter::<{closure@src/window.rs:90:46: 90:50}>.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1574:5 in function std::option::Option::<u16>::filter::<{closure@src/window.rs:90:46: 90:50}>
+
+Check 17: window::corner_place::{closure#0}.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: src/window.rs:90:48 in function window::corner_place::{closure#0}
+
+Check 18: window::corner_place::{closure#0}.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: src/window.rs:90:48 in function window::corner_place::{closure#0}
+
+Check 19: window::corner_place::{closure#0}.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: src/window.rs:90:48 in function window::corner_place::{closure#0}
+
+Check 20: window::corner_place::{closure#0}.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: src/window.rs:90:48 in function window::corner_place::{closure#0}
+
+Check 21: window::corner_place::{closure#0}.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: src/window.rs:90:48 in function window::corner_place::{closure#0}
+
+Check 22: window::corner_place::{closure#0}.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: src/window.rs:90:48 in function window::corner_place::{closure#0}
+
+Check 23: window::corner_place::{closure#1}.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: src/window.rs:92:31 in function window::corner_place::{closure#1}
+
+Check 24: window::corner_place::{closure#1}.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: src/window.rs:92:31 in function window::corner_place::{closure#1}
+
+Check 25: window::corner_place::{closure#1}.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: src/window.rs:92:31 in function window::corner_place::{closure#1}
+
+Check 26: window::corner_place::{closure#1}.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: src/window.rs:92:31 in function window::corner_place::{closure#1}
+
+Check 27: window::corner_place::{closure#1}.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: src/window.rs:92:31 in function window::corner_place::{closure#1}
+
+Check 28: window::corner_place::{closure#1}.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: src/window.rs:92:31 in function window::corner_place::{closure#1}
+
+Check 29: window::corner_place::{closure#1}.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: src/window.rs:92:47 in function window::corner_place::{closure#1}
+
+Check 30: window::corner_place::{closure#1}.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: src/window.rs:92:47 in function window::corner_place::{closure#1}
+
+Check 31: window::corner_place::{closure#1}.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: src/window.rs:92:47 in function window::corner_place::{closure#1}
+
+Check 32: window::corner_place::{closure#1}.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: src/window.rs:92:47 in function window::corner_place::{closure#1}
+
+Check 33: window::corner_place::{closure#1}.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: src/window.rs:92:47 in function window::corner_place::{closure#1}
+
+Check 34: window::corner_place::{closure#1}.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: src/window.rs:92:47 in function window::corner_place::{closure#1}
+
+Check 35: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 36: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 37: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 38: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 39: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 40: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 41: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 42: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 43: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 44: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 45: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 46: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+
+SUMMARY:
+ ** 0 of 46 failed
+
+VERIFICATION:- SUCCESSFUL
+Verification Time: 0.32605985s
+
+Manual Harness Summary:
+Complete - 1 successfully verified harnesses, 0 failures, 1 total.
+xtask: peak memory in bytes: 22917120

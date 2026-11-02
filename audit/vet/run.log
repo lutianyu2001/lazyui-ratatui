@@ -1,0 +1,3 @@
+$ cargo vet --locked
+Vetting Succeeded (27 fully audited, 55 exempted)
+xtask: vet: succeeded
