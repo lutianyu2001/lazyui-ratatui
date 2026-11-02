@@ -19,6 +19,9 @@ pub struct Field<'a> {
 
 /// What a field shows in `w` cells: `shown` starts after the `<` cell when `left` is
 /// set, and `cursor` is the cursor's column counted from the field's first cell.
+///
+/// `shown` is a piece of the text as it came, control characters included: ratatui leaves
+/// those out of a [`Buffer`], but a program that prints `shown` itself has to do so too.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FieldView<'a> {
     pub left: bool,
@@ -59,8 +62,7 @@ impl<'a> Field<'a> {
         if view.right {
             buf.set_string(area.right().saturating_sub(1), area.y, ">", marker);
         }
-        let col = u16::try_from(view.cursor).unwrap_or(0);
-        Position::new(area.x.saturating_add(col.min(area.width.saturating_sub(1))), area.y)
+        cursor_cell(area, view.cursor)
     }
 
     /// The part of `text` a field `w` cells wide shows with the cursor (a char index)
@@ -81,13 +83,7 @@ impl<'a> Field<'a> {
             let shown = take_width(text, w.saturating_sub(1));
             return FieldView { left: false, shown, right: true, cursor: before };
         }
-        // Scrolled: `<` in the first cell, and the cursor's cell before `>` or at the end.
-        let at_end = before == total;
-        let right_cell = !at_end && w >= 2;
-        // None of these saturate: `w` is at least 1, and at least 2 with `right_cell`.
-        let col = w.saturating_sub(1).saturating_sub(usize::from(right_cell));
-        let left = col > 0;
-        let skip = before.saturating_sub(col.saturating_sub(usize::from(left)));
+        let Scroll { left, right_cell, skip, fits } = scroll(before, total, w);
         let mut rest = text;
         let mut skipped: usize = 0;
         for g in text.graphemes(true) {
@@ -97,13 +93,45 @@ impl<'a> Field<'a> {
             skipped = skipped.saturating_add(grapheme_width(g));
             rest = &rest[g.len()..];
         }
-        let fits = w.saturating_sub(usize::from(left)).saturating_sub(usize::from(right_cell));
         let shown = take_width(rest, fits);
         let right = right_cell && skipped.saturating_add(width(shown)) < total;
         // Saturating for real: with the cursor inside a grapheme, `skipped` can pass `before`.
         let cursor = before.saturating_add(usize::from(left)).saturating_sub(skipped);
         FieldView { left, shown, right, cursor }
     }
+}
+
+/// Where the cursor goes for column `col` of a field drawn on `area`: on `area`, whatever
+/// the column.
+pub(crate) fn cursor_cell(area: Rect, col: usize) -> Position {
+    let col = u16::try_from(col).unwrap_or(0);
+    Position::new(area.x.saturating_add(col.min(area.width.saturating_sub(1))), area.y)
+}
+
+/// How a scrolled field divides its cells.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct Scroll {
+    /// Whether the first cell holds `<`.
+    pub(crate) left: bool,
+    /// Whether the last cell is kept from the text, for `>`.
+    pub(crate) right_cell: bool,
+    /// The cells of text to leave out on the left, at least.
+    pub(crate) skip: usize,
+    /// The cells left for text.
+    pub(crate) fits: usize,
+}
+
+/// `<` in the first cell, and the cursor's cell before `>` or at the end, for a cursor
+/// `before` cells into `total` cells of text.
+pub(crate) fn scroll(before: usize, total: usize, w: usize) -> Scroll {
+    let at_end = before == total;
+    let right_cell = !at_end && w >= 2;
+    // None of these saturate: `w` is at least 1, and at least 2 with `right_cell`.
+    let col = w.saturating_sub(1).saturating_sub(usize::from(right_cell));
+    let left = col > 0;
+    let skip = before.saturating_sub(col.saturating_sub(usize::from(left)));
+    let fits = w.saturating_sub(usize::from(left)).saturating_sub(usize::from(right_cell));
+    Scroll { left, right_cell, skip, fits }
 }
 
 #[cfg(test)]
@@ -186,6 +214,18 @@ mod tests {
                 }
             }
         }
+    }
+
+    #[test]
+    fn a_grapheme_too_wide_to_show_leaves_the_cursor_in_the_field() {
+        // A run of Hangul leading consonants is one grapheme, two cells for each.
+        let text = format!("ab{}", "\u{1100}".repeat(8));
+        let v = Field::view(&text, 10, 6);
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "", false, 1));
+        // With the cursor inside it, the cursor is past what is shown, but in the field.
+        let v = Field::view(&text, 3, 6);
+        assert_eq!((v.left, v.shown, v.right), (false, "ab", true));
+        assert!(v.cursor < 5, "{v:?}");
     }
 
     #[test]

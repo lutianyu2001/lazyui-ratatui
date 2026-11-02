@@ -14,7 +14,8 @@ pub fn width(s: &str) -> usize {
     s.graphemes(true).map(grapheme_width).sum()
 }
 
-/// The longest prefix of `s` that fits in `w` cells.
+/// The longest prefix of `s` that fits in `w` cells. It is cut from `s` as it came, control
+/// characters included, which only a [`Buffer`](ratatui::buffer::Buffer) leaves out.
 pub fn take_width(s: &str, w: usize) -> &str {
     let mut used: usize = 0;
     for (i, g) in s.grapheme_indices(true) {
