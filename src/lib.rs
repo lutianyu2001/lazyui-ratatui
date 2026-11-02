@@ -5,7 +5,8 @@
 //! - [`arrow_down`]: joins a window to one below it.
 //! - [`Field`]: a one-line text field that scrolls to keep its cursor visible and marks
 //!   text it cuts off with `<` and `>`, as readline's horizontal-scroll-mode does.
-//! - [`text`]: the widths these measure text in, the way Ratatui draws it.
+//! - [`text`]: the widths these measure text in, the way Ratatui draws it, and
+//!   [`text::sanitize`], which they draw text through.
 //!
 //! # Examples
 //!
@@ -56,6 +57,7 @@ mod field;
 #[cfg(kani)]
 mod proofs;
 pub mod text;
+mod unsteady;
 mod window;
 
 pub use field::{Field, FieldView};

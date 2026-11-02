@@ -36,20 +36,28 @@ fuzz_target!(|input: (Vec<u16>, u16, u8, bool)| {
         assert!(cut == s.len() || bounds.contains(&cut), "{what}");
     }
 
-    // A marker means there is something to see on its side; from 3 cells on, whatever is
-    // cut off there gets one.
+    // What is drawn under the cursor, and the cells it takes.
+    let at = s.char_indices().nth(cursor).map_or(s.len(), |(i, _)| i);
+    let at =
+        if at == s.len() { at } else { bounds.iter().copied().rfind(|&b| b <= at).unwrap_or(0) };
+    let under = s[at..].graphemes(true).map(width).find(|&cells| cells > 0);
+
+    // A marker means there is something to see on its side; with room for what is under the
+    // cursor and both markers, whatever is cut off there gets one.
     assert!(!v.left || width(before) > 0, "{what}");
     assert!(!v.right || width(after) > 0, "{what}");
-    if w >= 3 {
+    if w >= under.unwrap_or(1).max(1) + 2 {
         assert!(v.left || width(before) == 0, "{what}");
         assert!(v.right || width(after) == 0, "{what}");
     }
 
     // The cursor is at the start of its grapheme, among the text shown, in the column of
     // the text before it.
-    let at = s.char_indices().nth(cursor).map_or(s.len(), |(i, _)| i);
-    let at =
-        if at == s.len() { at } else { bounds.iter().copied().rfind(|&b| b <= at).unwrap_or(0) };
     assert!((start..=end).contains(&at), "{what}");
     assert_eq!(v.cursor, left + width(&s[start..at]), "{what}");
+
+    // What is under the cursor is shown, unless the field is too narrow for it.
+    if let Some(cells) = under.filter(|&cells| cells <= w) {
+        assert!(v.cursor + cells <= left + shown, "{what}");
+    }
 });

@@ -4,7 +4,7 @@
 //! alone, and no control character reaches the buffer.
 #![no_main]
 
-use lazyui_ratatui::text::width;
+use lazyui_ratatui::text::{sanitize, width};
 use lazyui_ratatui::{Window, arrow_down};
 use lazyui_ratatui_fuzz::{
     AnyBuffer, AnyRect, assert_clean, assert_drawn, assert_kept, corners, text,
@@ -26,7 +26,7 @@ fn check_border(buf: &Buffer, drawn: Rect, y: u16, label: &str) {
     let cells = width(label);
     if cells > 0 && cells + 4 <= usize::from(drawn.width) {
         let x = drawn.right() - 2 - u16::try_from(cells).expect("fits in a window");
-        assert_drawn(buf, x, y, label);
+        assert_drawn(buf, x, y, &sanitize(label));
     }
 }
 

@@ -90,26 +90,31 @@ fn the_cursor_goes_on_the_field() {
 
 /// A cursor within a text of any length, in a field of any width but 0: more than
 /// `Field::view` scrolls, so that these proofs do not depend on when it does.
-fn any_scroll() -> (usize, usize, Scroll) {
-    let (before, total, w): (usize, usize, usize) = (kani::any(), kani::any(), kani::any());
-    kani::assume(w > 0 && before <= total);
-    (before, w, scroll(before, total, w))
+fn any_scroll() -> (usize, usize, usize, Scroll) {
+    let (before, under, total, w): (usize, usize, usize, usize) =
+        (kani::any(), kani::any(), kani::any(), kani::any());
+    kani::assume(w > 0 && under > 0 && before <= total);
+    (before, under, w, scroll(before, under, total, w))
 }
 
 #[kani::proof]
 fn a_scrolled_field_uses_its_cells_exactly() {
-    let (_, w, s) = any_scroll();
+    let (_, _, w, s) = any_scroll();
     let (left, right) = (usize::from(s.left), usize::from(s.right_cell));
     assert_eq!(left + s.fits + right, w);
 }
 
 #[kani::proof]
 fn a_scrolled_cursor_keeps_off_the_markers() {
-    let (before, w, s) = any_scroll();
+    let (before, under, w, s) = any_scroll();
     let (left, right) = (usize::from(s.left), usize::from(s.right_cell));
     // Whole graphemes are left out, so any number of cells from `skip` to the cursor.
     let skipped: usize = kani::any();
     kani::assume(s.skip <= skipped && skipped <= before);
     let column = scrolled_cursor(before, s.left, skipped);
     assert!(left <= column && column < w - right);
+    if under <= w {
+        // What is under the cursor fits, before any `>`.
+        assert!(under <= w - right - column);
+    }
 }

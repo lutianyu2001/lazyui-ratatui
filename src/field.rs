@@ -4,7 +4,7 @@ use ratatui::buffer::Buffer;
 use ratatui::layout::{Position, Rect};
 use ratatui::style::{Modifier, Style};
 
-use crate::text::{grapheme_width, take_width, width};
+use crate::text::{grapheme_width, sanitize, take_width, width};
 use unicode_segmentation::UnicodeSegmentation;
 
 /// A one-line text field with a cursor. Text too long for it scrolls so the cursor stays
@@ -58,7 +58,7 @@ impl<'a> Field<'a> {
         if view.left {
             buf.set_string(area.x, area.y, "<", marker);
         }
-        buf.set_stringn(x, area.y, view.shown, width(view.shown), self.style);
+        buf.set_stringn(x, area.y, sanitize(view.shown), width(view.shown), self.style);
         if view.right {
             buf.set_string(area.right().saturating_sub(1), area.y, ">", marker);
         }
@@ -66,26 +66,30 @@ impl<'a> Field<'a> {
     }
 
     /// The part of `text` a field `w` cells wide shows with the cursor (a char index)
-    /// visible: from the start while the cursor fits before the last cell, else scrolled
-    /// so it sits by the `>` as near as whole graphemes allow (or in the last cell, at the
-    /// end of the text).
-    /// In a field too narrow for a marker beside the cursor's cell, the marker goes. A
-    /// cursor inside a grapheme is shown before it, as a terminal has no cell for it there.
+    /// visible: from the start while what is under the cursor fits before the last cell,
+    /// else scrolled so it sits by the `>` as near as whole graphemes allow (or in the last
+    /// cell, at the end of the text).
+    /// In a field too narrow for a marker beside what is under the cursor, the marker goes,
+    /// the `<` before the `>`. A wide grapheme under the cursor is left out only by a field
+    /// too narrow for it. A cursor inside a grapheme is shown before it, as a terminal has no
+    /// cell for it there.
     pub fn view(text: &str, cursor: usize, w: usize) -> FieldView<'_> {
         let total = width(text);
-        let before = cells_before(text, cursor);
+        let (before, under) = cells_around(text, cursor);
         if w == 0 {
             return FieldView { left: false, shown: "", right: false, cursor: 0 };
         }
+        // What can't be shown anyway is nothing to scroll for.
+        let under = if under > w { 1 } else { under };
         // Everything fits, cursor cell included.
         if total < w {
             return FieldView { left: false, shown: text, right: false, cursor: before };
         }
-        if before.saturating_add(2) <= w {
+        if before.saturating_add(under).saturating_add(1) <= w {
             let shown = take_width(text, w.saturating_sub(1));
             return FieldView { left: false, shown, right: true, cursor: before };
         }
-        let Scroll { left, right_cell, skip, fits } = scroll(before, total, w);
+        let Scroll { left, right_cell, skip, fits } = scroll(before, under, total, w);
         let mut rest = text;
         let mut skipped: usize = 0;
         for g in text.graphemes(true) {
@@ -101,18 +105,20 @@ impl<'a> Field<'a> {
     }
 }
 
-/// The cells before char `cursor`, in whole graphemes: a char's width alone says nothing
-/// of the grapheme it ends up in (U+231A takes two cells, and one followed by U+FE0E).
-fn cells_before(text: &str, cursor: usize) -> usize {
+/// The cells before char `cursor`, in whole graphemes, and those of what is drawn under it:
+/// a char's width alone says nothing of the grapheme it ends up in (U+231A takes two cells,
+/// and one followed by U+FE0E). Past the text, that is the one cell for the cursor.
+fn cells_around(text: &str, cursor: usize) -> (usize, usize) {
     let (mut chars, mut cells) = (0_usize, 0_usize);
     for g in text.graphemes(true) {
+        let wide = grapheme_width(g);
         chars = chars.saturating_add(g.chars().count());
-        if chars > cursor {
-            break;
+        if chars > cursor && wide > 0 {
+            return (cells, wide);
         }
-        cells = cells.saturating_add(grapheme_width(g));
+        cells = cells.saturating_add(wide);
     }
-    cells
+    (cells, 1)
 }
 
 /// Where the cursor goes for column `col` of a field drawn on `area`: on `area`, whatever
@@ -135,13 +141,13 @@ pub(crate) struct Scroll {
     pub(crate) fits: usize,
 }
 
-/// `<` in the first cell, and the cursor's cell before `>` or at the end, for a cursor
-/// `before` cells into `total` cells of text.
-pub(crate) fn scroll(before: usize, total: usize, w: usize) -> Scroll {
+/// `<` in the first cell, and the `under` cells under the cursor before `>` or at the end,
+/// for a cursor `before` cells into `total` cells of text.
+pub(crate) fn scroll(before: usize, under: usize, total: usize, w: usize) -> Scroll {
     let at_end = before == total;
-    let right_cell = !at_end && w >= 2;
-    // None of these saturate: `w` is at least 1, and at least 2 with `right_cell`.
-    let col = w.saturating_sub(1).saturating_sub(usize::from(right_cell));
+    let right_cell = !at_end && w > under;
+    // Only with `under` wider than the field does this saturate, and then to the first cell.
+    let col = w.saturating_sub(under).saturating_sub(usize::from(right_cell));
     let left = col > 0;
     let skip = before.saturating_sub(col.saturating_sub(usize::from(left)));
     let fits = w.saturating_sub(usize::from(left)).saturating_sub(usize::from(right_cell));
@@ -224,12 +230,12 @@ mod tests {
                     // Off the markers, on the text shown or just after it.
                     assert!(v.cursor < w - usize::from(right), "{what}");
                     assert!(left <= v.cursor && v.cursor <= left + shown, "{what}");
-                    // A marker means text is cut off on its side, and from 3 cells on,
-                    // text cut off on a side gets one.
+                    // A marker means text is cut off on its side, and from 4 cells on, with a
+                    // wide char and both markers, text cut off on a side gets one.
                     let start = v.shown.as_ptr().addr() - text.as_ptr().addr();
                     let cut = (start > 0, start + v.shown.len() < text.len());
                     assert!((!v.left || cut.0) && (!right || cut.1), "{what}");
-                    if w >= 3 {
+                    if w >= 4 {
                         assert_eq!((v.left, right), cut, "{what}");
                     }
                 }
@@ -254,8 +260,8 @@ mod tests {
     fn a_cursor_inside_a_grapheme_keeps_off_the_marker() {
         // The cursor between the heart and U+FE0F: the grapheme is left out whole, which
         // leaves out a cell more than the text before the cursor takes.
-        let v = Field::view("ab\u{2764}\u{fe0f}bcd", 3, 3);
-        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "", true, 1));
+        let v = Field::view("ab\u{2764}\u{fe0f}bcd", 3, 4);
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "\u{2764}\u{fe0f}", true, 1));
         // One grapheme of 170 cells, with the cursor partway through it.
         let text = format!("{}\u{7911}", "\u{1100}".repeat(85));
         let v = Field::view(&text, 36, 61);
@@ -295,5 +301,40 @@ mod tests {
         assert_eq!(scrolled_cursor(usize::MAX, true, usize::MAX), 1);
         assert_eq!(scrolled_cursor(7, true, 4), 4);
         assert_eq!(scrolled_cursor(7, false, 7), 0);
+    }
+
+    #[test]
+    fn what_is_under_the_cursor_is_shown() {
+        // The second char fits, once the first is scrolled off.
+        let v = Field::view("文文", 1, 4);
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (true, "文", false, 1));
+        // The field's every cursor, wide chars of all kinds, and a control char under it.
+        for text in ["文件名很长的中文", "a文b件c名d", "文\u{7}件名", "\u{1f600}a\u{1f600}b"]
+        {
+            for w in 2..12 {
+                for cursor in 0..=text.chars().count() {
+                    let v = Field::view(text, cursor, w);
+                    let rest: String = text.chars().skip(cursor).collect();
+                    let Some(under) = rest.graphemes(true).find(|g| grapheme_width(g) > 0) else {
+                        continue;
+                    };
+                    assert!(v.shown.contains(under), "{text:?}, cursor {cursor}, {w} cells: {v:?}");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn a_field_too_narrow_for_a_wide_char_shows_no_part_of_it() {
+        let v = Field::view("文文", 1, 1);
+        assert_eq!((v.left, v.shown, v.right, v.cursor), (false, "", false, 0));
+    }
+
+    #[test]
+    fn render_draws_what_terminals_measure_alike() {
+        let mut buf = Buffer::empty(Rect::new(0, 0, 8, 1));
+        let at = Field::new("\u{1f1fa}\u{1f1f8}\u{2764}\u{fe0f}x", 4).render(buf.area, &mut buf);
+        assert_eq!(line(&buf), "\u{fffd}\u{fffd}\u{2764} x   ");
+        assert_eq!(at, Position::new(4, 0));
     }
 }

@@ -4,7 +4,7 @@
 #![no_main]
 
 use lazyui_ratatui::Field;
-use lazyui_ratatui::text::width;
+use lazyui_ratatui::text::{sanitize, width};
 use lazyui_ratatui_fuzz::{AnyBuffer, AnyRect, assert_clean, assert_drawn, assert_kept, text};
 use libfuzzer_sys::fuzz_target;
 use ratatui::layout::Rect;
@@ -44,7 +44,7 @@ fuzz_target!(|input: (AnyBuffer, AnyRect, bool, Vec<u16>, u16)| {
         marker(drawn.right() - 1, ">");
     }
     let first = drawn.x + u16::from(view.left);
-    assert_drawn(&buf, first, y, view.shown);
+    assert_drawn(&buf, first, y, &sanitize(view.shown));
     // Past the text, and short of the `>`, the cells are as they were but for the style.
     let end = first + u16::try_from(width(view.shown)).expect("what fits in a row");
     for x in end..drawn.right() - u16::from(view.right) {

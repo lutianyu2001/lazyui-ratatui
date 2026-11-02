@@ -4,7 +4,7 @@
 // In a test an overflow panics, and so fails it, as it should.
 #![allow(clippy::arithmetic_side_effects)]
 
-use lazyui_ratatui::text::{take_width, width};
+use lazyui_ratatui::text::{sanitize, take_width, width};
 use lazyui_ratatui::{Field, Window, arrow_down};
 use proptest::prelude::*;
 use ratatui::buffer::Buffer;
@@ -59,8 +59,27 @@ fn arrow() -> impl Strategy<Value = (Buffer, u16, Rect, Rect)> {
 /// Text mixing ASCII, wide characters, emoji, combining accents and control characters.
 fn text() -> impl Strategy<Value = String> {
     let special = prop::sample::select(vec![
-        '文', '件', '❤', '\u{fe0f}', '\u{301}', 'ｶ', 'ﾞ', '\t', '\u{1b}', '\0', '\u{231a}',
-        '\u{fe0e}', '\u{1100}', '\u{202e}', '\u{2066}', '\u{200f}', '\u{9b}',
+        '文',
+        '件',
+        '❤',
+        '\u{fe0f}',
+        '\u{301}',
+        'ｶ',
+        'ﾞ',
+        '\t',
+        '\u{1b}',
+        '\0',
+        '\u{231a}',
+        '\u{fe0e}',
+        '\u{1100}',
+        '\u{202e}',
+        '\u{2066}',
+        '\u{200f}',
+        '\u{9b}',
+        '\u{200d}',
+        '\u{1f3fb}',
+        '\u{1f1e6}',
+        '\u{1f469}',
     ]);
     let c = prop_oneof![3 => prop::char::range('a', 'z'), 2 => special, 1 => any::<char>()];
     prop::collection::vec(c, 0..24).prop_map(String::from_iter)
@@ -130,6 +149,14 @@ proptest! {
         if w > 0 {
             prop_assert!(v.cursor < w - right, "{v:?}");
         }
+    }
+
+    #[test]
+    fn sanitized_text_takes_the_same_cells(text in text()) {
+        let clean = sanitize(&text);
+        prop_assert_eq!(width(&clean), width(&text));
+        let again = sanitize(&clean);
+        prop_assert_eq!(&again, &clean);
     }
 
     #[test]

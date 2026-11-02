@@ -1,9 +1,10 @@
 //! `text::width`, `text::take_width` and `text::grapheme_width` against what ratatui draws,
-//! and against the definition of each.
+//! and against the definition of each; `text::sanitize` keeps widths and has nothing left to do
+//! on what it returns.
 #![no_main]
 
-use lazyui_ratatui::text::{grapheme_width, take_width, width};
-use lazyui_ratatui_fuzz::{assert_clean, text};
+use lazyui_ratatui::text::{grapheme_width, sanitize, take_width, width};
+use lazyui_ratatui_fuzz::{assert_clean, reaches_no_terminal, text};
 use libfuzzer_sys::fuzz_target;
 use ratatui::buffer::Buffer;
 use ratatui::layout::Rect;
@@ -25,6 +26,13 @@ fuzz_target!(|input: (Vec<u16>, u16)| {
         assert_eq!(usize::from(end), total, "{s:?}");
         assert_clean(&buf);
     }
+
+    // Cell for cell, with nothing left that takes no cell or that terminals measure otherwise.
+    let clean = sanitize(&s);
+    assert_eq!(width(&clean), total, "{s:?}: {clean:?}");
+    assert_eq!(sanitize(&clean), clean, "{s:?}");
+    assert!(clean.graphemes(true).all(|g| grapheme_width(g) > 0), "{s:?}: {clean:?}");
+    assert!(!clean.chars().any(reaches_no_terminal), "{s:?}: {clean:?}");
 
     // The longest prefix that fits, in whole graphemes.
     let limit = usize::from(limit % 128);

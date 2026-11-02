@@ -5,7 +5,7 @@ use ratatui::layout::{Position, Rect};
 use ratatui::style::{Modifier, Style};
 use ratatui::widgets::{Block, BorderType, Widget};
 
-use crate::text::width;
+use crate::text::{sanitize, width};
 
 /// A window with rounded corners, named in its top right corner (`╭──[1] Files─╮`) and
 /// with an optional note in its bottom right one (`╰──[2 marked]─╯`). Both are drawn in
@@ -80,7 +80,7 @@ impl Widget for Window<'_> {
 /// `text` at the right end of border row `y`, one `─` away from the corner.
 fn corner(buf: &mut Buffer, area: Rect, y: u16, text: &str, style: Style) {
     if let Some((x, w)) = corner_place(area, width(text)) {
-        buf.set_stringn(x, y, text, usize::from(w), style);
+        buf.set_stringn(x, y, sanitize(text), usize::from(w), style);
     }
 }
 
