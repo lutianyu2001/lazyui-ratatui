@@ -70,8 +70,11 @@ impl<'a> Field<'a> {
     /// so it sits in the cell before the `>` (or the last cell, at the end of the text).
     /// In a field too narrow for a marker beside the cursor's cell, the marker goes.
     pub fn view(text: &str, cursor: usize, w: usize) -> FieldView<'_> {
-        let before = width(&text.chars().take(cursor).collect::<String>());
         let total = width(text);
+        // Capped: a char can take more cells alone than in the grapheme it ends up in, as
+        // U+231A does followed by U+FE0E, and then the chars before the cursor would take
+        // more cells than the whole text.
+        let before = width(&text.chars().take(cursor).collect::<String>()).min(total);
         if w == 0 {
             return FieldView { left: false, shown: "", right: false, cursor: 0 };
         }
@@ -214,6 +217,17 @@ mod tests {
                 }
             }
         }
+    }
+
+    #[test]
+    fn a_cursor_inside_a_grapheme_stays_in_the_field() {
+        // Two cells alone, one with U+FE0E: the char before the cursor is wider than the text.
+        let text = "\u{231a}\u{fe0e}";
+        assert_eq!((width("\u{231a}"), width(text)), (2, 1));
+        for w in 2..4 {
+            assert_eq!(Field::view(text, 1, w).cursor, 1, "{w} cells");
+        }
+        assert_eq!(Field::view("a\u{231a}\u{fe0e}", 2, 3).cursor, 2);
     }
 
     #[test]
