@@ -73,23 +73,23 @@ sizes a terminal should never have.
 | Threat model | text from others: terminal escapes, text reordering, overrunning a window, very long text; sizes and cursors out of range | 7 problems found and fixed; what is left is below |
 | `unsafe` code | forbidden in this crate | none |
 | Dependencies | 40 crates at run and build time: sources, licenses and known vulnerabilities with cargo-deny, audit records with cargo-vet | no advisory; 27 of all 82 audited by others, 55 exempted by the maintainer |
-| Miri | undefined behavior in the 18 unit tests of all three modules | none found |
-| Fuzzing | 4 targets, one hour each: text widths, a field's layout, a field drawn into a buffer, windows and arrows drawn into a buffer, with what each must draw checked | 93 million runs, no failure |
+| Miri | undefined behavior in 26 of the 27 unit tests of all four modules; the other, of very long text, takes hours and passed once | none found |
+| Fuzzing | 4 targets, one hour each: text widths, a field's layout, a field drawn into a buffer, windows and arrows drawn into a buffer, with what each must draw checked | 78 million runs, no failure |
 | Kani proofs | 7 proofs of the layout arithmetic, for every value of the integers, with no bound | 7 of 7 pass |
-| Branch coverage | tests, on all three modules | 58 of 62 branches reached; the other 4 are a test's own assertions failing |
+| Branch coverage | tests, on all four modules | 86 of 90 branches reached; the other 4 are a test's own assertions failing |
 | Review | the code, the threat model and the audit's own tooling reviewed apart from their writing, and the old and new code compared on the same inputs | findings fixed, or listed in SECURITY.md |
 
-The proofs, all with no bound on their integers, as run on 2026-11-02 at commit `0247190` with Kani 0.68.0:
+The proofs, all with no bound on their integers, as run on 2026-11-02 at commit `9470670` with Kani 0.68.0:
 
 | Proof | What holds | Time (s) | Peak memory (MiB) |
 |---|---|---|---|
 | `a_text_on_the_border_leaves_the_corners_alone` | a name or note takes exactly its width, with a `─` and the corner left on each side | <1 | 22 |
-| `an_arrow_stays_on_the_screen` | every row of an arrow is on the screen | <1 | 27 |
-| `an_arrow_joins_the_borders_of_both_windows` | an arrow runs from the upper window's bottom border to the lower one's top border, off their corners | 1 | 49 |
-| `an_arrow_is_drawn_when_nothing_stops_it` | with both borders on the screen, off their corners, the arrow is drawn | 1 | 49 |
-| `the_cursor_goes_on_the_field` | the cursor is on the field, whatever its column | <1 | 21 |
+| `an_arrow_stays_on_the_screen` | every row of an arrow is on the screen | <1 | 26 |
+| `an_arrow_joins_the_borders_of_both_windows` | an arrow runs from the upper window's bottom border to the lower one's top border, off their corners | <1 | 46 |
+| `an_arrow_is_drawn_when_nothing_stops_it` | with both borders on the screen, off their corners, the arrow is drawn | 1 | 43 |
+| `the_cursor_goes_on_the_field` | the cursor is on the field, whatever its column | <1 | 22 |
 | `a_scrolled_field_uses_its_cells_exactly` | markers and text add up to the field's width | <1 | 22 |
-| `a_scrolled_cursor_keeps_off_the_markers` | a scrolled cursor is never on a marker | 2 | 21 |
+| `a_scrolled_cursor_keeps_off_the_markers` | a scrolled cursor is never on a marker, and what is under it fits before the right marker | 18 | 22 |
 
 What this says, and what it doesn't:
 
