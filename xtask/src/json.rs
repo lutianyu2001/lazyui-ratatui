@@ -1,11 +1,10 @@
-//! A strict JSON reader, for `cargo kani list` and the replies of crates.io and OSV. Per
-//! project: there is no JSON crate among the dependencies, and the tasks add none (see
+//! A strict JSON reader, for `cargo kani list` and the replies of crates.io, OSV and GitHub.
+//! Per project: there is no JSON crate among the dependencies, and the tasks add none (see
 //! Cargo.toml). This reads text that came over the network, so whatever RFC 8259 does not
 //! allow is an error, and so is a key given twice; nesting has a limit, so that a reply of
 //! brackets cannot run the stack out.
 
 use std::collections::BTreeMap;
-use std::fmt::Write as _;
 use std::ops::Index;
 use std::str::Chars;
 
@@ -61,24 +60,6 @@ pub fn parse(text: &str) -> Result<Value, String> {
         None => Ok(value),
         Some(c) => Err(format!("{c:?} after the end of the value")),
     }
-}
-
-/// `text` as a JSON string, quotes included.
-pub fn quote(text: &str) -> String {
-    let mut out = String::with_capacity(text.len().saturating_add(2));
-    out.push('"');
-    for c in text.chars() {
-        match c {
-            '"' => out.push_str("\\\""),
-            '\\' => out.push_str("\\\\"),
-            c if u32::from(c) < 0x20 => {
-                let _ = write!(out, "\\u{:04x}", u32::from(c));
-            }
-            c => out.push(c),
-        }
-    }
-    out.push('"');
-    out
 }
 
 struct Reader<'a> {
@@ -287,7 +268,7 @@ impl Reader<'_> {
 #[cfg(test)]
 #[allow(clippy::unwrap_used)]
 mod tests {
-    use super::{DEPTH, Value, parse, quote};
+    use super::{DEPTH, Value, parse};
 
     #[test]
     fn values_are_read() {
@@ -353,12 +334,5 @@ mod tests {
         assert!(parse(&nested(DEPTH + 1)).is_err());
         assert!(parse(&"[".repeat(1 << 20)).is_err());
         assert!(parse(&"{\"a\":".repeat(1 << 20)).is_err());
-    }
-
-    #[test]
-    fn quoted_text_reads_back() {
-        for text in ["", "cargo-deny", "a\"b\\c\n\u{1}é😀"] {
-            assert_eq!(parse(&quote(text)).unwrap().as_str(), Some(text));
-        }
     }
 }

@@ -341,7 +341,7 @@ pub fn needed(root: &Path, task: &str, inputs: &str, tools: &str, params: &str) 
     if f.get("tools") != tools {
         why.push("the pinned tools changed".to_owned());
     }
-    if f.get("args") != params {
+    if !covers(f.get("args"), params) {
         why.push(format!("recorded with different arguments (`{}`)", f.get("args")));
     }
     // New advisories appear whatever the code does.
@@ -389,6 +389,19 @@ fn age(started: &str) -> Option<u64> {
     let then = days * 86_400 + hours * 3600 + minutes * 60;
     let now = SystemTime::now().duration_since(UNIX_EPOCH).ok()?.as_secs();
     now.checked_sub(then)
+}
+
+/// Whether a run recorded with the arguments `recorded` stands for one with `wanted`: the
+/// same ones, or a fuzz run at least as long (`seconds=N`), as CI's runs are longer.
+fn covers(recorded: &str, wanted: &str) -> bool {
+    let seconds = |args: &str| args.strip_prefix("seconds=").and_then(|n| n.parse::<u64>().ok());
+    recorded == wanted
+        || matches!((seconds(recorded), seconds(wanted)), (Some(r), Some(w)) if r >= w)
+}
+
+/// How the latest run of `task` ended: whether it succeeded; None when it never ran.
+pub fn latest_succeeded(root: &Path, task: &str) -> Option<bool> {
+    fields(&root.join("audit").join(task)).map(|f| f.get("result") == "succeeded")
 }
 
 /// `cargo xtask status`: how each task's latest run ended, when one last succeeded, and
@@ -453,7 +466,17 @@ fn time(t: SystemTime) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{changed, replace_path};
+    use super::{changed, covers, replace_path};
+
+    #[test]
+    fn a_longer_fuzz_run_stands_for_a_shorter_one() {
+        assert!(covers("", ""));
+        assert!(covers("seconds=3600", "seconds=3600"));
+        assert!(covers("seconds=14400", "seconds=3600"));
+        assert!(!covers("seconds=3600", "seconds=14400"));
+        assert!(!covers("seconds=x", "seconds=3600"));
+        assert!(!covers("", "seconds=3600"));
+    }
 
     #[test]
     fn paths_are_replaced_only_where_whole() {
