@@ -31,34 +31,34 @@ aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2
 aborting path on assume(false) at file src/proofs.rs line 62 column 23 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
 Unwinding loop _RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 1 file src/proofs.rs line 62 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
 Unwinding loop _RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 2 file src/proofs.rs line 62 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
-Runtime Symex: 0.112002s
+Runtime Symex: 0.0990519s
 size of program expression: 6064 steps
 slicing removed 3864 assignments
 Generated 439 VCC(s), 22 remaining after simplification
-Runtime Postprocess Equation: 0.00111447s
+Runtime Postprocess Equation: 0.000689424s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.0153975s
+Runtime Convert SSA: 0.0166476s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 5.37e-06s
+Runtime Post-process: 5.51e-06s
 Solving with CaDiCaL 3.0.0
 19667 variables, 38364 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0416955s
-Runtime decision procedure: 0.0575461s
+Runtime Solver: 0.0438919s
+Runtime decision procedure: 0.0609848s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 19668 variables, 38365 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0117322s
-Runtime decision procedure: 0.0119767s
+Runtime Solver: 0.011568s
+Runtime decision procedure: 0.0117979s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 19669 variables, 38366 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.28113s
-Runtime decision procedure: 0.281213s
+Runtime Solver: 0.28279s
+Runtime decision procedure: 0.282872s
 
 RESULTS:
 Check 1: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>.safety_check.1
@@ -914,8 +914,8 @@ SUMMARY:
 
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.68485373s
+Verification Time: 0.6777075s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 47534080
+xtask: peak memory in bytes: 52523008

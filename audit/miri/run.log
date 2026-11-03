@@ -30,6 +30,6 @@ test window::tests::each_condition_of_an_arrow_counts_by_itself ... ok
 test window::tests::names_and_notes_sit_in_the_corners ... ok
 test window::tests::nothing_is_drawn_outside_the_buffer ... ok
 
-test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 67.31s
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 67.03s
 
 xtask: miri: succeeded

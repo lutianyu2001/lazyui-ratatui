@@ -30,34 +30,34 @@ Starting Bounded Model Checking
 Unwinding loop _RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs39an_arrow_is_drawn_when_nothing_stops_it.0 iteration 1 file src/proofs.rs line 74 column 5 function proofs::an_arrow_is_drawn_when_nothing_stops_it thread 0
 Unwinding loop _RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs39an_arrow_is_drawn_when_nothing_stops_it.0 iteration 2 file src/proofs.rs line 74 column 5 function proofs::an_arrow_is_drawn_when_nothing_stops_it thread 0
 aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 2439 column 15 function <std::option::Option<(u16, u16)> as std::cmp::PartialEq>::eq thread 0
-Runtime Symex: 0.102376s
+Runtime Symex: 0.106611s
 size of program expression: 5717 steps
 slicing removed 3441 assignments
 Generated 466 VCC(s), 13 remaining after simplification
-Runtime Postprocess Equation: 0.000790987s
+Runtime Postprocess Equation: 0.000756384s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.0179936s
+Runtime Convert SSA: 0.0192389s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 4.72e-06s
+Runtime Post-process: 5.07e-06s
 Solving with CaDiCaL 3.0.0
 23397 variables, 46748 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0353134s
-Runtime decision procedure: 0.0537558s
+Runtime Solver: 0.0754736s
+Runtime decision procedure: 0.0952003s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 23398 variables, 46749 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.00872984s
-Runtime decision procedure: 0.00918759s
+Runtime Solver: 0.00868869s
+Runtime decision procedure: 0.0091415s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 23399 variables, 46750 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.495148s
-Runtime decision procedure: 0.49524s
+Runtime Solver: 0.514878s
+Runtime decision procedure: 0.514982s
 
 RESULTS:
 Check 1: kani::mem::cbmc::same_allocation.unsupported_construct.1
@@ -1015,8 +1015,8 @@ SUMMARY:
  ** 0 of 190 failed (1 unreachable)
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.82942605s
+Verification Time: 0.89626074s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 49758208
+xtask: peak memory in bytes: 46878720

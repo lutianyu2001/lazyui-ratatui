@@ -22,34 +22,34 @@ Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
 aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 633 column 5 function std::option::Option::<(u16, u16)>::is_some thread 0
 aborting path on assume(false) at file src/proofs.rs line 40 column 1 function proofs::an_arrow_stays_on_the_screen thread 0
-Runtime Symex: 0.042637s
+Runtime Symex: 0.0487965s
 size of program expression: 2910 steps
 slicing removed 1649 assignments
 Generated 230 VCC(s), 8 remaining after simplification
-Runtime Postprocess Equation: 0.000372613s
+Runtime Postprocess Equation: 0.000380211s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00682274s
+Runtime Convert SSA: 0.00666488s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 4.54e-06s
+Runtime Post-process: 4.55e-06s
 Solving with CaDiCaL 3.0.0
 9445 variables, 22133 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0207859s
-Runtime decision procedure: 0.0278269s
+Runtime Solver: 0.0195345s
+Runtime decision procedure: 0.0264189s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 9446 variables, 22134 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.00212461s
-Runtime decision procedure: 0.00226511s
+Runtime Solver: 0.00210099s
+Runtime decision procedure: 0.00223647s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 9447 variables, 22135 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.0276075s
-Runtime decision procedure: 0.0276534s
+Runtime Solver: 0.0267182s
+Runtime decision procedure: 0.026764s
 
 RESULTS:
 Check 1: proofs::an_arrow_stays_on_the_screen.cover.1
@@ -475,8 +475,8 @@ SUMMARY:
 
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.20110884s
+Verification Time: 0.20330374s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 26816512
+xtask: peak memory in bytes: 26464256

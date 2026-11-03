@@ -20,28 +20,28 @@ Removal of function pointers and virtual functions
 Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
-Runtime Symex: 0.00660096s
+Runtime Symex: 0.00662609s
 size of program expression: 464 steps
 slicing removed 179 assignments
 Generated 6 VCC(s), 6 remaining after simplification
-Runtime Postprocess Equation: 6.69e-05s
+Runtime Postprocess Equation: 7.5811e-05s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00268274s
+Runtime Convert SSA: 0.00291208s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 4.59e-06s
+Runtime Post-process: 4.5e-06s
 Solving with CaDiCaL 3.0.0
 3214 variables, 9898 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.000209662s
-Runtime decision procedure: 0.00296477s
+Runtime Solver: 0.000320092s
+Runtime decision procedure: 0.00330891s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 3215 variables, 9899 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.0601341s
-Runtime decision procedure: 0.0601659s
+Runtime Solver: 0.060043s
+Runtime decision procedure: 0.0600744s
 
 RESULTS:
 Check 1: proofs::a_scrolled_field_uses_its_cells_exactly.assertion.1
@@ -64,8 +64,8 @@ SUMMARY:
  ** 0 of 3 failed
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.09951347s
+Verification Time: 0.10020008s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 21315584
+xtask: peak memory in bytes: 22470656
