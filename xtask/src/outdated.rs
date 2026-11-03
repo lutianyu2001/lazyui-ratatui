@@ -813,11 +813,21 @@ fn ask(question: &str) -> bool {
     io::stdin().lock().read_line(&mut answer).is_ok() && matches!(answer.trim(), "y" | "Y" | "yes")
 }
 
-/// `GITHUB_TOKEN`, if set, checked to be a token's letters alone: it goes into a header.
+/// Whether `t` is a bearer token as RFC 6750 writes one (b64token): letters, digits and
+/// `-._~+/`, then `=` alone. GitHub's tokens differ by kind (the one Actions gives a job has
+/// dots), so the check is the header's grammar, not a guess at their shape: what passes it
+/// cannot end the header or the line of curl's configuration it goes into.
+fn is_token(t: &str) -> bool {
+    let body = t.trim_end_matches('=');
+    !body.is_empty()
+        && body.bytes().all(|b| b.is_ascii_alphanumeric() || b"-._~+/".contains(&b))
+}
+
+/// `GITHUB_TOKEN`, if set, checked to be a token: it goes into a header.
 fn github_token() -> Result<Option<String>, String> {
     match std::env::var("GITHUB_TOKEN") {
         Ok(t) if t.is_empty() => Ok(None),
-        Ok(t) if t.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'_') => Ok(Some(t)),
+        Ok(t) if is_token(&t) => Ok(Some(t)),
         Ok(_) => Err("GITHUB_TOKEN is not a token".to_owned()),
         Err(_) => Ok(None),
     }
@@ -947,6 +957,15 @@ mod tests {
     }
 
     use super::*;
+
+    #[test]
+    fn tokens_are_what_a_header_can_carry() {
+        assert!(is_token("ghp_0123456789abcdefABCDEF"));
+        assert!(is_token("ghs_abc.def-ghi_jkl~mno+pq/rs=="));
+        for t in ["", "==", "a b", "a\"b", "a\\b", "a\nb", "a=b", "a:b", "é"] {
+            assert!(!is_token(t), "{t:?}");
+        }
+    }
 
     #[test]
     fn json_strings_are_quoted() {
