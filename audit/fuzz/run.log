@@ -1,8 +1,6 @@
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo +nightly-2026-10-28 fuzz build
-   Compiling lazyui-ratatui v0.1.0 (.)
-   Compiling lazyui-ratatui-fuzz v0.0.0 (./fuzz)
-    Finished `release` profile [optimized + debuginfo] target(s) in 1.12s
-$ systemd-run --user --scope --quiet -p MemoryMax=5120M -p MemorySwapMax=0 -- /proc/3553835/exe __fuzz-targets ./audit/.running/fuzz 3600 4 field text view window
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.06s
+$ systemd-run --user --scope --quiet -p MemoryMax=5120M -p MemorySwapMax=0 -- /proc/4120/exe __fuzz-targets ./audit/.running/fuzz 3600 4 field text view window
 $ cargo +nightly-2026-10-28 fuzz run field -- -max_total_time=3600 -rss_limit_mb=1024 -timeout=10 > fuzz-field.log
 $ cargo +nightly-2026-10-28 fuzz run text -- -max_total_time=3600 -rss_limit_mb=1024 -timeout=10 > fuzz-text.log
 $ cargo +nightly-2026-10-28 fuzz run view -- -max_total_time=3600 -rss_limit_mb=1024 -timeout=10 > fuzz-view.log

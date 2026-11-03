@@ -16,7 +16,7 @@ warning: Found the following unsupported constructs:
          Verification will fail if one or more of these constructs is reachable.
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
 Wrote list results to ./kani-list.json
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::a_scrolled_cursor_keeps_off_the_markers --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
@@ -30,8 +30,8 @@ warning: use of an unstable feature
   = note: requested on the command line with `--force-warn unstable-features`
 
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/3894374/exe __kani-harness proofs::a_scrolled_cursor_keeps_off_the_markers --peak > kani-proofs.a_scrolled_cursor_keeps_off_the_markers.log
-proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 18 s, peak memory 22 MiB
+$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/4120/exe __kani-harness proofs::a_scrolled_cursor_keeps_off_the_markers --peak > kani-proofs.a_scrolled_cursor_keeps_off_the_markers.log
+proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 18 s, peak memory 36 MiB
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::a_scrolled_field_uses_its_cells_exactly --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
@@ -44,8 +44,8 @@ warning: use of an unstable feature
   = note: requested on the command line with `--force-warn unstable-features`
 
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/3894374/exe __kani-harness proofs::a_scrolled_field_uses_its_cells_exactly --peak > kani-proofs.a_scrolled_field_uses_its_cells_exactly.log
-proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory 22 MiB
+$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/4120/exe __kani-harness proofs::a_scrolled_field_uses_its_cells_exactly --peak > kani-proofs.a_scrolled_field_uses_its_cells_exactly.log
+proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory 21 MiB
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::a_text_on_the_border_leaves_the_corners_alone --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
@@ -58,8 +58,8 @@ warning: use of an unstable feature
   = note: requested on the command line with `--force-warn unstable-features`
 
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/3894374/exe __kani-harness proofs::a_text_on_the_border_leaves_the_corners_alone --peak > kani-proofs.a_text_on_the_border_leaves_the_corners_alone.log
-proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory 22 MiB
+$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/4120/exe __kani-harness proofs::a_text_on_the_border_leaves_the_corners_alone --peak > kani-proofs.a_text_on_the_border_leaves_the_corners_alone.log
+proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory 21 MiB
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::an_arrow_is_drawn_when_nothing_stops_it --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
@@ -79,8 +79,8 @@ warning: Found the following unsupported constructs:
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/3894374/exe __kani-harness proofs::an_arrow_is_drawn_when_nothing_stops_it --peak > kani-proofs.an_arrow_is_drawn_when_nothing_stops_it.log
-proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory 43 MiB
+$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/4120/exe __kani-harness proofs::an_arrow_is_drawn_when_nothing_stops_it --peak > kani-proofs.an_arrow_is_drawn_when_nothing_stops_it.log
+proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory 48 MiB
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::an_arrow_joins_the_borders_of_both_windows --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
@@ -100,7 +100,7 @@ warning: Found the following unsupported constructs:
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/3894374/exe __kani-harness proofs::an_arrow_joins_the_borders_of_both_windows --peak > kani-proofs.an_arrow_joins_the_borders_of_both_windows.log
+$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/4120/exe __kani-harness proofs::an_arrow_joins_the_borders_of_both_windows --peak > kani-proofs.an_arrow_joins_the_borders_of_both_windows.log
 proofs::an_arrow_joins_the_borders_of_both_windows: succeeded, 0 s, peak memory 46 MiB
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::an_arrow_stays_on_the_screen --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
@@ -114,7 +114,7 @@ warning: use of an unstable feature
   = note: requested on the command line with `--force-warn unstable-features`
 
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/3894374/exe __kani-harness proofs::an_arrow_stays_on_the_screen --peak > kani-proofs.an_arrow_stays_on_the_screen.log
+$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/4120/exe __kani-harness proofs::an_arrow_stays_on_the_screen --peak > kani-proofs.an_arrow_stays_on_the_screen.log
 proofs::an_arrow_stays_on_the_screen: succeeded, 0 s, peak memory 26 MiB
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::the_cursor_goes_on_the_field --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
@@ -128,6 +128,6 @@ warning: use of an unstable feature
   = note: requested on the command line with `--force-warn unstable-features`
 
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/3894374/exe __kani-harness proofs::the_cursor_goes_on_the_field --peak > kani-proofs.the_cursor_goes_on_the_field.log
-proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory 22 MiB
+$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/4120/exe __kani-harness proofs::the_cursor_goes_on_the_field --peak > kani-proofs.the_cursor_goes_on_the_field.log
+proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory 21 MiB
 xtask: kani: succeeded

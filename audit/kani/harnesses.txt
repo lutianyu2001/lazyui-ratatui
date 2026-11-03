@@ -1,7 +1,7 @@
-proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 18 s, peak memory 22 MiB
-proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory 22 MiB
-proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory 22 MiB
-proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory 43 MiB
+proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 18 s, peak memory 36 MiB
+proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory 21 MiB
+proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory 21 MiB
+proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory 48 MiB
 proofs::an_arrow_joins_the_borders_of_both_windows: succeeded, 0 s, peak memory 46 MiB
 proofs::an_arrow_stays_on_the_screen: succeeded, 0 s, peak memory 26 MiB
-proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory 22 MiB
+proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory 21 MiB

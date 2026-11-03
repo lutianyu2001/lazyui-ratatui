@@ -1,5 +1,5 @@
 $ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo +nightly-2026-10-28 miri test --locked --lib -- field:: text:: unsteady:: window:: --skip sanitize_holds_for_graphemes_of_any_length
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
      Running unittests src/lib.rs (target/miri/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/c34c2427667602eb/out/lazyui_ratatui-c34c2427667602eb)
 
 running 26 tests
@@ -30,6 +30,6 @@ test window::tests::each_condition_of_an_arrow_counts_by_itself ... ok
 test window::tests::names_and_notes_sit_in_the_corners ... ok
 test window::tests::nothing_is_drawn_outside_the_buffer ... ok
 
-test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 66.13s
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 67.31s
 
 xtask: miri: succeeded

@@ -416,6 +416,30 @@ ba3f1ce audit: results for v0.2.0 (52042f9)
 `audit/fuzz` took the run's results, `audit/vet` kept the local ones and no code changed. A run for a commit not on
 `main` printed `634e1be is not on main; not recording.`
 
+As `main.rs` changed, every task's result lapsed; all seven were run again from the clean tree at e090ba6:
+
+```sh
+cargo xtask all --if-needed
+```
+
+Output (the last line of each task, and the test summaries):
+```plaintext
+xtask: deny: succeeded
+xtask: vet: succeeded
+xtask: geiger: succeeded
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 67.31s
+xtask: miri: succeeded
+xtask: coverage: succeeded
+proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory 48 MiB
+... (six other proofs, all succeeded, 0 to 18 s, 21 to 46 MiB)
+xtask: kani: succeeded
+xtask: fuzz: succeeded
+```
+
+Fuzzing an hour each ran 12,708,232 (`text`), 37,216,615 (`view`), 15,486,960 (`field`) and 7,722,036 (`window`)
+inputs, with no crash; coverage stayed at 86 of 90 branches. `cargo xtask badges target/badges --deny success` then
+read `up to date` for every badge, `passing` for deny.
+
 </details>
 
 ###### Note

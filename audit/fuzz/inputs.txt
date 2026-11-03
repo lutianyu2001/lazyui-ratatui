@@ -16,7 +16,7 @@ e06ef9767e1e6a9ceb0ab5f714ce17a44f2d0600	src/text.rs
 8d6af9e3e6432acdc2b85d3e091c2d13bb2b3a87	src/unsteady.rs
 39384da4678f00de9093f51132214f561c3ce45e	src/window.rs
 7fbb68dc9524a82087ff3b1de1e4de776885b353	xtask/Cargo.toml
-03ba5361737ade8b5cac0136128e3c07e0909e5d	xtask/src/main.rs
+1f9434789a980e563ea1ca75d78e48350c9ee794	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
 2732ef272fb7a177e568bc03fe19b3eb84d3dc04	xtask/src/tasks/fuzz.rs
 171917aad0222375043b3fbf17d60ac79566b69f	xtask/src/tasks/mod.rs
