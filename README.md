@@ -6,6 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](SECURITY.md#ci)
+[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](xtask/src/pins.rs)
 
 A small widget library that brings lazygit-style panels to [Ratatui](https://ratatui.rs):
 rounded windows named with their focus key, corner notes, arrows between windows and
@@ -69,7 +70,6 @@ Note: "Lazy" in the name refers to lazygit, not lazy evaluation.
 [![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fcoverage.json)](audit/coverage)
 [![kani](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fkani.json)](audit/kani)
 [![fuzz](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Ffuzz.json)](audit/fuzz)
-[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](xtask/src/pins.rs)
 
 This is an audit by the project's maintainer, not by a third party, and it is no promise that the
 crate has no bugs. It covers the versions in `Cargo.lock` at the commit named below.
@@ -120,8 +120,8 @@ What this says, and what it doesn't:
 
 The results of each check are committed with the code in `audit/<task>/`, and SECURITY.md says how
 to run them. The badges above show whether each result still stands for the code on `main`
-(green), no longer does (yellow) or failed (red), and whether a pinned tool or action is due for an
-update. GitHub Actions runs the checks whose length is known, at each release; Kani and Miri are run
+(green), no longer does (yellow) or failed (red); the audit badge under the title sums them up, and
+the pins badge beside it shows whether a pinned tool or action is due for an update. GitHub Actions runs the checks whose length is known, at each release; Kani and Miri are run
 by hand, as one change can make them take hours. An audit out of date holds no release back.
 
 ## Prerequisites

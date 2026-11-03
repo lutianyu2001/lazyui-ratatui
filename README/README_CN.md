@@ -6,6 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](../SECURITY.md#ci)
+[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](../xtask/src/pins.rs)
 
 一个小型组件库，为 [Ratatui](https://ratatui.rs) 提供 lazygit 风格的面板：标有焦点键和名称的圆角窗口、角落注释、窗口之间的箭头，以及可滚动的单行文本框。
 
@@ -58,7 +59,6 @@
 [![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fcoverage.json)](../audit/coverage)
 [![kani](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fkani.json)](../audit/kani)
 [![fuzz](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Ffuzz.json)](../audit/fuzz)
-[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](../xtask/src/pins.rs)
 
 这是项目维护者自己做的审计，不是第三方审计，也不保证这个 crate 没有 bug。它针对的是下面写明的提交里 `Cargo.lock` 记录的版本。
 
@@ -96,7 +96,7 @@
 - `FieldView::shown` 和 `take_width` 原样返回文本，包括控制字符；形近字符也按原样绘制。留给程序处理的完整清单见[SECURITY.md](../SECURITY.md#what-the-crate-leaves-to-the-program)。
 
 每项审计的结果和代码一起提交在 `audit/<task>/` 里，运行方法见 SECURITY.md。本节开头的 badge 显示每项结果对 `main` 上
-现在的代码是否仍然有效（绿色）、已经过期（黄色）还是失败（红色），以及固定的工具和 action 是否该升级了。耗时可预期的
+现在的代码是否仍然有效（绿色）、已经过期（黄色）还是失败（红色）；标题下的 audit badge 是它们的汇总，旁边的 pins badge 显示固定的工具和 action 是否该升级了。耗时可预期的
 检查在每次发版时由 GitHub Actions 自动运行；Kani 和 Miri 手动运行，因为一处改动就可能让它们跑上几小时。审计过期不影响发版。
 
 ## 前置要求
