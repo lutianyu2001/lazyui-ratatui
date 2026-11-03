@@ -814,9 +814,10 @@ fn ask(question: &str) -> bool {
 }
 
 /// Whether `t` is a bearer token as RFC 6750 writes one (b64token): letters, digits and
-/// `-._~+/`, then `=` alone. GitHub's tokens differ by kind (the one Actions gives a job has
-/// dots), so the check is the header's grammar, not a guess at their shape: what passes it
-/// cannot end the header or the line of curl's configuration it goes into.
+/// `-._~+/`, then `=` alone. GitHub's tokens differ by kind (the one Actions gives a job was
+/// refused by a check for letters, digits and `_`), so the check is the header's grammar, not
+/// a guess at their shape: what passes it cannot end the header or the line of curl's
+/// configuration it goes into.
 fn is_token(t: &str) -> bool {
     let body = t.trim_end_matches('=');
     !body.is_empty()
