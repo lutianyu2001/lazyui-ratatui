@@ -235,10 +235,6 @@ fn refused(task: &str, why: &str) -> Outcome {
 // Per project: the files the code reads as data (with include_str!, from build.rs, or as a
 // test's sample): never documentation, whatever their names, and hashed as they are.
 const READ_AS_DATA: [&str; 0] = [];
-// Per project: what only an integration test reads, so what only the coverage task's run can
-// find changed. tests/readme.rs reads the READMEs; in READ_AS_DATA, a change to their text
-// would ask for an hour of fuzzing.
-const READ_BY_TESTS: [&str; 2] = ["README.md", "README/README_CN.md"];
 
 // Per project: what only Kani compiles (`#[cfg(kani)]`), which no other task can find changed.
 const PROOFS: [&str; 1] = ["src/proofs.rs"];
@@ -288,7 +284,7 @@ fn affects(task: &str, path: &str) -> bool {
         "fuzz" => code(&["tests"]),
         // `--lib`: not the integration tests.
         "geiger" | "kani" | "miri" => code(&["tests", "fuzz"]),
-        _ => code(&["fuzz"]) || READ_BY_TESTS.contains(&path),
+        _ => code(&["fuzz"]),
     }
 }
 
@@ -492,8 +488,8 @@ mod tests {
         assert_eq!(reads("xtask/src/json.rs"), only(&["kani"]));
         assert_eq!(reads("xtask/src/tasks/fuzz.rs"), only(&["fuzz"]));
         // Per project: paths of this project, by the rows of the table in the skill.
-        assert_eq!(reads("README.md"), only(&["coverage"]));
-        assert_eq!(reads("README/README_CN.md"), only(&["coverage"]));
+        assert_eq!(reads("README.md"), Vec::<&str>::new());
+        assert_eq!(reads("README/README_CN.md"), Vec::<&str>::new());
         assert_eq!(reads("SECURITY.md"), Vec::<&str>::new());
         assert_eq!(reads("SUPPLY_CHAIN.md"), Vec::<&str>::new());
         assert_eq!(reads("LICENSE"), Vec::<&str>::new());

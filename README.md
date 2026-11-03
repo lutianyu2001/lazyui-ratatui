@@ -212,9 +212,8 @@ cargo test
 cargo clippy --all-targets
 ```
 
-The examples in this README are also in the crate documentation, where they are
-compiled and run as doctests; `tests/readme.rs` checks that both places show the same
-code.
+The examples in this README are compiled and run as doctests, as are those of the
+crate documentation.
 
 The crate forbids `unsafe` code, and Clippy rejects arithmetic that doesn't say how it
 handles overflow. `tests/no_panic.rs` uses [proptest](https://crates.io/crates/proptest)
@@ -244,7 +243,9 @@ The entire repository is licensed under the Apache License, Version 2.0
 (the "License"); you may not use any file in this repository except in 
 compliance with the License. You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+```plaintext
+http://www.apache.org/licenses/LICENSE-2.0
+```
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,

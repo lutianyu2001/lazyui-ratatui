@@ -186,7 +186,7 @@ cargo test
 cargo clippy --all-targets
 ```
 
-README 里的示例同样写在 crate 文档中，在那里作为 doctest 编译并运行；`tests/readme.rs` 检查两处的代码一致。
+README 里的示例和 crate 文档里的一样，作为 doctest 编译并运行。
 
 crate 禁止 `unsafe` 代码，Clippy 拒绝没有写明如何处理溢出的算术。`tests/no_panic.rs` 用
 [proptest](https://crates.io/crates/proptest) 把随机文本画进随机的区域和缓冲区（其中一些
@@ -215,7 +215,9 @@ The entire repository is licensed under the Apache License, Version 2.0
 (the "License"); you may not use any file in this repository except in 
 compliance with the License. You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+```plaintext
+http://www.apache.org/licenses/LICENSE-2.0
+```
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,

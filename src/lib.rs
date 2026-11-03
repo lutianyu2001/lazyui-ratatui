@@ -10,7 +10,7 @@
 //!
 //! # Examples
 //!
-//! The READMEs show these too; `tests/readme.rs` checks that they show them unchanged.
+//! The READMEs show these too, and their examples are compiled and run as doctests.
 //!
 //! ```rust
 //! use lazyui_ratatui::{Field, Window};
@@ -62,3 +62,13 @@ mod window;
 
 pub use field::{Field, FieldView};
 pub use window::{Window, arrow_down};
+
+/// The examples of README.md, as doctests.
+#[cfg(doctest)]
+#[doc = include_str!("../README.md")]
+pub struct ReadmeDoctests;
+
+/// The examples of README/README_CN.md, as doctests.
+#[cfg(doctest)]
+#[doc = include_str!("../README/README_CN.md")]
+pub struct ReadmeCnDoctests;
