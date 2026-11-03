@@ -321,7 +321,8 @@ proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory 22 MiB
 ###### Note
 Miri took 12,313 s at `3f07829`, against 57 s before, because of `sanitize_holds_for_graphemes_of_any_length`, whose
 two texts have 32,769 and 65,537 characters. It passed there, 25 of 27 tests. It is now in `SKIP`, and `unsteady::`,
-missing from that run, was added to `MODULES`: 26 of 27 tests in 67 s.
+missing from that run, was added to `MODULES`: 26 of 27 tests in 66 s. The 4 branches
+left unreached are now at `field.rs:232` and `field.rs:237`, again a test's own assertions failing.
 
 ###### Analysis from AI
 Text can no longer leave its window on tmux 3.4 through this crate's widgets, as far as 400,000 random texts can tell.
