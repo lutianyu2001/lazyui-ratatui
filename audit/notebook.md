@@ -41,6 +41,8 @@ Passed: 2 of 2 mutants of the window oracle caught (arrow without clipping, corn
 The terminal width disagreement was reproduced on tmux 3.4: 92 bytes of text in a field 28 cells wide painted into
 the next window, borders intact. It is not fixed: any Ratatui widget does the same.
 
+> Revised in Task 6: fixed for this crate's fields and window corners on tmux 3.4.
+
 ## Task 2: Dependencies
 
 ###### Motivation
@@ -213,8 +215,122 @@ sampled; it says little about Ratatui, which nobody has audited for this project
 - Change first: decide whether the crate should offer a way to clean text before drawing, since every program that
   shows untrusted text has to solve this on its own now.
 
+> Revised in Task 6: the maintainer decided the disagreement must be fixed, and it was.
+
 Two of this audit's mistakes were found only because a number moved: a proof changed and not rerun, and a property
 test passing without drawing. A run that exercises nothing passes as quietly as one that holds.
+
+## Task 6: Terminal Widths and the Hidden Character
+
+###### Motivation
+- **Why**: Task 1 left two things open: text could leave its window on a terminal that measures it differently, and
+  a field could hide the character under the cursor. This task fixes both and re-runs the audit.
+- **Source**: The maintainer's answers to the audit report, 2026-11-02: "3. 要修", "5. 得修", and "审计工具自身的小问题要修复并同步到
+  skill".
+
+#### Environment
+- tmux 3.4, glibc 2.39 (Unicode 15)
+- Python 3 scripts in the session's scratchpad, not kept in the repository
+
+### 6.1 Measuring the Terminal
+
+Inside a tmux pane, each scalar value was printed after an `X` and the cursor read back with a status report:
+
+```plaintext
+\r\x1b[KX<char>\x1b[6n
+```
+
+| Measure | Result |
+|---|---|
+| Scalars measured | 1,112,064 |
+| Disagree with Ratatui | 64,768, in 130 ranges |
+
+Most are unassigned code points; regional indicators and U+FFF9 to U+FFFB are among the rest. glibc's `wcwidth` does
+not stand in for tmux: a lone regional indicator is 2 cells in tmux, 1 in Ratatui. Random strings then showed that
+single characters are not enough, as U+FE0F widens the character before it, U+200D swallows the one after it, and
+U+1F3FB to U+1F3FF join the one before them. Those made it 132 ranges, in `src/unsteady.rs`.
+
+### 6.2 Sanitizing What Is Drawn
+
+`text::sanitize` replaces each grapheme a terminal may measure differently with one of the same cells, and `Field`
+and `Window` draw only its output; there is no way to turn it off. It keeps the width of the text, is idempotent,
+drops zero-width graphemes and checks that neighbours do not join once something between them has gone. It takes
+about 60 ms per MB.
+
+The tmux measurement was then run on random text, on all planes, of length up to 16:
+
+| Corpus | Texts | Disagree, raw | Disagree, sanitized |
+|---|---|---|---|
+| Without skin tones and U+200D handled | | | 23,111, then 7,377 |
+| Final, second seed | 400,000 | 140,589 | 0 |
+
+### 6.3 The Character Under the Cursor
+
+`cells_before` became `cells_around`, which also gives the cells of the grapheme under the cursor, and `scroll` keeps
+those cells in view. The left and right markers now need the cursor's cells plus 2. A grapheme wider than the field
+counts as 1, so that no part of it is drawn.
+
+#### Verification
+Passed: each fix undone by hand was caught by the matching target within 45 s.
+
+| Undone | Caught by |
+|---|---|
+| Under-cursor fix | view |
+| Check that neighbours do not join | text |
+| `Field` drawing raw text | field |
+| `Window` drawing raw text | window |
+
+### 6.4 The Audit's Tools
+
+- A run fails if `HEAD` or the tree changes while it runs.
+- `geiger` checks its table is complete, and `outdated` prints only what is printable from what it fetched.
+- Recording errors fail the run, where they were ignored before.
+- `verify.yml` is manual only, and its check job and the advisories jobs keep no credentials after checkout.
+
+All of it is in the skill's `reference/`; `xtask/` of this repository differs from it only where marked per project.
+
+### 6.5 Results
+
+Run from a clean tree at `3f07829`, with Miri and Kani run again later for changes to their own tasks:
+
+```sh
+cargo xtask all --if-needed
+```
+
+| Target | Runs | Seconds |
+|---|---|---|
+| text | 7,123,895 | 3601 |
+| view | 43,056,180 | 3601 |
+| field | 18,853,225 | 3601 |
+| window | 8,853,523 | 3601 |
+
+Total 77,886,823 runs, no failure, no artifact. `text` runs about a fifth as often as before; its target now also
+sanitizes each input and checks the result, which is the likely cause. Branch coverage 95.56%, 86 of 90.
+
+Output (`audit/kani/harnesses.txt`, final run):
+```plaintext
+proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 18 s, peak memory 22 MiB
+proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory 22 MiB
+proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory 22 MiB
+proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory 43 MiB
+proofs::an_arrow_joins_the_borders_of_both_windows: succeeded, 0 s, peak memory 46 MiB
+proofs::an_arrow_stays_on_the_screen: succeeded, 0 s, peak memory 26 MiB
+proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory 22 MiB
+```
+
+###### Note
+Miri took 12,313 s at `3f07829`, against 57 s before, because of `sanitize_holds_for_graphemes_of_any_length`, whose
+two texts have 32,769 and 65,537 characters. It passed there, 25 of 27 tests. It is now in `SKIP`, and `unsteady::`,
+missing from that run, was added to `MODULES`: 26 of 27 tests in 67 s.
+
+###### Analysis from AI
+Text can no longer leave its window on tmux 3.4 through this crate's widgets, as far as 400,000 random texts can tell.
+
+- Firm: 0 of 400,000 sanitized texts disagree on tmux 3.4, against 140,589 raw; the arithmetic proofs still hold with
+  the cursor's cells added; 78 million fuzz runs found no failure.
+- Not settled: every terminal but tmux 3.4 is unmeasured; `src/unsteady.rs` was measured against Ratatui 0.30.2 and
+  has to be measured again after an upgrade; joined emoji, flags and U+FE0F sequences now show plainer.
+- Change first: measure the terminals users actually run, such as kitty, WezTerm, Alacritty and iTerm2.
 
 ---
 

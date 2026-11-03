@@ -20,47 +20,62 @@ Removal of function pointers and virtual functions
 Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
-Runtime Symex: 0.00802991s
-size of program expression: 523 steps
-slicing removed 200 assignments
-Generated 4 VCC(s), 4 remaining after simplification
-Runtime Postprocess Equation: 0.000162561s
+Runtime Symex: 0.00941939s
+size of program expression: 710 steps
+slicing removed 286 assignments
+Generated 10 VCC(s), 10 remaining after simplification
+Runtime Postprocess Equation: 0.00011446s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00389834s
+Runtime Convert SSA: 0.00341626s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 6.02e-06s
+Runtime Post-process: 4.6e-06s
 Solving with CaDiCaL 3.0.0
-4119 variables, 12441 clauses
+4792 variables, 15533 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.000894175s
-Runtime decision procedure: 0.00489361s
+Runtime Solver: 0.000470913s
+Runtime decision procedure: 0.00398938s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
-4120 variables, 12442 clauses
+4793 variables, 15534 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 2.24548s
-Runtime decision procedure: 2.24554s
+Runtime Solver: 18.3298s
+Runtime decision procedure: 18.3298s
 
 RESULTS:
 Check 1: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.1
 	 - Status: SUCCESS
 	 - Description: "attempt to subtract with overflow"
-	 - Location: src/proofs.rs:114:40 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+	 - Location: src/proofs.rs:115:40 in function proofs::a_scrolled_cursor_keeps_off_the_markers
 
 Check 2: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.2
 	 - Status: SUCCESS
 	 - Description: "assertion failed: left <= column && column < w - right"
-	 - Location: src/proofs.rs:114:5 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+	 - Location: src/proofs.rs:115:5 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+
+Check 3: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.3
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: src/proofs.rs:118:26 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+
+Check 4: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.4
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: src/proofs.rs:118:26 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+
+Check 5: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.5
+	 - Status: SUCCESS
+	 - Description: "assertion failed: under <= w - right - column"
+	 - Location: src/proofs.rs:118:9 in function proofs::a_scrolled_cursor_keeps_off_the_markers
 
 
 SUMMARY:
- ** 0 of 2 failed
+ ** 0 of 5 failed
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 2.291234s
+Verification Time: 18.390821s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 21909504
+xtask: peak memory in bytes: 22417408

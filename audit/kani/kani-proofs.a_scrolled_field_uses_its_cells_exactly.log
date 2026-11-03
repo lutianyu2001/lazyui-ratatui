@@ -20,52 +20,52 @@ Removal of function pointers and virtual functions
 Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
-Runtime Symex: 0.00629981s
-size of program expression: 430 steps
-slicing removed 168 assignments
+Runtime Symex: 0.00659242s
+size of program expression: 464 steps
+slicing removed 179 assignments
 Generated 6 VCC(s), 6 remaining after simplification
-Runtime Postprocess Equation: 9.9831e-05s
+Runtime Postprocess Equation: 8.3391e-05s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00261588s
+Runtime Convert SSA: 0.00295622s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 5.24e-06s
+Runtime Post-process: 4.74e-06s
 Solving with CaDiCaL 3.0.0
-2817 variables, 8269 clauses
+3214 variables, 9898 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.000308332s
-Runtime decision procedure: 0.00300108s
+Runtime Solver: 0.000325222s
+Runtime decision procedure: 0.00337181s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
-2818 variables, 8270 clauses
+3215 variables, 9899 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.0552029s
-Runtime decision procedure: 0.0552393s
+Runtime Solver: 0.0599608s
+Runtime decision procedure: 0.0599907s
 
 RESULTS:
 Check 1: proofs::a_scrolled_field_uses_its_cells_exactly.assertion.1
 	 - Status: SUCCESS
 	 - Description: "attempt to add with overflow"
-	 - Location: src/proofs.rs:103:16 in function proofs::a_scrolled_field_uses_its_cells_exactly
+	 - Location: src/proofs.rs:104:16 in function proofs::a_scrolled_field_uses_its_cells_exactly
 
 Check 2: proofs::a_scrolled_field_uses_its_cells_exactly.assertion.2
 	 - Status: SUCCESS
 	 - Description: "attempt to add with overflow"
-	 - Location: src/proofs.rs:103:16 in function proofs::a_scrolled_field_uses_its_cells_exactly
+	 - Location: src/proofs.rs:104:16 in function proofs::a_scrolled_field_uses_its_cells_exactly
 
 Check 3: proofs::a_scrolled_field_uses_its_cells_exactly.assertion.3
 	 - Status: SUCCESS
 	 - Description: "assertion failed: left + s.fits + right == w"
-	 - Location: src/proofs.rs:103:5 in function proofs::a_scrolled_field_uses_its_cells_exactly
+	 - Location: src/proofs.rs:104:5 in function proofs::a_scrolled_field_uses_its_cells_exactly
 
 
 SUMMARY:
  ** 0 of 3 failed
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.09587844s
+Verification Time: 0.10078562s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 22347776
+xtask: peak memory in bytes: 22024192
