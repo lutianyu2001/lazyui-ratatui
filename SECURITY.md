@@ -72,7 +72,7 @@ itself, is not covered unless it goes through `text::sanitize`.
 | `miri` | undefined behavior in the unit tests of all modules (`field::`, `text::`, `unsteady::`, `window::`), which run Ratatui's and its dependencies' `unsafe` code; one test of very long text is left out, as it takes hours under Miri | nightly |
 | `coverage` | branches the tests do not reach | nightly |
 | `kani` | the proofs in `src/proofs.rs`: the layout arithmetic, for every value of the integers | Kani's own |
-| `fuzz` | the four targets below, an hour each | nightly |
+| `fuzz` | the four targets below, an hour each on a workstation, four hours each on GitHub Actions | nightly |
 
 Unit and property tests run with `cargo test`, and Clippy's pedantic lints with
 `arithmetic_side_effects`, `unwrap_used` and `expect_used` are denied. The crate forbids `unsafe`
@@ -119,8 +119,8 @@ cargo xtask outdated              # whether a pinned version is due for an updat
 ```
 
 `--no-record` runs on any working tree and leaves the results in `target/audit/<task>/`: that is
-how to run some proofs (`kani <proof...>`) or fuzz for less than an hour. `--if-needed` skips
-a task whose result stands.
+how to run some proofs (`kani <proof...>`) or fuzz for less than an hour. A fuzz run longer than
+an hour is recorded, and stands for the task. `--if-needed` skips a task whose result stands.
 
 ### Results
 
@@ -136,17 +136,42 @@ for a commit.
 
 ### CI
 
-`.github/workflows/verify.yml` is started by hand, and on purpose not by a push: the audit takes
-hours, and no push needs it. It runs only the tasks whose result no longer stands, one job each, and
-its last job commits the results to `audit/`. That job is the only one that may write, and it runs
-no project code. The rest have `contents: read`, and their checkouts keep no token.
+The maintainer's decision is to run on GitHub Actions every task whose length is known before it
+starts, to make full use of it, and to leave the others to a person:
 
-GitHub Actions is off on this repository for now. Until it is turned on, neither workflow runs, and
-the results come from runs on the maintainer's machine.
+- `.github/workflows/verify.yml` runs by itself when a release is published on GitHub: `deny`,
+  `vet`, `geiger`, `coverage`, and `fuzz` for four hours a target, all four at once on one
+  runner, which stops on time whatever it finds.
+- `kani` and `miri` never start by themselves: one new proof or test can take them from seconds
+  to hours (one test took Miri from a minute to three hours), and a run left to time out at each
+  release would waste the runners. They are tried on a workstation first, with `--no-record`, and
+  then run there, or on GitHub by starting the workflow by hand with the tasks `kani miri`.
+- Nothing runs on a push: the audit takes hours, and no push needs it.
+- A release does not wait for the audit, and a result out of date holds no release back. The
+  badges at the top of the README show which results stand.
+
+Each task runs only when its result no longer stands, one job each, and the last job commits the
+results to `audit/` on `main`, as results for the release's commit. Results committed since that
+commit are newer and stay. That job is the only one that may write, it runs no project code, and
+it restores no cache. The rest have `contents: read`, and their checkouts keep no token. Fuzzing
+goes on from the corpus of the last run on GitHub, kept for 90 days as an artifact.
 
 `.github/workflows/advisories.yml` runs daily, since a new advisory needs no change to the
-repository: it runs `cargo xtask deny --no-record` and checks the pinned tools for known
-vulnerabilities, and weekly whether they are due for an update.
+repository: it runs `cargo xtask deny --no-record` and checks the pinned tools and actions for
+known vulnerabilities, and weekly whether they are due for an update. It also writes the badges:
+whether each task's latest result stands for the code on `main`, how its own `deny` check went, and
+whether a pinned version is due. It does so daily, after each run of `verify.yml`, and when started
+by hand. A job that cannot write produces them, and a job that runs no project code lets through
+only the files and words a badge can have, and pushes them to the `badges` branch, which holds
+nothing else and is replaced each time.
 
-Because that job pushes to `main`, run `git pull --rebase` before pushing, and do not amend what
+Actions are pinned to commits, with the release in a comment, so that a tag moved upstream cannot
+change what runs with a token. `cargo xtask outdated` checks them like the pinned tools: a release
+a month newer, a known vulnerability, an action not pinned, or a tag that no longer names the
+commit pinned.
+
+GitHub Actions is off on this repository for now. Until it is turned on, neither workflow runs, the
+badges have nothing to show, and the results come from runs on the maintainer's machine.
+
+Because `verify.yml` pushes to `main`, run `git pull --rebase` before pushing, and do not amend what
 has been pushed. The repository has no branch rules, on purpose.

@@ -338,3 +338,92 @@ Text can no longer leave its window on tmux 3.4 through this crate's widgets, as
 *Timestamp: 2026-11-02*
 
 ---
+
+## Task 7: Running the Audit on GitHub Actions
+
+###### Motivation
+- **Why**: The audit ran only by hand, and nothing showed when a result had lapsed. The maintainer wants GitHub
+  Actions used for every task whose length is known before it starts, the rest left to a person, and a badge per
+  task.
+- **Source**: The maintainer, 2026-11-02 and 2026-11-03: "能用actions的都用, 用不了的再手动, 这是为了充分利用github
+  actions", fuzz "拉满4小时", Kani and Miri by hand, "审计过期不影响发版", one badge per task plus one for the whole
+  audit, one "pins" badge for tools and actions, and badges that can be refreshed by hand.
+
+#### Design
+| Workflow | When | What |
+|---|---|---|
+| `verify.yml` | a release is published; by hand | deny, vet, geiger, coverage, fuzz for 14,400 s a target; Kani and Miri only by hand |
+| `advisories.yml` | daily; after each `verify.yml` run; by hand | deny, known vulnerabilities in pinned tools and actions, the badges; weekly all updates |
+
+Kani and Miri stay off every event because their time depends on the proofs and tests (Miri went from 57 s to
+12,313 s with one test in Task 6), and a job left to time out at each release wastes runners. Each workflow has one
+job that may write, which runs no project code: `record` commits `audit/`, `badges` pushes the `badges` branch.
+Actions are pinned to commits; `cargo xtask outdated` checks them against their releases.
+
+#### Changes to xtask
+- A fuzz run at least 3,600 s long is recorded and stands for the task; `needed <task> [args]` asks about a given
+  length, so a release runs fuzz again unless a 4-hour result stands.
+- `badges <dir> --deny <outcome>` writes shields.io endpoint files.
+- `outdated` reads each `uses:` of the workflows. OSV does not order the versions of GitHub Actions, so a query by
+  version finds nothing:
+
+```sh
+curl -s https://api.osv.dev/v1/query \
+  -d '{"package":{"name":"tj-actions/changed-files","ecosystem":"GitHub Actions"},"version":"45.0.7"}' | jq -c '[.vulns[]?.id]'
+```
+
+Output:
+```plaintext
+[]
+```
+
+  The advisory of that version, `GHSA-mrrh-fwg8-r2c3`, is listed by package name, with `fixed: 46.0.1`; `outdated`
+  reads every advisory of an action and compares the ranges itself.
+
+#### Verification
+Passed: xtask's 26 tests and Clippy; the reference copy, with ureq and serde_json, has 24 tests passing and no Clippy
+warning.
+
+<details>
+<summary>Commands and output</summary>
+
+Before pinning, `outdated` found every action unpinned:
+
+```sh
+GITHUB_TOKEN=$(gh auth token) cargo xtask outdated </dev/null
+```
+
+Output:
+```plaintext
+actions/checkout: v4 -> 7.0.1 (not pinned to a commit)
+dtolnay/rust-toolchain: stable -> nothing to update to yet (not pinned to a commit)
+actions/upload-artifact: v4 -> 7.0.2 (not pinned to a commit)
+actions/download-artifact: v4 -> 8.0.2 (not pinned to a commit)
+```
+
+After pinning those and dropping `dtolnay/rust-toolchain` (the runner's rustup installs the toolchain of
+`rust-toolchain.toml`), `cargo xtask badges target/badges --deny success` gave `pins: up to date`. The `badges`
+job's check, run on that output, let it through, and refused a file whose message was `<img>`.
+
+The `record` job's script was run against a local repository: a release at a commit, then local vet results and
+more code on `main`:
+
+```plaintext
+vet: results committed since 52042f9 stand
+ba3f1ce audit: results for v0.2.0 (52042f9)
+```
+
+`audit/fuzz` took the run's results, `audit/vet` kept the local ones and no code changed. A run for a commit not on
+`main` printed `634e1be is not on main; not recording.`
+
+</details>
+
+###### Note
+Neither workflow has run on GitHub: Actions is off on this repository, and nothing has been pushed. The first run
+will be the real test of the triggers, the corpus artifact and the push to `badges`.
+
+---
+
+*Timestamp: 2026-11-03*
+
+---

@@ -5,6 +5,15 @@
 </p>
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](SECURITY.md#ci)
+[![deny](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fdeny.json)](https://github.com/lutianyu2001/lazyui-ratatui/actions/workflows/advisories.yml)
+[![vet](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fvet.json)](audit/vet)
+[![geiger](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fgeiger.json)](audit/geiger)
+[![miri](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fmiri.json)](audit/miri)
+[![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fcoverage.json)](audit/coverage)
+[![kani](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fkani.json)](audit/kani)
+[![fuzz](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Ffuzz.json)](audit/fuzz)
+[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](xtask/src/pins.rs)
 
 A small widget library that brings lazygit-style panels to [Ratatui](https://ratatui.rs):
 rounded windows named with their focus key, corner notes, arrows between windows and
@@ -74,7 +83,7 @@ sizes a terminal should never have.
 | `unsafe` code | forbidden in this crate | none |
 | Dependencies | 40 crates at run and build time: sources, licenses and known vulnerabilities with cargo-deny, audit records with cargo-vet | no advisory; 27 of all 82 audited by others, 55 exempted by the maintainer |
 | Miri | undefined behavior in 26 of the 27 unit tests of all four modules; the other, of very long text, takes hours and passed once | none found |
-| Fuzzing | 4 targets, one hour each: text widths, a field's layout, a field drawn into a buffer, windows and arrows drawn into a buffer, with what each must draw checked | 78 million runs, no failure |
+| Fuzzing | 4 targets, an hour each on a workstation and four hours each on GitHub Actions at each release: text widths, a field's layout, a field drawn into a buffer, windows and arrows drawn into a buffer, with what each must draw checked | 78 million runs in an hour each (2026-11-02), no failure |
 | Kani proofs | 7 proofs of the layout arithmetic, for every value of the integers, with no bound | 7 of 7 pass |
 | Branch coverage | tests, on all four modules | 86 of 90 branches reached; the other 4 are a test's own assertions failing |
 | Review | the code, the threat model and the audit's own tooling reviewed apart from their writing, and the old and new code compared on the same inputs | findings fixed, or listed in SECURITY.md |
@@ -109,7 +118,10 @@ What this says, and what it doesn't:
   has the whole list of what is left to the program.
 
 The results of each check are committed with the code in `audit/<task>/`, and SECURITY.md says how
-to run them.
+to run them. The badges at the top show whether each result still stands for the code on `main`
+(green), no longer does (yellow) or failed (red), and whether a pinned tool or action is due for an
+update. GitHub Actions runs the checks whose length is known, at each release; Kani and Miri are run
+by hand, as one change can make them take hours. An audit out of date holds no release back.
 
 ## Prerequisites
 

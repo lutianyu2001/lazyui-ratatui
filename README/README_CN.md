@@ -5,6 +5,15 @@
 </p>
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](../SECURITY.md#ci)
+[![deny](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fdeny.json)](https://github.com/lutianyu2001/lazyui-ratatui/actions/workflows/advisories.yml)
+[![vet](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fvet.json)](../audit/vet)
+[![geiger](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fgeiger.json)](../audit/geiger)
+[![miri](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fmiri.json)](../audit/miri)
+[![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fcoverage.json)](../audit/coverage)
+[![kani](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fkani.json)](../audit/kani)
+[![fuzz](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Ffuzz.json)](../audit/fuzz)
+[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](../xtask/src/pins.rs)
 
 一个小型组件库，为 [Ratatui](https://ratatui.rs) 提供 lazygit 风格的面板：标有焦点键和名称的圆角窗口、角落注释、窗口之间的箭头，以及可滚动的单行文本框。
 
@@ -60,7 +69,7 @@
 | `unsafe` 代码 | 本 crate 禁止使用 | 没有 |
 | 依赖 | 运行和构建时的 40 个 crate：用 cargo-deny 查来源、许可证和已知漏洞，用 cargo-vet 管审计记录 | 没有安全公告；全部 82 个里 27 个有他人的审计，55 个由维护者豁免 |
 | Miri | 在全部四个模块的 27 个单元测试里跑了 26 个，查未定义行为；剩下那个测超长文本，要跑几小时，跑通过一次 | 未发现 |
-| 模糊测试 | 4 个 target，每个一小时：文本宽度、输入框布局、画进 buffer 的输入框、画进 buffer 的窗口和箭头，并检查各自应画出的内容 | 共约 7800 万次运行，没有失败 |
+| 模糊测试 | 4 个 target，本机每个一小时，每次发版时在 GitHub Actions 上每个四小时：文本宽度、输入框布局、画进 buffer 的输入框、画进 buffer 的窗口和箭头，并检查各自应画出的内容 | 每个一小时共约 7800 万次运行（2026-11-02），没有失败 |
 | Kani 证明 | 7 个布局算术的证明，对整数的每个取值成立，没有界限 | 7 个全部通过 |
 | 分支覆盖率 | 测试，全部四个模块 | 90 个分支走到 86 个；其余 4 个是测试自身断言失败的一侧 |
 | 评审 | 代码、威胁模型和审计工具本身都与编写分开评审，并在相同输入上对比了新旧代码 | 发现的问题已修复，或写入 SECURITY.md |
@@ -85,7 +94,9 @@
 - `Field` 和 `Window` 会替换终端与 Ratatui 算法不同的文本，这样它就跑不出窗口。这一点只在 tmux 3.4 上测过：40 万条随机文本里，替换前有 140,589 条不一致，替换后没有。其他终端，以及程序用别的组件绘制、没经过 `text::sanitize` 的文本，不在覆盖范围内，见 [SECURITY.md](../SECURITY.md#known-remaining-risks)。
 - `FieldView::shown` 和 `take_width` 原样返回文本，包括控制字符；形近字符也按原样绘制。留给程序处理的完整清单见[SECURITY.md](../SECURITY.md#what-the-crate-leaves-to-the-program)。
 
-每项审计的结果和代码一起提交在 `audit/<task>/` 里，运行方法见 SECURITY.md。
+每项审计的结果和代码一起提交在 `audit/<task>/` 里，运行方法见 SECURITY.md。顶部的 badge 显示每项结果对 `main` 上
+现在的代码是否仍然有效（绿色）、已经过期（黄色）还是失败（红色），以及固定的工具和 action 是否该升级了。耗时可预期的
+检查在每次发版时由 GitHub Actions 自动运行；Kani 和 Miri 手动运行，因为一处改动就可能让它们跑上几小时。审计过期不影响发版。
 
 ## 前置要求
 
