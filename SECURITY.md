@@ -148,7 +148,7 @@ starts, to make full use of it, and to leave the others to a person:
   then run there, or on GitHub by starting the workflow by hand with the tasks `kani miri`.
 - Nothing runs on a push: the audit takes hours, and no push needs it.
 - A release does not wait for the audit, and a result out of date holds no release back. The
-  badges at the top of the README show which results stand.
+  badges in the README show which results stand.
 
 Each task runs only when its result no longer stands, one job each, and the last job commits the
 results to `audit/` on `main`, as results for the release's commit. Results committed since that
@@ -169,9 +169,6 @@ Actions are pinned to commits, with the release in a comment, so that a tag move
 change what runs with a token. `cargo xtask outdated` checks them like the pinned tools: a release
 a month newer, a known vulnerability, an action not pinned, or a tag that no longer names the
 commit pinned.
-
-GitHub Actions is off on this repository for now. Until it is turned on, neither workflow runs, the
-badges have nothing to show, and the results come from runs on the maintainer's machine.
 
 Because `verify.yml` pushes to `main`, run `git pull --rebase` before pushing, and do not amend what
 has been pushed. The repository has no branch rules, on purpose.

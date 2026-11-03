@@ -6,14 +6,6 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](../SECURITY.md#ci)
-[![deny](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fdeny.json)](https://github.com/lutianyu2001/lazyui-ratatui/actions/workflows/advisories.yml)
-[![vet](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fvet.json)](../audit/vet)
-[![geiger](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fgeiger.json)](../audit/geiger)
-[![miri](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fmiri.json)](../audit/miri)
-[![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fcoverage.json)](../audit/coverage)
-[![kani](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fkani.json)](../audit/kani)
-[![fuzz](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Ffuzz.json)](../audit/fuzz)
-[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](../xtask/src/pins.rs)
 
 一个小型组件库，为 [Ratatui](https://ratatui.rs) 提供 lazygit 风格的面板：标有焦点键和名称的圆角窗口、角落注释、窗口之间的箭头，以及可滚动的单行文本框。
 
@@ -59,6 +51,15 @@
 
 ## 安全审计
 
+[![deny](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fdeny.json)](https://github.com/lutianyu2001/lazyui-ratatui/actions/workflows/advisories.yml)
+[![vet](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fvet.json)](../audit/vet)
+[![geiger](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fgeiger.json)](../audit/geiger)
+[![miri](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fmiri.json)](../audit/miri)
+[![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fcoverage.json)](../audit/coverage)
+[![kani](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fkani.json)](../audit/kani)
+[![fuzz](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Ffuzz.json)](../audit/fuzz)
+[![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](../xtask/src/pins.rs)
+
 这是项目维护者自己做的审计，不是第三方审计，也不保证这个 crate 没有 bug。它针对的是下面写明的提交里 `Cargo.lock` 记录的版本。
 
 这个 crate 只画文本：不起进程，不开文件和 socket。所以审计要回答两个问题：能控制程序所画文本的人能用它做什么，以及尺寸到了终端不该有的值时会发生什么。
@@ -94,7 +95,7 @@
 - `Field` 和 `Window` 会替换终端与 Ratatui 算法不同的文本，这样它就跑不出窗口。这一点只在 tmux 3.4 上测过：40 万条随机文本里，替换前有 140,589 条不一致，替换后没有。其他终端，以及程序用别的组件绘制、没经过 `text::sanitize` 的文本，不在覆盖范围内，见 [SECURITY.md](../SECURITY.md#known-remaining-risks)。
 - `FieldView::shown` 和 `take_width` 原样返回文本，包括控制字符；形近字符也按原样绘制。留给程序处理的完整清单见[SECURITY.md](../SECURITY.md#what-the-crate-leaves-to-the-program)。
 
-每项审计的结果和代码一起提交在 `audit/<task>/` 里，运行方法见 SECURITY.md。顶部的 badge 显示每项结果对 `main` 上
+每项审计的结果和代码一起提交在 `audit/<task>/` 里，运行方法见 SECURITY.md。本节开头的 badge 显示每项结果对 `main` 上
 现在的代码是否仍然有效（绿色）、已经过期（黄色）还是失败（红色），以及固定的工具和 action 是否该升级了。耗时可预期的
 检查在每次发版时由 GitHub Actions 自动运行；Kani 和 Miri 手动运行，因为一处改动就可能让它们跑上几小时。审计过期不影响发版。
 
