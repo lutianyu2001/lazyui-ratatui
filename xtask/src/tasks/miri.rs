@@ -7,11 +7,11 @@ use crate::tasks::limit;
 /// The modules whose tests Miri runs: those that start no process, open no socket and
 /// wait on no worker thread. The names end in `::`, since test filters match parts of
 /// names, and an interface test whose name merely contains one would time out.
-const MODULES: &[&str] = &["field::", "text::", "window::"];
+const MODULES: &[&str] = &["field::", "text::", "unsteady::", "window::"];
 /// What the tests are built with.
 const BUILD: &[&str] = &["--lib"];
 /// Tests too slow under Miri.
-const SKIP: &[&str] = &[];
+const SKIP: &[&str] = &["sanitize_holds_for_graphemes_of_any_length"];
 
 pub fn run(root: &Path) -> Result<(), String> {
     // Filters that match nothing run nothing, and pass.

@@ -69,7 +69,7 @@ itself, is not covered unless it goes through `text::sanitize`.
 | `deny` | sources, licenses, duplicate versions and known vulnerabilities of the dependencies; the fuzz workspace's vulnerabilities and sources | stable |
 | `vet` | every dependency has an audit on record, or an exemption | stable |
 | `geiger` | how much `unsafe` code the dependencies have | stable |
-| `miri` | undefined behavior in the unit tests of all modules (`field::`, `text::`, `window::`), which run Ratatui's and its dependencies' `unsafe` code | nightly |
+| `miri` | undefined behavior in the unit tests of all modules (`field::`, `text::`, `unsteady::`, `window::`), which run Ratatui's and its dependencies' `unsafe` code; one test of very long text is left out, as it takes hours under Miri | nightly |
 | `coverage` | branches the tests do not reach | nightly |
 | `kani` | the proofs in `src/proofs.rs`: the layout arithmetic, for every value of the integers | Kani's own |
 | `fuzz` | the four targets below, an hour each | nightly |
