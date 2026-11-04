@@ -1,10 +1,58 @@
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo +nightly-2026-10-28 fuzz build
-   Compiling lazyui-ratatui v0.1.0 (.)
-   Compiling lazyui-ratatui-fuzz v0.0.0 (./fuzz)
-    Finished `release` profile [optimized + debuginfo] target(s) in 1.14s
-$ systemd-run --user --scope --quiet -p MemoryMax=5120M -p MemorySwapMax=0 -- /proc/390813/exe __fuzz-targets ./audit/.running/fuzz 3600 4 field text view window
-$ cargo +nightly-2026-10-28 fuzz run field -- -max_total_time=3600 -rss_limit_mb=1024 -timeout=10 > fuzz-field.log
-$ cargo +nightly-2026-10-28 fuzz run text -- -max_total_time=3600 -rss_limit_mb=1024 -timeout=10 > fuzz-text.log
-$ cargo +nightly-2026-10-28 fuzz run view -- -max_total_time=3600 -rss_limit_mb=1024 -timeout=10 > fuzz-view.log
-$ cargo +nightly-2026-10-28 fuzz run window -- -max_total_time=3600 -rss_limit_mb=1024 -timeout=10 > fuzz-window.log
+$ cargo +nightly-2026-10-28 fuzz build
+[1m[92m   Compiling[0m proc-macro2 v1.0.107
+[1m[92m   Compiling[0m quote v1.0.47
+[1m[92m   Compiling[0m unicode-ident v1.0.27
+[1m[92m   Compiling[0m rustversion v1.0.23
+[1m[92m   Compiling[0m ident_case v1.0.1
+[1m[92m   Compiling[0m allocator-api2 v0.2.21
+[1m[92m   Compiling[0m libc v0.2.191
+[1m[92m   Compiling[0m thiserror v2.0.21
+[1m[92m   Compiling[0m strsim v0.11.1
+[1m[92m   Compiling[0m equivalent v1.0.3
+[1m[92m   Compiling[0m foldhash v0.2.0
+[1m[92m   Compiling[0m hashbrown v0.17.1
+[1m[92m   Compiling[0m syn v3.0.9
+[1m[92m   Compiling[0m syn v2.0.119
+[1m[92m   Compiling[0m heck v0.5.0
+[1m[92m   Compiling[0m either v1.19.0
+[1m[92m   Compiling[0m itertools v0.14.0
+[1m[92m   Compiling[0m castaway v0.2.4
+[1m[92m   Compiling[0m cfg-if v1.0.5
+[1m[92m   Compiling[0m static_assertions v1.1.0
+[1m[92m   Compiling[0m itoa v1.0.18
+[1m[92m   Compiling[0m unicode-width v0.2.2
+[1m[92m   Compiling[0m bitflags v2.13.2
+[1m[92m   Compiling[0m ryu v1.0.23
+[1m[92m   Compiling[0m strum_macros v0.28.0
+[1m[92m   Compiling[0m unicode-segmentation v1.13.3
+[1m[92m   Compiling[0m compact_str v0.9.1
+[1m[92m   Compiling[0m darling_core v0.24.1
+[1m[92m   Compiling[0m unicode-truncate v2.0.1
+[1m[92m   Compiling[0m jobserver v0.1.35
+[1m[92m   Compiling[0m strum v0.28.0
+[1m[92m   Compiling[0m lru v0.18.5
+[1m[92m   Compiling[0m find-msvc-tools v0.1.15
+[1m[92m   Compiling[0m shlex v2.0.1
+[1m[92m   Compiling[0m indoc v2.0.8
+[1m[92m   Compiling[0m cc v1.11.0
+[1m[92m   Compiling[0m thiserror-impl v2.0.21
+[1m[92m   Compiling[0m line-clipping v0.3.8
+[1m[92m   Compiling[0m derive_arbitrary v1.5.0
+[1m[92m   Compiling[0m kasuari v0.4.13
+[1m[92m   Compiling[0m arbitrary v1.5.0
+[1m[92m   Compiling[0m ratatui-core v0.1.2
+[1m[92m   Compiling[0m darling_macro v0.24.1
+[1m[92m   Compiling[0m darling v0.24.1
+[1m[92m   Compiling[0m instability v0.3.14
+[1m[92m   Compiling[0m libfuzzer-sys v0.4.13
+[1m[92m   Compiling[0m ratatui-widgets v0.3.2
+[1m[92m   Compiling[0m ratatui v0.30.2
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
+[1m[92m   Compiling[0m lazyui-ratatui-fuzz v0.0.0 (./fuzz)
+[1m[92m    Finished[0m `release` profile [optimized + debuginfo] target(s) in 36.12s
+$ /proc/5499/exe __fuzz-targets ./audit/.running/fuzz 14400 4 field text view window
+$ cargo +nightly-2026-10-28 fuzz run field -- -max_total_time=14400 -rss_limit_mb=1024 -timeout=10 > fuzz-field.log
+$ cargo +nightly-2026-10-28 fuzz run text -- -max_total_time=14400 -rss_limit_mb=1024 -timeout=10 > fuzz-text.log
+$ cargo +nightly-2026-10-28 fuzz run view -- -max_total_time=14400 -rss_limit_mb=1024 -timeout=10 > fuzz-view.log
+$ cargo +nightly-2026-10-28 fuzz run window -- -max_total_time=14400 -rss_limit_mb=1024 -timeout=10 > fuzz-window.log
 xtask: fuzz: succeeded
