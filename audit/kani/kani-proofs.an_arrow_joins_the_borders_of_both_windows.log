@@ -9,7 +9,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
 warning: Found the following unsupported constructs:
              - caller_location (1)
              - foreign function (1)
@@ -31,34 +31,34 @@ aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x
 aborting path on assume(false) at file src/proofs.rs line 62 column 23 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
 Unwinding loop _RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 1 file src/proofs.rs line 62 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
 Unwinding loop _RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 2 file src/proofs.rs line 62 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
-Runtime Symex: 0.125576s
+Runtime Symex: 0.0685728s
 size of program expression: 6064 steps
 slicing removed 3864 assignments
 Generated 439 VCC(s), 22 remaining after simplification
-Runtime Postprocess Equation: 0.00178295s
+Runtime Postprocess Equation: 0.00165023s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.0155082s
+Runtime Convert SSA: 0.0102128s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 8.836e-06s
+Runtime Post-process: 6.4e-06s
 Solving with CaDiCaL 3.0.0
 19667 variables, 38364 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0409945s
-Runtime decision procedure: 0.0570694s
+Runtime Solver: 0.0244904s
+Runtime decision procedure: 0.0350897s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 19668 variables, 38365 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0145544s
-Runtime decision procedure: 0.0148718s
+Runtime Solver: 0.00920845s
+Runtime decision procedure: 0.00941291s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 19669 variables, 38366 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.345477s
-Runtime decision procedure: 0.345643s
+Runtime Solver: 0.240422s
+Runtime decision procedure: 0.240556s
 
 RESULTS:
 Check 1: std::fmt::Arguments::<'_>::from_str.assertion.1
@@ -914,7 +914,7 @@ SUMMARY:
 
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.8222507s
+Verification Time: 0.912495s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.

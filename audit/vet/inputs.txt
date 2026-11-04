@@ -5,8 +5,8 @@
 2772ccb21f3b87f003ba51035a8ccee603c019aa	supply-chain/audits.toml
 a7067135224d2d7a5a184d09e581b96814da2a15	supply-chain/config.toml
 7a2ca355cba13559a6e6a5ec2bcda66d0ac4ec07	supply-chain/imports.lock
-2e93dcb46fa7ebf072a3a482c8a7175f879d352e	xtask/Cargo.toml
-aa2d59e1f6a1faf13fd7ff754f66acd74432116d	xtask/src/main.rs
+d3d6e453c0de06a3910ca18df4433d43373d5135	xtask/Cargo.toml
+c4d4c83169ad83e1f35bdfecf5cdaa9b0b7f8804	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
-171917aad0222375043b3fbf17d60ac79566b69f	xtask/src/tasks/mod.rs
+c329af61b0d22bfc28e08fd733e1e82a48e64a37	xtask/src/tasks/mod.rs
 c67c76e148a59e0c5aa9c4553ece4c187d56e02f	xtask/src/tasks/vet.rs

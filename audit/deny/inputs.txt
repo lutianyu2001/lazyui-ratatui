@@ -5,8 +5,8 @@
 380ccfe90559ca238ea51b244da07f8f05180609	deny.toml
 3e1215be49a1c04c207c3c59811ce30dda253e7f	fuzz/Cargo.lock
 8b191cfeb035f16df5741748f3fbb618025bd281	fuzz/Cargo.toml
-2e93dcb46fa7ebf072a3a482c8a7175f879d352e	xtask/Cargo.toml
-aa2d59e1f6a1faf13fd7ff754f66acd74432116d	xtask/src/main.rs
+d3d6e453c0de06a3910ca18df4433d43373d5135	xtask/Cargo.toml
+c4d4c83169ad83e1f35bdfecf5cdaa9b0b7f8804	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
 474d6c3d7076c28a02dc6cb57447bf56f948b2f0	xtask/src/tasks/deny.rs
-171917aad0222375043b3fbf17d60ac79566b69f	xtask/src/tasks/mod.rs
+c329af61b0d22bfc28e08fd733e1e82a48e64a37	xtask/src/tasks/mod.rs

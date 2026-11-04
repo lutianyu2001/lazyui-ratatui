@@ -1,6 +1,6 @@
 result: succeeded
-started: 2026-11-04 02:54 UTC
-seconds: 14437
-commit: acba905fbc4afe9f424106975fda0c6e3cb89d0a
+started: 2026-11-04 18:16 UTC
+seconds: 14436
+commit: 0653aa8a917b48582b324dc3c9d9d762fa940a6b
 args: seconds=14400
 tools: cargo-fuzz 0.13.2, nightly-2026-10-28

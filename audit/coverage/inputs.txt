@@ -9,8 +9,9 @@ e06ef9767e1e6a9ceb0ab5f714ce17a44f2d0600	src/text.rs
 39384da4678f00de9093f51132214f561c3ce45e	src/window.rs
 d3abbeb993f597ef6571ad6d9d057a2674b49642	tests/no_panic.proptest-regressions
 a2724486d43032b91d7f4f8796f9eeca72364d30	tests/no_panic.rs
-2e93dcb46fa7ebf072a3a482c8a7175f879d352e	xtask/Cargo.toml
-aa2d59e1f6a1faf13fd7ff754f66acd74432116d	xtask/src/main.rs
+d3d6e453c0de06a3910ca18df4433d43373d5135	xtask/Cargo.toml
+2e086b9d3ca404d2ec078b3b1d51feddf998d526	xtask/src/json.rs
+c4d4c83169ad83e1f35bdfecf5cdaa9b0b7f8804	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
-1ad6ec7e511476fbdd56c028584cd58094b710b1	xtask/src/tasks/coverage.rs
-171917aad0222375043b3fbf17d60ac79566b69f	xtask/src/tasks/mod.rs
+872846b6df945a817bbbe54f91857ad0fc233b6b	xtask/src/tasks/coverage.rs
+c329af61b0d22bfc28e08fd733e1e82a48e64a37	xtask/src/tasks/mod.rs

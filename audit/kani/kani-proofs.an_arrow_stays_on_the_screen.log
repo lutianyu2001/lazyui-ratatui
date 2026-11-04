@@ -1,6 +1,7 @@
 $ cargo kani --lib --harness proofs::an_arrow_stays_on_the_screen --exact -Z unstable-options --harness-timeout 1800s
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -9,7 +10,6 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 Checking harness proofs::an_arrow_stays_on_the_screen...
 CBMC 6.11.0 (cbmc-6.11.0)
 CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
@@ -22,34 +22,34 @@ Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
 aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 633 column 5 function std::option::Option::<(u16, u16)>::is_some thread 0
 aborting path on assume(false) at file src/proofs.rs line 40 column 1 function proofs::an_arrow_stays_on_the_screen thread 0
-Runtime Symex: 0.0546791s
+Runtime Symex: 0.0273022s
 size of program expression: 2910 steps
 slicing removed 1649 assignments
 Generated 230 VCC(s), 8 remaining after simplification
-Runtime Postprocess Equation: 0.00077711s
+Runtime Postprocess Equation: 0.000263402s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00854928s
+Runtime Convert SSA: 0.00474822s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 5.972e-06s
+Runtime Post-process: 4.707e-06s
 Solving with CaDiCaL 3.0.0
 9445 variables, 22133 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0248423s
-Runtime decision procedure: 0.0336944s
+Runtime Solver: 0.01485s
+Runtime decision procedure: 0.0197612s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 9446 variables, 22134 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.00281879s
-Runtime decision procedure: 0.00299957s
+Runtime Solver: 0.00167318s
+Runtime decision procedure: 0.00177179s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 9447 variables, 22135 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.0340897s
-Runtime decision procedure: 0.0341729s
+Runtime Solver: 0.0228603s
+Runtime decision procedure: 0.0228933s
 
 RESULTS:
 Check 1: std::option::Option::<(u16, u16)>::is_some.unreachable.1
@@ -475,7 +475,7 @@ SUMMARY:
 
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.25044644s
+Verification Time: 0.14501952s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
