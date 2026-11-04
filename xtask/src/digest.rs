@@ -194,7 +194,7 @@ fn piped(root: &Path, args: &[&str], input: Vec<u8>) -> Result<Vec<u8>, String> 
 
 #[cfg(test)]
 mod tests {
-    use super::{normal, without_own_versions};
+    use super::{OWN_VERSION_READ, normal, without_own_versions};
 
     fn same(path: &str, a: &str, b: &str) -> bool {
         let (a, b) = (normal(path, a.as_bytes()), normal(path, b.as_bytes()));
@@ -263,9 +263,13 @@ mod tests {
         assert_eq!(blank("Cargo.toml", workspace), "[workspace.package]\nversion = \"\"\n");
         let inherited = "[package]\nversion.workspace = true\n";
         assert_eq!(blank("Cargo.toml", inherited), inherited);
-        // Both reach normal, and the rest of the text stays.
-        assert!(normal("Cargo.toml", manifest("0.2.0").as_bytes()).is_some());
-        assert!(normal("fuzz/Cargo.lock", lock("0.2.0", "1.0.0").as_bytes()).is_some());
+        // Both reach normal, and the rest of the text stays: with their own versions left out,
+        // or as they are where the code reads its version (a Cargo.toml then still as TOML,
+        // unless the toml branch is gone).
+        let manifest_read = normal("Cargo.toml", manifest("0.2.0").as_bytes());
+        assert!(manifest_read.is_some() || OWN_VERSION_READ);
+        let lock_read = normal("fuzz/Cargo.lock", lock("0.2.0", "1.0.0").as_bytes());
+        assert_eq!(lock_read.is_some(), !OWN_VERSION_READ);
         assert_eq!(normal("a.md", b"version = \"1\""), None);
     }
 }
