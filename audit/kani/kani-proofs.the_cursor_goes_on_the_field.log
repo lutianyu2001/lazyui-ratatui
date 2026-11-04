@@ -9,40 +9,40 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 Checking harness proofs::the_cursor_goes_on_the_field...
 CBMC 6.11.0 (cbmc-6.11.0)
 CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
-Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/814ff9fc711d6c46/out/lazyui_ratatui-814ff9fc711d6c46__RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs28the_cursor_goes_on_the_field.out
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/d34fe1abf5ac8fc5/out/lazyui_ratatui-d34fe1abf5ac8fc5__RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs28the_cursor_goes_on_the_field.out
 Generating GOTO Program
 Adding CPROVER library (x86_64)
 Removal of function pointers and virtual functions
 Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
-aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs line 1594 column 15 function std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or thread 0
-Runtime Symex: 0.0177307s
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs line 1594 column 15 function std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or thread 0
+Runtime Symex: 0.0215s
 size of program expression: 1143 steps
 slicing removed 473 assignments
 Generated 63 VCC(s), 3 remaining after simplification
-Runtime Postprocess Equation: 0.000192331s
+Runtime Postprocess Equation: 0.000270044s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00323726s
+Runtime Convert SSA: 0.00412792s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 4.57e-06s
+Runtime Post-process: 6.171e-06s
 Solving with CaDiCaL 3.0.0
 4350 variables, 11031 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.013762s
-Runtime decision procedure: 0.0171221s
+Runtime Solver: 0.0168186s
+Runtime decision procedure: 0.0211197s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 4351 variables, 11032 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.019806s
-Runtime decision procedure: 0.0198374s
+Runtime Solver: 0.0246927s
+Runtime decision procedure: 0.0247426s
 
 RESULTS:
 Check 1: proofs::the_cursor_goes_on_the_field.assertion.1
@@ -53,75 +53,74 @@ Check 1: proofs::the_cursor_goes_on_the_field.assertion.1
 Check 2: std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or.unreachable.1
 	 - Status: SUCCESS
 	 - Description: "unreachable code"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:1594:15 in function std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:1594:15 in function std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or
 
 Check 3: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.1
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 4: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.2
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 5: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.3
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 6: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.4
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 7: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.5
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 8: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.6
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 9: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.7
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 10: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.8
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 11: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.9
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 12: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.10
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 13: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.11
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 14: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.12
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 
 SUMMARY:
  ** 0 of 14 failed
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.084775776s
+Verification Time: 0.1044756s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 21561344

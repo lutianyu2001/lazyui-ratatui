@@ -1,7 +1,245 @@
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib list --format json
+$ cargo kani --lib list --format json
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
+[1m[92m   Compiling[0m proc-macro2 v1.0.107
+[1m[92m   Compiling[0m unicode-ident v1.0.27
+[1m[92m   Compiling[0m quote v1.0.47
+[1m[92m   Compiling[0m rustversion v1.0.23
+[1m[92m   Compiling[0m thiserror v2.0.21
+[1m[92m   Compiling[0m foldhash v0.2.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m equivalent v1.0.3
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m strsim v0.11.1
+[1m[92m   Compiling[0m allocator-api2 v0.2.21
+[1m[92m   Compiling[0m ident_case v1.0.1
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m hashbrown v0.17.1
+[1m[92m   Compiling[0m heck v0.5.0
+[1m[92m   Compiling[0m either v1.19.0
+[1m[92m   Compiling[0m syn v3.0.9
+[1m[92m   Compiling[0m syn v2.0.119
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m itertools v0.14.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m castaway v0.2.4
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m static_assertions v1.1.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m ryu v1.0.23
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m itoa v1.0.18
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m cfg-if v1.0.5
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m bitflags v2.13.2
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m unicode-width v0.2.2
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m unicode-segmentation v1.13.3
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m compact_str v0.9.1
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m unicode-truncate v2.0.1
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m lru v0.18.5
+[1m[92m   Compiling[0m indoc v2.0.8
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m line-clipping v0.3.8
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m strum_macros v0.28.0
+[1m[92m   Compiling[0m darling_core v0.24.1
+[1m[92m   Compiling[0m strum v0.28.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m thiserror-impl v2.0.21
+warning: use of an unstable feature
+   --> ~/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.21/src/lib.rs:271:50
+    |
+271 | #![cfg_attr(error_generic_member_access, feature(error_generic_member_access))]
+    |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `--force-warn unstable-features`
+
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+
+[1m[92m   Compiling[0m kasuari v0.4.13
+[1m[92m   Compiling[0m darling_macro v0.24.1
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m ratatui-core v0.1.2
+[1m[92m   Compiling[0m darling v0.24.1
+[1m[92m   Compiling[0m instability v0.3.14
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m ratatui-widgets v0.3.2
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m ratatui v0.30.2
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -17,12 +255,12 @@ warning: Found the following unsupported constructs:
          Verification will fail if one or more of these constructs is reachable.
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.24s
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 9.57s
 Wrote list results to ./kani-list.json
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::a_scrolled_cursor_keeps_off_the_markers --exact -Z unstable-options --harness-timeout 1800s --only-codegen
+$ cargo kani --lib --harness proofs::a_scrolled_cursor_keeps_off_the_markers --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -31,13 +269,13 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/390813/exe __kani-harness proofs::a_scrolled_cursor_keeps_off_the_markers --peak > kani-proofs.a_scrolled_cursor_keeps_off_the_markers.log
-proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 18 s, peak memory 23 MiB
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::a_scrolled_field_uses_its_cells_exactly --exact -Z unstable-options --harness-timeout 1800s --only-codegen
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
+$ /proc/2844/exe __kani-harness proofs::a_scrolled_cursor_keeps_off_the_markers > kani-proofs.a_scrolled_cursor_keeps_off_the_markers.log
+proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 23 s, peak memory unknown
+$ cargo kani --lib --harness proofs::a_scrolled_field_uses_its_cells_exactly --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -46,13 +284,13 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/390813/exe __kani-harness proofs::a_scrolled_field_uses_its_cells_exactly --peak > kani-proofs.a_scrolled_field_uses_its_cells_exactly.log
-proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory 22 MiB
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::a_text_on_the_border_leaves_the_corners_alone --exact -Z unstable-options --harness-timeout 1800s --only-codegen
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
+$ /proc/2844/exe __kani-harness proofs::a_scrolled_field_uses_its_cells_exactly > kani-proofs.a_scrolled_field_uses_its_cells_exactly.log
+proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory unknown
+$ cargo kani --lib --harness proofs::a_text_on_the_border_leaves_the_corners_alone --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -61,35 +299,13 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/390813/exe __kani-harness proofs::a_text_on_the_border_leaves_the_corners_alone --peak > kani-proofs.a_text_on_the_border_leaves_the_corners_alone.log
-proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory 22 MiB
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::an_arrow_is_drawn_when_nothing_stops_it --exact -Z unstable-options --harness-timeout 1800s --only-codegen
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
+$ /proc/2844/exe __kani-harness proofs::a_text_on_the_border_leaves_the_corners_alone > kani-proofs.a_text_on_the_border_leaves_the_corners_alone.log
+proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory unknown
+$ cargo kani --lib --harness proofs::an_arrow_is_drawn_when_nothing_stops_it --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
-warning: use of an unstable feature
- --> <crate attribute>:1:12
-  |
-1 | #![feature(register_tool)]
-  |            ^^^^^^^^^^^^^
-  |
-  = note: requested on the command line with `--force-warn unstable-features`
-
-warning: Found the following unsupported constructs:
-             - caller_location (1)
-             - foreign function (1)
-         
-         Verification will fail if one or more of these constructs is reachable.
-         See https://model-checking.github.io/kani/rust-feature-support.html for more details.
-
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/390813/exe __kani-harness proofs::an_arrow_is_drawn_when_nothing_stops_it --peak > kani-proofs.an_arrow_is_drawn_when_nothing_stops_it.log
-proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory 45 MiB
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::an_arrow_joins_the_borders_of_both_windows --exact -Z unstable-options --harness-timeout 1800s --only-codegen
-Kani Rust Verifier 0.68.0 (cargo plugin)
-CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -105,13 +321,13 @@ warning: Found the following unsupported constructs:
          Verification will fail if one or more of these constructs is reachable.
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/390813/exe __kani-harness proofs::an_arrow_joins_the_borders_of_both_windows --peak > kani-proofs.an_arrow_joins_the_borders_of_both_windows.log
-proofs::an_arrow_joins_the_borders_of_both_windows: succeeded, 0 s, peak memory 51 MiB
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::an_arrow_stays_on_the_screen --exact -Z unstable-options --harness-timeout 1800s --only-codegen
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.18s
+$ /proc/2844/exe __kani-harness proofs::an_arrow_is_drawn_when_nothing_stops_it > kani-proofs.an_arrow_is_drawn_when_nothing_stops_it.log
+proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory unknown
+$ cargo kani --lib --harness proofs::an_arrow_joins_the_borders_of_both_windows --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -120,13 +336,20 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/390813/exe __kani-harness proofs::an_arrow_stays_on_the_screen --peak > kani-proofs.an_arrow_stays_on_the_screen.log
-proofs::an_arrow_stays_on_the_screen: succeeded, 0 s, peak memory 26 MiB
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo kani --lib --harness proofs::the_cursor_goes_on_the_field --exact -Z unstable-options --harness-timeout 1800s --only-codegen
+warning: Found the following unsupported constructs:
+             - caller_location (1)
+             - foreign function (1)
+         
+         Verification will fail if one or more of these constructs is reachable.
+         See https://model-checking.github.io/kani/rust-feature-support.html for more details.
+
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.18s
+$ /proc/2844/exe __kani-harness proofs::an_arrow_joins_the_borders_of_both_windows > kani-proofs.an_arrow_joins_the_borders_of_both_windows.log
+proofs::an_arrow_joins_the_borders_of_both_windows: succeeded, 1 s, peak memory unknown
+$ cargo kani --lib --harness proofs::an_arrow_stays_on_the_screen --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-   Compiling lazyui-ratatui v0.1.0 (.)
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -135,7 +358,22 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue -- /proc/390813/exe __kani-harness proofs::the_cursor_goes_on_the_field --peak > kani-proofs.the_cursor_goes_on_the_field.log
-proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory 21 MiB
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
+$ /proc/2844/exe __kani-harness proofs::an_arrow_stays_on_the_screen > kani-proofs.an_arrow_stays_on_the_screen.log
+proofs::an_arrow_stays_on_the_screen: succeeded, 0 s, peak memory unknown
+$ cargo kani --lib --harness proofs::the_cursor_goes_on_the_field --exact -Z unstable-options --harness-timeout 1800s --only-codegen
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
+$ /proc/2844/exe __kani-harness proofs::the_cursor_goes_on_the_field > kani-proofs.the_cursor_goes_on_the_field.log
+proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory unknown
 xtask: kani: succeeded

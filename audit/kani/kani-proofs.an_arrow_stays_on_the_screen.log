@@ -9,73 +9,73 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 Checking harness proofs::an_arrow_stays_on_the_screen...
 CBMC 6.11.0 (cbmc-6.11.0)
 CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
-Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/849781225e72123f/out/lazyui_ratatui-849781225e72123f__RNvNtCsRhYAatvApt_14lazyui_ratatui6proofs28an_arrow_stays_on_the_screen.out
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/730b1c8b55d24276/out/lazyui_ratatui-730b1c8b55d24276__RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs28an_arrow_stays_on_the_screen.out
 Generating GOTO Program
 Adding CPROVER library (x86_64)
 Removal of function pointers and virtual functions
 Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
-aborting path on assume(false) at file /home/runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 633 column 5 function std::option::Option::<(u16, u16)>::is_some thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 633 column 5 function std::option::Option::<(u16, u16)>::is_some thread 0
 aborting path on assume(false) at file src/proofs.rs line 40 column 1 function proofs::an_arrow_stays_on_the_screen thread 0
-Runtime Symex: 0.0487965s
+Runtime Symex: 0.0546791s
 size of program expression: 2910 steps
 slicing removed 1649 assignments
 Generated 230 VCC(s), 8 remaining after simplification
-Runtime Postprocess Equation: 0.000380211s
+Runtime Postprocess Equation: 0.00077711s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00666488s
+Runtime Convert SSA: 0.00854928s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 4.55e-06s
+Runtime Post-process: 5.972e-06s
 Solving with CaDiCaL 3.0.0
 9445 variables, 22133 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0195345s
-Runtime decision procedure: 0.0264189s
+Runtime Solver: 0.0248423s
+Runtime decision procedure: 0.0336944s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 9446 variables, 22134 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.00210099s
-Runtime decision procedure: 0.00223647s
+Runtime Solver: 0.00281879s
+Runtime decision procedure: 0.00299957s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 9447 variables, 22135 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.0267182s
-Runtime decision procedure: 0.026764s
+Runtime Solver: 0.0340897s
+Runtime decision procedure: 0.0341729s
 
 RESULTS:
-Check 1: proofs::an_arrow_stays_on_the_screen.cover.1
+Check 1: std::option::Option::<(u16, u16)>::is_some.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:633:5 in function std::option::Option::<(u16, u16)>::is_some
+
+Check 2: proofs::an_arrow_stays_on_the_screen.cover.1
 	 - Status: SATISFIED
 	 - Description: "cover condition: ends.is_some()"
 	 - Location: src/proofs.rs:43:5 in function proofs::an_arrow_stays_on_the_screen
 
-Check 2: proofs::an_arrow_stays_on_the_screen.unreachable.1
+Check 3: proofs::an_arrow_stays_on_the_screen.unreachable.1
 	 - Status: SUCCESS
 	 - Description: "unreachable code"
 	 - Location: src/proofs.rs:40:1 in function proofs::an_arrow_stays_on_the_screen
 
-Check 3: proofs::an_arrow_stays_on_the_screen.assertion.1
+Check 4: proofs::an_arrow_stays_on_the_screen.assertion.1
 	 - Status: SUCCESS
 	 - Description: "assertion failed: top < bottom"
 	 - Location: src/proofs.rs:45:9 in function proofs::an_arrow_stays_on_the_screen
 
-Check 4: proofs::an_arrow_stays_on_the_screen.assertion.2
+Check 5: proofs::an_arrow_stays_on_the_screen.assertion.2
 	 - Status: SUCCESS
 	 - Description: "assertion failed: screen.contains(Position::new(x, y))"
 	 - Location: src/proofs.rs:49:9 in function proofs::an_arrow_stays_on_the_screen
-
-Check 5: std::option::Option::<(u16, u16)>::is_some.unreachable.1
-	 - Status: SUCCESS
-	 - Description: "unreachable code"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:633:5 in function std::option::Option::<(u16, u16)>::is_some
 
 Check 6: window::arrow_ends::{closure#0}.pointer_dereference.1
 	 - Status: SUCCESS
@@ -380,92 +380,92 @@ Check 65: window::arrow_ends::{closure#1}.pointer_dereference.24
 Check 66: std::option::Option::<(u16, u16)>::is_some.pointer_dereference.1
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
 
 Check 67: std::option::Option::<(u16, u16)>::is_some.pointer_dereference.2
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
 
 Check 68: std::option::Option::<(u16, u16)>::is_some.pointer_dereference.3
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
 
 Check 69: std::option::Option::<(u16, u16)>::is_some.pointer_dereference.4
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
 
 Check 70: std::option::Option::<(u16, u16)>::is_some.pointer_dereference.5
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
 
 Check 71: std::option::Option::<(u16, u16)>::is_some.pointer_dereference.6
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:634:18 in function std::option::Option::<(u16, u16)>::is_some
 
 Check 72: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.1
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 73: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.2
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 74: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.3
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 75: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.4
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 76: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.5
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 77: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.6
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 78: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.7
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 79: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.8
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 80: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.9
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 81: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.10
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 82: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.11
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 Check 83: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.12
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: ../../../runner/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
 
 
 SUMMARY:
@@ -475,8 +475,7 @@ SUMMARY:
 
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.20330374s
+Verification Time: 0.25044644s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.
-xtask: peak memory in bytes: 26464256

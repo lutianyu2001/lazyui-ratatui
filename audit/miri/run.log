@@ -1,6 +1,147 @@
-$ systemd-run --user --scope --quiet -p MemoryMax=4G -p MemorySwapMax=0 -- cargo +nightly-2026-10-28 miri test --locked --lib -- field:: text:: unsteady:: window:: --skip sanitize_holds_for_graphemes_of_any_length
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
-     Running unittests src/lib.rs (target/miri/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/c34c2427667602eb/out/lazyui_ratatui-c34c2427667602eb)
+$ cargo +nightly-2026-10-28 miri test --locked --lib -- field:: text:: unsteady:: window:: --skip sanitize_holds_for_graphemes_of_any_length
+Preparing a sysroot for Miri (target: x86_64-unknown-linux-gnu)... done
+[1m[92m Downloading[0m crates ...
+[1m[92m  Downloaded[0m bitflags v2.13.2
+[1m[92m  Downloaded[0m allocator-api2 v0.2.21
+[1m[92m  Downloaded[0m bit-set v0.11.1
+[1m[92m  Downloaded[0m autocfg v1.5.1
+[1m[92m  Downloaded[0m bit-vec v0.10.1
+[1m[92m  Downloaded[0m fnv v1.0.7
+[1m[92m  Downloaded[0m borsh-derive v1.8.1
+[1m[92m  Downloaded[0m darling_macro v0.24.1
+[1m[92m  Downloaded[0m cfg-if v1.0.5
+[1m[92m  Downloaded[0m proc-macro-crate v3.5.0
+[1m[92m  Downloaded[0m wait-timeout v0.2.1
+[1m[92m  Downloaded[0m static_assertions v1.1.0
+[1m[92m  Downloaded[0m castaway v0.2.4
+[1m[92m  Downloaded[0m cpufeatures v0.3.1
+[1m[92m  Downloaded[0m equivalent v1.0.3
+[1m[92m  Downloaded[0m ident_case v1.0.1
+[1m[92m  Downloaded[0m quick-error v1.2.3
+[1m[92m  Downloaded[0m rand_xorshift v0.5.0
+[1m[92m  Downloaded[0m errno v0.3.14
+[1m[92m  Downloaded[0m fastrand v2.5.0
+[1m[92m  Downloaded[0m lru v0.18.5
+[1m[92m  Downloaded[0m strsim v0.11.1
+[1m[92m  Downloaded[0m thiserror v2.0.21
+[1m[92m  Downloaded[0m cfg_aliases v0.2.2
+[1m[92m  Downloaded[0m heck v0.5.0
+[1m[92m  Downloaded[0m instability v0.3.14
+[1m[92m  Downloaded[0m strum v0.28.0
+[1m[92m  Downloaded[0m unarray v0.1.4
+[1m[92m  Downloaded[0m quote v1.0.47
+[1m[92m  Downloaded[0m thiserror-impl v2.0.21
+[1m[92m  Downloaded[0m itoa v1.0.18
+[1m[92m  Downloaded[0m either v1.19.0
+[1m[92m  Downloaded[0m indoc v2.0.8
+[1m[92m  Downloaded[0m once_cell v1.21.4
+[1m[92m  Downloaded[0m rand_core v0.10.1
+[1m[92m  Downloaded[0m rustversion v1.0.23
+[1m[92m  Downloaded[0m rusty-fork v0.3.1
+[1m[92m  Downloaded[0m toml_datetime v1.1.2+spec-1.1.0
+[1m[92m  Downloaded[0m unicode-truncate v2.0.1
+[1m[92m  Downloaded[0m kasuari v0.4.13
+[1m[92m  Downloaded[0m strum_macros v0.28.0
+[1m[92m  Downloaded[0m tempfile v3.27.0
+[1m[92m  Downloaded[0m chacha20 v0.10.2
+[1m[92m  Downloaded[0m core_detect v1.0.0
+[1m[92m  Downloaded[0m line-clipping v0.3.8
+[1m[92m  Downloaded[0m num-traits v0.2.19
+[1m[92m  Downloaded[0m serde_derive v1.0.229
+[1m[92m  Downloaded[0m ryu v1.0.23
+[1m[92m  Downloaded[0m serde_core v1.0.229
+[1m[92m  Downloaded[0m toml_parser v1.1.5+spec-1.1.0
+[1m[92m  Downloaded[0m bytes v1.12.1
+[1m[92m  Downloaded[0m darling v0.24.1
+[1m[92m  Downloaded[0m getrandom v0.4.3
+[1m[92m  Downloaded[0m ratatui v0.30.2
+[1m[92m  Downloaded[0m serde v1.0.229
+[1m[92m  Downloaded[0m toml_edit v0.25.17+spec-1.1.0
+[1m[92m  Downloaded[0m compact_str v0.9.1
+[1m[92m  Downloaded[0m regex-syntax v0.8.11
+[1m[92m  Downloaded[0m borsh v1.8.1
+[1m[92m  Downloaded[0m darling_core v0.24.1
+[1m[92m  Downloaded[0m indexmap v2.14.2
+[1m[92m  Downloaded[0m rand v0.10.3
+[1m[92m  Downloaded[0m unicode-segmentation v1.13.3
+[1m[92m  Downloaded[0m itertools v0.14.0
+[1m[92m  Downloaded[0m winnow v1.0.4
+[1m[92m  Downloaded[0m ratatui-core v0.1.2
+[1m[92m  Downloaded[0m proptest v1.12.0
+[1m[92m  Downloaded[0m ratatui-widgets v0.3.2
+[1m[92m  Downloaded[0m unicode-width v0.2.2
+[1m[92m  Downloaded[0m syn v3.0.9
+[1m[92m  Downloaded[0m syn v2.0.119
+[1m[92m  Downloaded[0m rustix v1.1.6
+[1m[92m  Downloaded[0m linux-raw-sys v0.12.1
+[1m[92m   Compiling[0m proc-macro2 v1.0.107
+[1m[92m   Compiling[0m quote v1.0.47
+[1m[92m   Compiling[0m unicode-ident v1.0.27
+[1m[92m   Compiling[0m libc v0.2.191
+[1m[92m   Compiling[0m cfg-if v1.0.5
+[1m[92m   Compiling[0m bitflags v2.13.2
+[1m[92m   Compiling[0m rustversion v1.0.23
+[1m[92m   Compiling[0m rand_core v0.10.1
+[1m[92m   Compiling[0m thiserror v2.0.21
+[1m[92m   Compiling[0m foldhash v0.2.0
+[1m[92m   Compiling[0m allocator-api2 v0.2.21
+[1m[92m   Compiling[0m getrandom v0.4.3
+[1m[92m   Compiling[0m strsim v0.11.1
+[1m[92m   Compiling[0m syn v3.0.9
+[1m[92m   Compiling[0m ident_case v1.0.1
+[1m[92m   Compiling[0m equivalent v1.0.3
+[1m[92m   Compiling[0m hashbrown v0.17.1
+[1m[92m   Compiling[0m syn v2.0.119
+[1m[92m   Compiling[0m either v1.19.0
+[1m[92m   Compiling[0m heck v0.5.0
+[1m[92m   Compiling[0m rustix v1.1.6
+[1m[92m   Compiling[0m castaway v0.2.4
+[1m[92m   Compiling[0m itertools v0.14.0
+[1m[92m   Compiling[0m errno v0.3.14
+[1m[92m   Compiling[0m unicode-segmentation v1.13.3
+[1m[92m   Compiling[0m static_assertions v1.1.0
+[1m[92m   Compiling[0m itoa v1.0.18
+[1m[92m   Compiling[0m linux-raw-sys v0.12.1
+[1m[92m   Compiling[0m autocfg v1.5.1
+[1m[92m   Compiling[0m ryu v1.0.23
+[1m[92m   Compiling[0m unicode-width v0.2.2
+[1m[92m   Compiling[0m num-traits v0.2.19
+[1m[92m   Compiling[0m compact_str v0.9.1
+[1m[92m   Compiling[0m unicode-truncate v2.0.1
+[1m[92m   Compiling[0m darling_core v0.24.1
+[1m[92m   Compiling[0m strum_macros v0.28.0
+[1m[92m   Compiling[0m lru v0.18.5
+[1m[92m   Compiling[0m indoc v2.0.8
+[1m[92m   Compiling[0m fastrand v2.5.0
+[1m[92m   Compiling[0m strum v0.28.0
+[1m[92m   Compiling[0m once_cell v1.21.4
+[1m[92m   Compiling[0m thiserror-impl v2.0.21
+[1m[92m   Compiling[0m wait-timeout v0.2.1
+[1m[92m   Compiling[0m tempfile v3.27.0
+[1m[92m   Compiling[0m line-clipping v0.3.8
+[1m[92m   Compiling[0m cpufeatures v0.3.1
+[1m[92m   Compiling[0m fnv v1.0.7
+[1m[92m   Compiling[0m bit-vec v0.10.1
+[1m[92m   Compiling[0m quick-error v1.2.3
+[1m[92m   Compiling[0m rusty-fork v0.3.1
+[1m[92m   Compiling[0m bit-set v0.11.1
+[1m[92m   Compiling[0m chacha20 v0.10.2
+[1m[92m   Compiling[0m rand v0.10.3
+[1m[92m   Compiling[0m rand_xorshift v0.5.0
+[1m[92m   Compiling[0m regex-syntax v0.8.11
+[1m[92m   Compiling[0m core_detect v1.0.0
+[1m[92m   Compiling[0m unarray v0.1.4
+[1m[92m   Compiling[0m darling_macro v0.24.1
+[1m[92m   Compiling[0m kasuari v0.4.13
+[1m[92m   Compiling[0m darling v0.24.1
+[1m[92m   Compiling[0m instability v0.3.14
+[1m[92m   Compiling[0m ratatui-core v0.1.2
+[1m[92m   Compiling[0m ratatui-widgets v0.3.2
+[1m[92m   Compiling[0m proptest v1.12.0
+[1m[92m   Compiling[0m ratatui v0.30.2
+[1m[92m   Compiling[0m lazyui-ratatui v0.2.0 (.)
+[1m[92m    Finished[0m `test` profile [unoptimized + debuginfo] target(s) in 12.61s
+[1m[92m     Running[0m unittests src/lib.rs (target/miri/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/365b2e54a461ec40/out/lazyui_ratatui-365b2e54a461ec40)
 
 running 26 tests
 test field::tests::a_cursor_inside_a_grapheme_goes_before_it ... ok
@@ -30,6 +171,6 @@ test window::tests::each_condition_of_an_arrow_counts_by_itself ... ok
 test window::tests::names_and_notes_sit_in_the_corners ... ok
 test window::tests::nothing_is_drawn_outside_the_buffer ... ok
 
-test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 67.03s
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 82.62s
 
 xtask: miri: succeeded

@@ -1,13 +1,13 @@
-# Rust as tokens, the rest as git blobs (1)
+# Rust as tokens, the rest as git blobs, own versions left out (1)
 4408eff3db9961c1a2cbdc28625bd3973635e831	.cargo/config.toml
-a84e31416750c562ff56673bfacd76e3a9d4a213	Cargo.lock
-1e6851cff2f6563329398711ed47bdddde2aa3ec	Cargo.toml
+27d7b427ea8e727a3dac12a6507892d73108ca80	Cargo.lock
+944e9e9402537ccc630ed94ea480cfa698f9e3ea	Cargo.toml
 306cd6be8b262b48e545289eb55a72e84972498b	src/field.rs
 a455453c9680aca1af83762a81bd454e535dcc42	src/lib.rs
 e06ef9767e1e6a9ceb0ab5f714ce17a44f2d0600	src/text.rs
 8d6af9e3e6432acdc2b85d3e091c2d13bb2b3a87	src/unsteady.rs
 39384da4678f00de9093f51132214f561c3ce45e	src/window.rs
-7fbb68dc9524a82087ff3b1de1e4de776885b353	xtask/Cargo.toml
+2e93dcb46fa7ebf072a3a482c8a7175f879d352e	xtask/Cargo.toml
 aa2d59e1f6a1faf13fd7ff754f66acd74432116d	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
 6461824b3e8fba1cd959a5ef52cbda91d6740ea4	xtask/src/tasks/miri.rs
