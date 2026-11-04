@@ -473,6 +473,13 @@ block instead of an indented one, which rustdoc compiled as Rust; `tests/readme.
 fuzzing an hour each ran 14,114,280 (`text`), 44,366,313 (`view`), 17,550,546 (`field`) and 8,950,947 (`window`)
 inputs; coverage stayed at 86 of 90 branches.
 
+The release of v0.2.0 started Verify 41763432089: deny, vet, coverage and fuzz passed and `record` committed them
+(f941b35), but geiger failed with `cargo geiger wrote no whole table`. verify.yml sets `CARGO_TERM_COLOR: always`,
+and geiger colours its table as cargo's output is coloured, so the row of totals started with an escape code rather
+than a digit. Every earlier geiger success was a local run, where the output is a file and gets no colour. Fixed by
+running geiger with `CARGO_TERM_COLOR=never`; with `CARGO_TERM_COLOR=always`, a `--no-record` run failed the same
+way before the fix and succeeded after it, with no escape codes and the same table apart from the crate's version.
+
 ---
 
 *Timestamp: 2026-11-04*
