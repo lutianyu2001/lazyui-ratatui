@@ -820,8 +820,7 @@ fn ask(question: &str) -> bool {
 /// configuration it goes into.
 fn is_token(t: &str) -> bool {
     let body = t.trim_end_matches('=');
-    !body.is_empty()
-        && body.bytes().all(|b| b.is_ascii_alphanumeric() || b"-._~+/".contains(&b))
+    !body.is_empty() && body.bytes().all(|b| b.is_ascii_alphanumeric() || b"-._~+/".contains(&b))
 }
 
 /// `GITHUB_TOKEN`, if set, checked to be a token: it goes into a header.
