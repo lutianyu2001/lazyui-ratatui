@@ -443,11 +443,32 @@ read `up to date` for every badge, `passing` for deny.
 </details>
 
 ###### Note
-Neither workflow has run on GitHub: Actions is off on this repository, and nothing has been pushed. The first run
-will be the real test of the triggers, the corpus artifact and the push to `badges`.
+Neither workflow had run on GitHub when this was written. See 7.1 for the first runs.
+
+### 7.1 First Runs on GitHub
+Actions was turned on, `main` pushed at 24ed65f, and both workflows started by hand.
+
+| Run | Result |
+|---|---|
+| Advisories 41723342774 | `outdated` refused `GITHUB_TOKEN`: the token a job gets has characters besides letters, digits and `_`. Fixed in 38849c5 by checking it against RFC 6750's b64token grammar. |
+| Advisories 41724007566 | passed; the `badges` branch was created with all nine badges, which shields.io renders |
+| Verify 41723338689 | deny, vet, geiger and coverage stood and were skipped; fuzz ran 4 h 4 min with no corpus to start from, passed, and uploaded `fuzz-corpus` (1.6 MB); `record` committed nothing |
+
+`record` should have kept the newer local fuzz results anyway, but it never looked at the run's: with one artifact
+matching `audit-*`, download-artifact v8.0.2 put its files straight into `results/`, not `results/audit-fuzz/`, so
+the loop over `results/audit-*` found nothing. Had no newer result been committed, a run's results would have been
+dropped silently. Fixed by uploading the task's directory itself and downloading with `merge-multiple: true`, so each
+task's results land in `results/<task>/` whatever the count; the new loop was checked against that layout locally.
+It has not run on GitHub yet, as every task's result stands.
+
+The READMEs' examples became doctests (`#[cfg(doctest)]` with `include_str!`), with the license URL in a plaintext
+block instead of an indented one, which rustdoc compiled as Rust; `tests/readme.rs` and `READ_BY_TESTS` went. As
+`src/lib.rs` and `xtask/src/main.rs` changed, every task ran again from the clean tree at d8f67c9: all succeeded;
+fuzzing an hour each ran 14,114,280 (`text`), 44,366,313 (`view`), 17,550,546 (`field`) and 8,950,947 (`window`)
+inputs; coverage stayed at 86 of 90 branches.
 
 ---
 
-*Timestamp: 2026-11-03*
+*Timestamp: 2026-11-04*
 
 ---
