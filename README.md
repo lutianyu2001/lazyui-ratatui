@@ -5,6 +5,8 @@
 </p>
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Release](https://img.shields.io/github/release/lutianyu2001/lazyui-ratatui)](https://github.com/lutianyu2001/lazyui-ratatui/releases)
+[![Crates.io Version](https://img.shields.io/crates/v/lazyui-ratatui)](https://crates.io/crates/lazyui-ratatui)<br>
 [![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](SECURITY.md#ci)
 [![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](xtask/src/pins.rs)
 
