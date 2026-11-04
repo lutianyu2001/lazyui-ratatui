@@ -480,6 +480,12 @@ than a digit. Every earlier geiger success was a local run, where the output is 
 running geiger with `CARGO_TERM_COLOR=never`; with `CARGO_TERM_COLOR=always`, a `--no-record` run failed the same
 way before the fix and succeeded after it, with no escape codes and the same table apart from the crate's version.
 
+Aligned with the skill's reference again: geiger scans a copy of the work tree in `target/geiger-src/`, geiger and
+coverage empty their build directories when the workspace's packages are not those they were built for
+(`own_target`, which reads `cargo metadata` with `xtask/src/json.rs`, so that module now counts for geiger and
+coverage as well as kani), and Verify's last job starts Advisories in place of its `workflow_run` trigger. As
+`xtask/src/main.rs` and `xtask/src/tasks/mod.rs` changed, every result lapsed, and Verify ran all seven tasks.
+
 ---
 
 *Timestamp: 2026-11-04*
