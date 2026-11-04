@@ -1,6 +1,6 @@
 [package]
 name = "lazyui-ratatui"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 rust-version = "1.88"
 description = "Lazygit-style panels for Ratatui: rounded windows named with their focus key, corner notes, arrows between windows, scrolling one-line fields"

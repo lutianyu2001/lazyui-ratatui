@@ -114,7 +114,7 @@ cargo add lazyui-ratatui
 
 ```toml
 [dependencies]
-lazyui-ratatui = "0.1"
+lazyui-ratatui = "0.2"
 ```
 
 ## 用法
