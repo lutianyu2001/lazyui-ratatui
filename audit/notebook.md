@@ -225,8 +225,7 @@ test passing without drawing. A run that exercises nothing passes as quietly as 
 ###### Motivation
 - **Why**: Task 1 left two things open: text could leave its window on a terminal that measures it differently, and
   a field could hide the character under the cursor. This task fixes both and re-runs the audit.
-- **Source**: The maintainer's answers to the audit report, 2026-11-02: "3. 要修", "5. 得修", and "审计工具自身的小问题要修复并同步到
-  skill".
+- **Source**: The maintainer's answers to the audit report, 2026-11-02: "3. 要修", "5. 得修", and "审计工具自身的小问题要修复".
 
 #### Environment
 - tmux 3.4, glibc 2.39 (Unicode 15)
@@ -286,8 +285,6 @@ Passed: each fix undone by hand was caught by the matching target within 45 s.
 - `geiger` checks its table is complete, and `outdated` prints only what is printable from what it fetched.
 - Recording errors fail the run, where they were ignored before.
 - `verify.yml` is manual only, and its check job and the advisories jobs keep no credentials after checkout.
-
-All of it is in the skill's `reference/`; `xtask/` of this repository differs from it only where marked per project.
 
 ### 6.5 Results
 
@@ -381,8 +378,7 @@ Output:
   reads every advisory of an action and compares the ranges itself.
 
 #### Verification
-Passed: xtask's 26 tests and Clippy; the reference copy, with ureq and serde_json, has 24 tests passing and no Clippy
-warning.
+Passed: xtask's 26 tests and Clippy.
 
 <details>
 <summary>Commands and output</summary>
@@ -480,7 +476,7 @@ than a digit. Every earlier geiger success was a local run, where the output is 
 running geiger with `CARGO_TERM_COLOR=never`; with `CARGO_TERM_COLOR=always`, a `--no-record` run failed the same
 way before the fix and succeeded after it, with no escape codes and the same table apart from the crate's version.
 
-Aligned with the skill's reference again: geiger scans a copy of the work tree in `target/geiger-src/`, geiger and
+geiger now scans a copy of the work tree in `target/geiger-src/`, geiger and
 coverage empty their build directories when the workspace's packages are not those they were built for
 (`own_target`, which reads `cargo metadata` with `xtask/src/json.rs`, so that module now counts for geiger and
 coverage as well as kani), and Verify's last job starts Advisories in place of its `workflow_run` trigger. As
