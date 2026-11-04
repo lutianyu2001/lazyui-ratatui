@@ -10,8 +10,8 @@ description = "The security audit: cargo xtask <task> (see SECURITY.md)"
 # Only crates already among the project's normal dependencies, with the features these need,
 # so that the tasks add nothing to Cargo.lock, vendor/ or what cargo vet covers: each with
 # only the features the code needs, since defaults could bring in crates. Per project: the
-# versions in Cargo.lock; a crate not there is replaced as the skill says. This project has
-# no toml, serde_json or ureq: TOML files are hashed as they are, src/json.rs reads JSON and
+# versions in Cargo.lock; a crate not there is replaced by code of xtask's own or the
+# system's curl. This project has no toml, serde_json or ureq: TOML files are hashed as they are, src/json.rs reads JSON and
 # curl does the HTTP.
 [dependencies]
 proc-macro2 = { version = "1.0.107", default-features = false }
