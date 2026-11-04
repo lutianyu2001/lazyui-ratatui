@@ -130,7 +130,9 @@ run failed, the last one that succeeded is kept in `audit/<task>/last_succeeded/
 
 A result stands while it succeeded, the tools and arguments are the same and the files the task
 reads have not changed: Rust files compare by their tokens, so comments and layout do not count,
-and doc comments do; other files compare as they are. `deny` also lapses after a day, as the
+and doc comments do; other files compare as they are, except that the crate's own version in
+`Cargo.toml` and `Cargo.lock` does not count, so a release that changes only that leaves every
+result standing. `deny` also lapses after a day, as the
 advisory database changes daily. Runs that record need a clean working tree, as a result stands
 for a commit.
 
