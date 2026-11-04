@@ -10,5 +10,5 @@ e06ef9767e1e6a9ceb0ab5f714ce17a44f2d0600	src/text.rs
 2e93dcb46fa7ebf072a3a482c8a7175f879d352e	xtask/Cargo.toml
 aa2d59e1f6a1faf13fd7ff754f66acd74432116d	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
-13381e799705e795f9ba9432e97a3a75f5881739	xtask/src/tasks/geiger.rs
+b3541c3b939e14554a5ca07da32f03539c3960f5	xtask/src/tasks/geiger.rs
 171917aad0222375043b3fbf17d60ac79566b69f	xtask/src/tasks/mod.rs

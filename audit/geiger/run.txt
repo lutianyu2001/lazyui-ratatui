@@ -1,6 +1,6 @@
-result: failed: cargo geiger wrote no whole table: exit status: 1
-started: 2026-11-04 02:56 UTC
+result: succeeded
+started: 2026-11-04 09:21 UTC
 seconds: 10
-commit: acba905fbc4afe9f424106975fda0c6e3cb89d0a
+commit: 135d37bd8afce04cfa86690885ee7749154ab926
 args: 
 tools: cargo-geiger 0.14.0
