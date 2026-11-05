@@ -1,7 +1,6 @@
 $ cargo kani --lib --harness proofs::a_scrolled_cursor_keeps_off_the_markers --exact -Z unstable-options --harness-timeout 1800s
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -10,6 +9,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 Checking harness proofs::a_scrolled_cursor_keeps_off_the_markers...
 CBMC 6.11.0 (cbmc-6.11.0)
 CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
@@ -20,28 +20,28 @@ Removal of function pointers and virtual functions
 Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
-Runtime Symex: 0.00667814s
+Runtime Symex: 0.0133478s
 size of program expression: 710 steps
 slicing removed 286 assignments
 Generated 10 VCC(s), 10 remaining after simplification
-Runtime Postprocess Equation: 8.8101e-05s
+Runtime Postprocess Equation: 0.000268084s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00265694s
+Runtime Convert SSA: 0.00519466s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 5.228e-06s
+Runtime Post-process: 1.0139e-05s
 Solving with CaDiCaL 3.0.0
 4792 variables, 15533 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.000357552s
-Runtime decision procedure: 0.00310042s
+Runtime Solver: 0.00103707s
+Runtime decision procedure: 0.0065298s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 4793 variables, 15534 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 16.0682s
-Runtime decision procedure: 16.0683s
+Runtime Solver: 24.0359s
+Runtime decision procedure: 24.036s
 
 RESULTS:
 Check 1: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.1
@@ -74,7 +74,7 @@ SUMMARY:
  ** 0 of 5 failed
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 16.116344s
+Verification Time: 24.122814s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.

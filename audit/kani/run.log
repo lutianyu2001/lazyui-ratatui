@@ -2,8 +2,8 @@ $ cargo kani --lib list --format json
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
 [1m[92m   Compiling[0m proc-macro2 v1.0.107
-[1m[92m   Compiling[0m quote v1.0.47
 [1m[92m   Compiling[0m unicode-ident v1.0.27
+[1m[92m   Compiling[0m quote v1.0.47
 [1m[92m   Compiling[0m rustversion v1.0.23
 [1m[92m   Compiling[0m thiserror v2.0.21
 [1m[92m   Compiling[0m foldhash v0.2.0
@@ -17,7 +17,6 @@ warning: use of an unstable feature
 
 [1m[92m   Compiling[0m strsim v0.11.1
 [1m[92m   Compiling[0m equivalent v1.0.3
-[1m[92m   Compiling[0m allocator-api2 v0.2.21
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -26,6 +25,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
+[1m[92m   Compiling[0m allocator-api2 v0.2.21
 [1m[92m   Compiling[0m ident_case v1.0.1
 warning: use of an unstable feature
  --> <crate attribute>:1:12
@@ -35,9 +35,10 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m   Compiling[0m hashbrown v0.17.1
+[1m[92m   Compiling[0m heck v0.5.0
 [1m[92m   Compiling[0m syn v3.0.9
 [1m[92m   Compiling[0m syn v2.0.119
+[1m[92m   Compiling[0m hashbrown v0.17.1
 [1m[92m   Compiling[0m either v1.19.0
 warning: use of an unstable feature
  --> <crate attribute>:1:12
@@ -47,6 +48,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
+[1m[92m   Compiling[0m itertools v0.14.0
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -55,8 +57,6 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m   Compiling[0m heck v0.5.0
-[1m[92m   Compiling[0m itertools v0.14.0
 [1m[92m   Compiling[0m castaway v0.2.4
 warning: use of an unstable feature
  --> <crate attribute>:1:12
@@ -147,6 +147,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
+[1m[92m   Compiling[0m lru v0.18.5
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -155,7 +156,6 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m   Compiling[0m lru v0.18.5
 [1m[92m   Compiling[0m indoc v2.0.8
 warning: use of an unstable feature
  --> <crate attribute>:1:12
@@ -177,7 +177,6 @@ warning: use of an unstable feature
 [1m[92m   Compiling[0m strum_macros v0.28.0
 [1m[92m   Compiling[0m darling_core v0.24.1
 [1m[92m   Compiling[0m strum v0.28.0
-[1m[92m   Compiling[0m thiserror-impl v2.0.21
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -186,6 +185,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
+[1m[92m   Compiling[0m thiserror-impl v2.0.21
 warning: use of an unstable feature
    --> ~/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.21/src/lib.rs:271:50
     |
@@ -201,7 +201,6 @@ warning: use of an unstable feature
   |            ^^^^^^^^^^^^^
 
 [1m[92m   Compiling[0m kasuari v0.4.13
-[1m[92m   Compiling[0m darling_macro v0.24.1
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -210,6 +209,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
+[1m[92m   Compiling[0m darling_macro v0.24.1
 [1m[92m   Compiling[0m ratatui-core v0.1.2
 [1m[92m   Compiling[0m darling v0.24.1
 [1m[92m   Compiling[0m instability v0.3.14
@@ -255,7 +255,7 @@ warning: Found the following unsupported constructs:
          Verification will fail if one or more of these constructs is reachable.
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 5.94s
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 10.35s
 Wrote list results to ./kani-list.json
 $ cargo kani --lib --harness proofs::a_scrolled_cursor_keeps_off_the_markers --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
@@ -269,9 +269,9 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
-$ /proc/2617/exe __kani-harness proofs::a_scrolled_cursor_keeps_off_the_markers > kani-proofs.a_scrolled_cursor_keeps_off_the_markers.log
-proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 16 s, peak memory unknown
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
+$ /proc/3089/exe __kani-harness proofs::a_scrolled_cursor_keeps_off_the_markers > kani-proofs.a_scrolled_cursor_keeps_off_the_markers.log
+proofs::a_scrolled_cursor_keeps_off_the_markers: succeeded, 24 s, peak memory unknown
 $ cargo kani --lib --harness proofs::a_scrolled_field_uses_its_cells_exactly --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
@@ -284,9 +284,9 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
-$ /proc/2617/exe __kani-harness proofs::a_scrolled_field_uses_its_cells_exactly > kani-proofs.a_scrolled_field_uses_its_cells_exactly.log
-proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 1 s, peak memory unknown
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
+$ /proc/3089/exe __kani-harness proofs::a_scrolled_field_uses_its_cells_exactly > kani-proofs.a_scrolled_field_uses_its_cells_exactly.log
+proofs::a_scrolled_field_uses_its_cells_exactly: succeeded, 0 s, peak memory unknown
 $ cargo kani --lib --harness proofs::a_text_on_the_border_leaves_the_corners_alone --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
@@ -299,8 +299,8 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.11s
-$ /proc/2617/exe __kani-harness proofs::a_text_on_the_border_leaves_the_corners_alone > kani-proofs.a_text_on_the_border_leaves_the_corners_alone.log
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
+$ /proc/3089/exe __kani-harness proofs::a_text_on_the_border_leaves_the_corners_alone > kani-proofs.a_text_on_the_border_leaves_the_corners_alone.log
 proofs::a_text_on_the_border_leaves_the_corners_alone: succeeded, 0 s, peak memory unknown
 $ cargo kani --lib --harness proofs::an_arrow_is_drawn_when_nothing_stops_it --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
@@ -321,9 +321,9 @@ warning: Found the following unsupported constructs:
          Verification will fail if one or more of these constructs is reachable.
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
-$ /proc/2617/exe __kani-harness proofs::an_arrow_is_drawn_when_nothing_stops_it > kani-proofs.an_arrow_is_drawn_when_nothing_stops_it.log
-proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 0 s, peak memory unknown
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.20s
+$ /proc/3089/exe __kani-harness proofs::an_arrow_is_drawn_when_nothing_stops_it > kani-proofs.an_arrow_is_drawn_when_nothing_stops_it.log
+proofs::an_arrow_is_drawn_when_nothing_stops_it: succeeded, 1 s, peak memory unknown
 $ cargo kani --lib --harness proofs::an_arrow_joins_the_borders_of_both_windows --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
@@ -343,8 +343,8 @@ warning: Found the following unsupported constructs:
          Verification will fail if one or more of these constructs is reachable.
          See https://model-checking.github.io/kani/rust-feature-support.html for more details.
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
-$ /proc/2617/exe __kani-harness proofs::an_arrow_joins_the_borders_of_both_windows > kani-proofs.an_arrow_joins_the_borders_of_both_windows.log
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
+$ /proc/3089/exe __kani-harness proofs::an_arrow_joins_the_borders_of_both_windows > kani-proofs.an_arrow_joins_the_borders_of_both_windows.log
 proofs::an_arrow_joins_the_borders_of_both_windows: succeeded, 1 s, peak memory unknown
 $ cargo kani --lib --harness proofs::an_arrow_stays_on_the_screen --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
@@ -358,8 +358,8 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
-$ /proc/2617/exe __kani-harness proofs::an_arrow_stays_on_the_screen > kani-proofs.an_arrow_stays_on_the_screen.log
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
+$ /proc/3089/exe __kani-harness proofs::an_arrow_stays_on_the_screen > kani-proofs.an_arrow_stays_on_the_screen.log
 proofs::an_arrow_stays_on_the_screen: succeeded, 0 s, peak memory unknown
 $ cargo kani --lib --harness proofs::the_cursor_goes_on_the_field --exact -Z unstable-options --harness-timeout 1800s --only-codegen
 Kani Rust Verifier 0.68.0 (cargo plugin)
@@ -373,7 +373,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
-$ /proc/2617/exe __kani-harness proofs::the_cursor_goes_on_the_field > kani-proofs.the_cursor_goes_on_the_field.log
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
+$ /proc/3089/exe __kani-harness proofs::the_cursor_goes_on_the_field > kani-proofs.the_cursor_goes_on_the_field.log
 proofs::the_cursor_goes_on_the_field: succeeded, 0 s, peak memory unknown
 xtask: kani: succeeded

@@ -1,7 +1,6 @@
 $ cargo kani --lib --harness proofs::a_text_on_the_border_leaves_the_corners_alone --exact -Z unstable-options --harness-timeout 1800s
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -10,6 +9,7 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 Checking harness proofs::a_text_on_the_border_leaves_the_corners_alone...
 CBMC 6.11.0 (cbmc-6.11.0)
 CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
@@ -27,34 +27,34 @@ aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x
 aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 2869 column 15 function <std::option::Option<u16> as std::ops::Try>::branch thread 0
 aborting path on assume(false) at file src/lib.rs line 0 column 0 function window::corner_place thread 0
 aborting path on assume(false) at file src/proofs.rs line 25 column 1 function proofs::a_text_on_the_border_leaves_the_corners_alone thread 0
-Runtime Symex: 0.0236276s
+Runtime Symex: 0.0460872s
 size of program expression: 2240 steps
 slicing removed 1328 assignments
 Generated 90 VCC(s), 24 remaining after simplification
-Runtime Postprocess Equation: 0.000352395s
+Runtime Postprocess Equation: 0.000878588s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00325627s
+Runtime Convert SSA: 0.00665714s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 6.951e-06s
+Runtime Post-process: 8.336e-06s
 Solving with CaDiCaL 3.0.0
 5162 variables, 11552 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.000223463s
-Runtime decision procedure: 0.00359032s
+Runtime Solver: 0.000376115s
+Runtime decision procedure: 0.00725925s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 5163 variables, 11553 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.00302464s
-Runtime decision procedure: 0.00306925s
+Runtime Solver: 0.00495885s
+Runtime decision procedure: 0.00506746s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 5164 variables, 11554 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.156086s
-Runtime decision procedure: 0.156135s
+Runtime Solver: 0.22171s
+Runtime decision procedure: 0.22183s
 
 RESULTS:
 Check 1: core::num::<impl u16>::checked_add.arithmetic_overflow.1
@@ -292,7 +292,7 @@ SUMMARY:
  ** 0 of 46 failed
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.26627204s
+Verification Time: 0.43070227s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.

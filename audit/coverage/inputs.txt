@@ -10,8 +10,8 @@ e06ef9767e1e6a9ceb0ab5f714ce17a44f2d0600	src/text.rs
 d3abbeb993f597ef6571ad6d9d057a2674b49642	tests/no_panic.proptest-regressions
 a2724486d43032b91d7f4f8796f9eeca72364d30	tests/no_panic.rs
 d3d6e453c0de06a3910ca18df4433d43373d5135	xtask/Cargo.toml
-2e086b9d3ca404d2ec078b3b1d51feddf998d526	xtask/src/json.rs
-c4d4c83169ad83e1f35bdfecf5cdaa9b0b7f8804	xtask/src/main.rs
+f5e7771338b995fd205bb65d4431b97548b3a597	xtask/src/json.rs
+58477b7d7a00e28a5110a4ff4e43a59272e261d8	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
 872846b6df945a817bbbe54f91857ad0fc233b6b	xtask/src/tasks/coverage.rs
 c329af61b0d22bfc28e08fd733e1e82a48e64a37	xtask/src/tasks/mod.rs
