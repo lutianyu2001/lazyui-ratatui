@@ -107,8 +107,8 @@ That the crate's calls on a `Buffer` stay inside it is covered by fuzzing, not b
 
 ### Running the Audit
 
-The tools and the nightly toolchain are pinned in `xtask/src/pins.rs`, and nothing here is part of
-`cargo build` or `cargo test`.
+The tools and the nightly toolchain are pinned in `xtask/src/pins.rs`, the stable toolchain in
+`rust-toolchain.toml`, and nothing here is part of `cargo build` or `cargo test`.
 
 ```bash
 cargo xtask setup                 # install the pinned tools
