@@ -123,8 +123,8 @@ What this says, and what it doesn't:
 The results of each check are committed with the code in `audit/<task>/`, and SECURITY.md says how
 to run them. The badges above show whether each result still stands for the code on `main`
 (green), no longer does (yellow) or failed (red); the audit badge under the title sums them up, and
-the pins badge beside it shows whether a pinned tool or action is due for an update. GitHub Actions runs the checks whose length is known, at each release; Kani and Miri are run
-by hand, as one change can make them take hours. An audit out of date holds no release back.
+the pins badge beside it shows whether a pinned tool or action is due for an update. GitHub Actions runs the checks at each release; Kani and Miri are among them while they are
+short, as one change can make them take hours. An audit out of date holds no release back.
 
 ## Prerequisites
 

@@ -138,16 +138,19 @@ for a commit.
 
 ### CI
 
-The maintainer's decision is to run on GitHub Actions every task whose length is known before it
-starts, to make full use of it, and to leave the others to a person:
+The maintainer's decision is to run on GitHub Actions every task that is short or whose length is
+known before it starts, to make full use of it, and to leave the others to a person:
 
 - `.github/workflows/verify.yml` runs by itself when a release is published on GitHub: `deny`,
-  `vet`, `geiger`, `coverage`, and `fuzz` for four hours a target, all four at once on one
-  runner, which stops on time whatever it finds.
-- `kani` and `miri` never start by themselves: one new proof or test can take them from seconds
-  to hours (one test took Miri from a minute to three hours), and a run left to time out at each
-  release would waste the runners. They are tried on a workstation first, with `--no-record`, and
-  then run there, or on GitHub by starting the workflow by hand with the tasks `kani miri`.
+  `vet`, `geiger`, `coverage`, `kani`, `miri`, and `fuzz` for four hours a target, all four at
+  once on one runner, which stops on time whatever it finds.
+- `kani` and `miri` are there because they are short: on GitHub they took a minute and three
+  minutes (2026-11-04), and their jobs stop after 30. One new proof or test can take them from
+  seconds to hours (one test took Miri from a minute to three hours), and a run left to time out
+  at each release would waste the runners. So after a change to the proofs or to what Miri tests,
+  they are timed first, on a workstation with `--no-record` or by starting the workflow by hand
+  with the tasks `kani miri`; if they have grown long, they leave what a release runs, and run on
+  a workstation or by hand.
 - Nothing runs on a push: the audit takes hours, and no push needs it.
 - A release does not wait for the audit, and a result out of date holds no release back. The
   badges in the README show which results stand.

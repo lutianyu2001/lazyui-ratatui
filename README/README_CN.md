@@ -98,8 +98,8 @@
 - `FieldView::shown` 和 `take_width` 原样返回文本，包括控制字符；形近字符也按原样绘制。留给程序处理的完整清单见[SECURITY.md](../SECURITY.md#what-the-crate-leaves-to-the-program)。
 
 每项审计的结果和代码一起提交在 `audit/<task>/` 里，运行方法见 SECURITY.md。本节开头的 badge 显示每项结果对 `main` 上
-现在的代码是否仍然有效（绿色）、已经过期（黄色）还是失败（红色）；标题下的 audit badge 是它们的汇总，旁边的 pins badge 显示固定的工具和 action 是否该升级了。耗时可预期的
-检查在每次发版时由 GitHub Actions 自动运行；Kani 和 Miri 手动运行，因为一处改动就可能让它们跑上几小时。审计过期不影响发版。
+现在的代码是否仍然有效（绿色）、已经过期（黄色）还是失败（红色）；标题下的 audit badge 是它们的汇总，旁边的 pins badge 显示固定的工具和 action 是否该升级了。每次发版时
+GitHub Actions 自动运行这些检查；Kani 和 Miri 只在耗时很短时一起运行，因为一处改动就可能让它们跑上几小时。审计过期不影响发版。
 
 ## 前置要求
 
