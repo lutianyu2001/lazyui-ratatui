@@ -62,6 +62,15 @@ These run on the machine that builds a program, not in it.
 | Procedural macros | darling_macro, indoc, instability, rustversion, strum_macros, thiserror-impl |
 | Build scripts | proc-macro2, quote, rustversion, thiserror |
 
+## Updating Dependencies
+
+A new version of a dependency is taken only after it has been out for 7 days, and only when the
+maintainer decides to: `cargo update -p <crate>` within what `Cargo.toml` allows, `cargo upgrade`
+past it. Before it is taken, what changed is read for new build scripts and procedural macros, new
+`unsafe` code, access to the network or the file system, obfuscated or base64 strings, and new
+crates it brings in. It is then recorded with `cargo vet certify`, and `cargo xtask deny` and
+`cargo xtask vet` run again.
+
 ## What Is Outside These Checks
 
 `fuzz/` is a workspace of its own, with its own `Cargo.lock` of 52 packages. It is not in a user's
