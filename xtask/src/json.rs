@@ -1,4 +1,5 @@
-//! A strict JSON reader, for `cargo kani list` and the replies of crates.io, OSV and GitHub.
+//! A strict JSON reader, for `cargo kani list`, `cargo metadata` and the replies of
+//! crates.io, OSV and GitHub.
 //! Per project: there is no JSON crate among the dependencies, and the tasks add none (see
 //! Cargo.toml). This reads text that came over the network, so whatever RFC 8259 does not
 //! allow is an error, and so is a key given twice; nesting has a limit, so that a reply of
