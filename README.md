@@ -133,16 +133,37 @@ short, as one change can make them take hours. An audit out of date holds no rel
 
 ## Installation
 
-```bash
-cargo add lazyui-ratatui
-```
+### From crates.io (Recommended)
 
-Or add it to `Cargo.toml` by hand:
+1. Add the crate to your project:
 
-```toml
-[dependencies]
-lazyui-ratatui = "0.2"
-```
+   ```bash
+   cargo add lazyui-ratatui
+   ```
+
+   Or add it to `Cargo.toml` by hand:
+
+   ```toml
+   [dependencies]
+   lazyui-ratatui = "0.2"
+   ```
+
+### Building from Source
+
+1. Clone the repository and build it:
+
+   ```bash
+   git clone https://github.com/lutianyu2001/lazyui-ratatui.git
+   cd lazyui-ratatui
+   cargo build --locked
+   ```
+
+2. Depend on the local copy in your project's `Cargo.toml`:
+
+   ```toml
+   [dependencies]
+   lazyui-ratatui = { path = "<path/to/lazyui-ratatui>" }
+   ```
 
 ## Usage
 

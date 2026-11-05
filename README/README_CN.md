@@ -108,16 +108,37 @@ GitHub Actions 自动运行这些检查；Kani 和 Miri 只在耗时很短时一
 
 ## 安装
 
-```bash
-cargo add lazyui-ratatui
-```
+### 从 crates.io 安装（推荐）
 
-或手动加到 `Cargo.toml`：
+1. 把 crate 加进项目：
 
-```toml
-[dependencies]
-lazyui-ratatui = "0.2"
-```
+   ```bash
+   cargo add lazyui-ratatui
+   ```
+
+   或手动加到 `Cargo.toml`：
+
+   ```toml
+   [dependencies]
+   lazyui-ratatui = "0.2"
+   ```
+
+### 从源码构建
+
+1. 克隆仓库并构建：
+
+   ```bash
+   git clone https://github.com/lutianyu2001/lazyui-ratatui.git
+   cd lazyui-ratatui
+   cargo build --locked
+   ```
+
+2. 在项目的 `Cargo.toml` 里依赖本地的副本：
+
+   ```toml
+   [dependencies]
+   lazyui-ratatui = { path = "<path/to/lazyui-ratatui>" }
+   ```
 
 ## 用法
 
