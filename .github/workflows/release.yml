@@ -1,0 +1,112 @@
+# The release workflow of a Rust crate without Python bindings: copy it to
+# .github/workflows/release.yml, which holds all of a project's releasing. Only
+# what is marked Per project differs between projects. Not run in a project yet: on its first use,
+# watch the run.
+#
+# Pushing a version tag checks the crate with cargo publish --dry-run, publishes it to crates.io by
+# trusted publishing (the environment crates-io), and then creates the GitHub release. crates.io
+# takes only versions after the first this way: the first goes out by hand. By hand, the same
+# commands run in the same order with the token in cargo's credentials.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+env:
+  # Per project: the crate published to crates.io.
+  CRATE: lazyui-ratatui
+  # Per project: true where .cargo/config.toml replaces crates.io with vendor/. cargo publish then
+  # needs --registry crates-io, and the network that net.offline turns off (cargo 1.99.1).
+  VENDOR: false
+
+jobs:
+  # Checks the package the way crates.io will build it, with neither a secret nor a token that can
+  # write: the dry run builds it, running the dependencies' build scripts and procedural macros.
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check that the tag matches the version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(cargo metadata --no-deps --format-version 1 \
+            | python3 -c 'import json, os, sys; print(next(p["version"] for p in json.load(sys.stdin)["packages"] if p["name"] == os.environ["CRATE"]))')
+          if [ "v$version" != "$TAG" ]; then
+            echo "tag $TAG doesn't match version $version" >&2
+            exit 1
+          fi
+
+      # Per project: the command that fills vendor/, as the project's other jobs run it.
+      - name: Download the dependencies into vendor/
+        if: env.VENDOR == 'true'
+        run: cargo --config net.offline=false vendor --locked --versioned-dirs vendor
+
+      - name: Check the crate
+        run: |
+          if [ "$VENDOR" = true ]; then
+            cargo --config net.offline=false publish --dry-run --locked --registry crates-io -p "$CRATE"
+          else
+            cargo publish --dry-run --locked -p "$CRATE"
+          fi
+
+  crates-io:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: crates-io
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Per project: as in the build job. Packaging reads vendor/ even without verifying (cargo
+      # 1.99.1, on rse); downloading runs no code.
+      - name: Download the dependencies into vendor/
+        if: env.VENDOR == 'true'
+        run: cargo --config net.offline=false vendor --locked --versioned-dirs vendor
+
+      - uses: rust-lang/crates-io-auth-action@3268eb413133e2960fa4ae0e963ca76380c54cd9 # v1.0.6
+        id: auth
+
+      # The build job's dry run built this package from the same tag and Cargo.lock, so this one
+      # only packages and uploads, and runs no build script with the token at hand.
+      - name: Publish the crate
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        run: |
+          if [ "$VENDOR" = true ]; then
+            cargo --config net.offline=false publish --locked --no-verify --registry crates-io -p "$CRATE"
+          else
+            cargo publish --locked --no-verify -p "$CRATE"
+          fi
+
+  github-release:
+    needs: crates-io
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      # Per project: only to start verify.yml below.
+      actions: write
+    steps:
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" -R "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" --generate-notes
+          # Per project: with the security audit's verify.yml, which a release made with this
+          # token would not start on its own.
+          gh workflow run verify.yml -R "$GITHUB_REPOSITORY" --ref "$TAG"
