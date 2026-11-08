@@ -22,9 +22,8 @@ use std::fmt::Write as _;
 use std::io::{BufRead as _, IsTerminal as _, Read as _, Write as _};
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode, Stdio};
-use std::thread;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
-use std::{fs, io};
+use std::{fs, io, thread};
 
 use crate::json::{self, Value};
 use crate::pins::{NIGHTLY, TOOLS};
