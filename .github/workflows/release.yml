@@ -1,12 +1,9 @@
-# The release workflow of a Rust crate without Python bindings: copy it to
-# .github/workflows/release.yml, which holds all of a project's releasing. Only
-# what is marked Per project differs between projects. Not run in a project yet: on its first use,
-# watch the run.
-#
-# Pushing a version tag checks the crate with cargo publish --dry-run, publishes it to crates.io by
-# trusted publishing (the environment crates-io), and then creates the GitHub release. crates.io
-# takes only versions after the first this way: the first goes out by hand. By hand, the same
-# commands run in the same order with the token in cargo's credentials.
+# The release of a Rust crate: pushing a version tag runs ci.yml, then checks the crate with cargo
+# publish --dry-run, publishes it to crates.io by trusted publishing (the environment crates-io),
+# and then creates the GitHub release. crates.io takes only versions after the first this way: the
+# first goes out by hand. This file holds all of the project's releasing; what is marked Per project
+# is this project's own. By hand, the same commands run in the same order with the token in cargo's
+# credentials.
 name: Release
 
 on:
@@ -25,9 +22,15 @@ env:
   VENDOR: false
 
 jobs:
+  # The project's ci.yml, its checks and tests: a release goes out only when they pass.
+  # ./ rather than $/, which actionlint 1.7.12 does not know yet.
+  ci: # zizmor: ignore[self-repository]
+    uses: ./.github/workflows/ci.yml
+
   # Checks the package the way crates.io will build it, with neither a secret nor a token that can
   # write: the dry run builds it, running the dependencies' build scripts and procedural macros.
   build:
+    needs: ci
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
