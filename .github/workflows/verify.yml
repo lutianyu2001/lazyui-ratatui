@@ -4,11 +4,11 @@ name: Verify
 # maintainer's decision is to run on GitHub's runners every task that is short or whose
 # length is known before it starts, and so make full use of GitHub Actions; and only those:
 #
-# - At each release published on GitHub, the tasks of ON_RELEASE run by themselves: deny,
-#   vet, geiger, coverage and fuzz, and Kani and Miri where their runs are known to be
-#   short. Fuzzing runs FUZZ_SECONDS a target, the targets at once on a runner's four cores
-#   (up to four of them), stopping on time whatever it finds: four hours, well within the
-#   six a job may take.
+# - At each release published on GitHub, the tasks of ON_RELEASE run by themselves:
+#   review, deny, vet, geiger, coverage and fuzz, and Kani and Miri where their runs are
+#   known to be short. Fuzzing runs FUZZ_SECONDS a target, the targets at once on a
+#   runner's four cores (up to four of them), stopping on time whatever it finds: four
+#   hours, well within the six a job may take.
 # - How long Kani and Miri take depends on the proofs and tests, and one change can take
 #   them from seconds to hours (a single test took Miri from a minute to three hours). A run
 #   left to time out, release after release, would waste the runners and could draw
@@ -33,10 +33,10 @@ on:
   workflow_dispatch:
     inputs:
       tasks:
-        description: "Tasks to run, among: deny vet geiger miri coverage kani fuzz"
+        description: "Tasks to run, among: review deny vet geiger miri coverage kani fuzz"
         type: string
         # Per project: what a release runs, as ON_RELEASE below.
-        default: "deny vet geiger miri coverage kani fuzz"
+        default: "review deny vet geiger miri coverage kani fuzz"
 
 concurrency: { group: "verify-${{ github.ref }}", cancel-in-progress: true }
 
@@ -65,8 +65,8 @@ jobs:
           # Per project: TASKS in xtask/src/tasks/mod.rs, and those of them a release runs:
           # those whose length is known before they start, and kani and miri where their
           # runs are known to be short.
-          KNOWN: "deny vet geiger miri coverage kani fuzz"
-          ON_RELEASE: "deny vet geiger miri coverage kani fuzz"
+          KNOWN: "review deny vet geiger miri coverage kani fuzz"
+          ON_RELEASE: "review deny vet geiger miri coverage kani fuzz"
           EVENT: ${{ github.event_name }}
           ASKED: ${{ github.event.inputs.tasks }}
         run: |
@@ -124,6 +124,8 @@ jobs:
           else
             echo "no corpus to go on from"
           fi
+      # Per project: with vendor/ (an application), restore it first, the fuzz workspace's
+      # dependencies too; xtask itself builds from it. A library has no such steps.
       - id: args
         run: |
           if [ "$TASK" = fuzz ]; then echo "args=$FUZZ_SECONDS" >> "$GITHUB_OUTPUT"; fi
@@ -163,6 +165,7 @@ jobs:
       # download-artifact puts a lone artifact's files straight into its path.
       - if: ${{ !cancelled() && steps.task.outcome != 'skipped' }}
         run: |
+          rm -rf target/results
           mkdir -p target/results
           if [ -d "audit/$TASK" ]; then cp -r "audit/$TASK" target/results/; fi
       - if: ${{ !cancelled() && steps.task.outcome != 'skipped' }}
@@ -208,6 +211,10 @@ jobs:
           merge-multiple: true
       - name: Commit the results to audit/
         env:
+          # Per project: the same tasks as plan's KNOWN. The jobs that wrote the results ran
+          # the project's code, so a directory of any other name (audit/reviews/ above all,
+          # which review trusts) is refused.
+          KNOWN: "review deny vet geiger miri coverage kani fuzz"
           BRANCH: ${{ github.event.repository.default_branch }}
           # The release's tag, or the branch the run was started on.
           NAME: ${{ github.ref_name }}
@@ -227,6 +234,10 @@ jobs:
             mkdir -p audit
             for dir in results/*/; do
               task=$(basename "$dir")
+              case " $KNOWN " in
+                *" $task "*) ;;
+                *) echo "results/$task: no task of that name" >&2; exit 1 ;;
+              esac
               if printf '%s\n' "${keep[@]}" | grep -qx "$task"; then
                 echo "$task: results committed since ${sha::7} stand"
                 continue

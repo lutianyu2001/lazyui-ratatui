@@ -66,6 +66,7 @@ itself, is not covered unless it goes through `text::sanitize`.
 
 | Check | What it covers | Toolchain |
 |---|---|---|
+| `review` | every Rust file with `unsafe` and every C, C++ or assembly file has a review under `audit/reviews/` whose sha256 matches the file; with no `unsafe` code here, none is needed | stable |
 | `deny` | sources, licenses, duplicate versions and known vulnerabilities of the dependencies; the fuzz workspace's vulnerabilities and sources | stable |
 | `vet` | every dependency has an audit on record, or an exemption | stable |
 | `geiger` | how much `unsafe` code the dependencies have | stable |
@@ -114,7 +115,7 @@ The tools and the nightly toolchain are pinned in `xtask/src/pins.rs`, the stabl
 cargo xtask setup                 # install the pinned tools
 cargo xtask status                # each task's latest result, and whether it still stands
 cargo xtask all --if-needed       # run what no longer stands
-cargo xtask <task>                # deny, vet, geiger, miri, coverage, kani [proof...], fuzz [seconds]
+cargo xtask <task>                # review, deny, vet, geiger, miri, coverage, kani [proof...], fuzz [seconds]
 cargo xtask outdated              # whether a pinned version is due for an update
 ```
 
@@ -141,9 +142,9 @@ for a commit.
 The maintainer's decision is to run on GitHub Actions every task that is short or whose length is
 known before it starts, to make full use of it, and to leave the others to a person:
 
-- `.github/workflows/verify.yml` runs by itself when a release is published on GitHub: `deny`,
-  `vet`, `geiger`, `coverage`, `kani`, `miri`, and `fuzz` for four hours a target, all four at
-  once on one runner, which stops on time whatever it finds.
+- `.github/workflows/verify.yml` runs by itself when a release is published on GitHub:
+  `review`, `deny`, `vet`, `geiger`, `coverage`, `kani`, `miri`, and `fuzz` for four hours a
+  target, all four at once on one runner, which stops on time whatever it finds.
 - `kani` and `miri` are there because they are short: on GitHub they took a minute and three
   minutes (2026-11-04), and their jobs stop after 30. One new proof or test can take them from
   seconds to hours (one test took Miri from a minute to three hours), and a run left to time out

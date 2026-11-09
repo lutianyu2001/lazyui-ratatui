@@ -55,6 +55,7 @@
 
 ## 安全审计
 
+[![review](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Freview.json)](../audit/review)
 [![deny](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fdeny.json)](https://github.com/lutianyu2001/lazyui-ratatui/actions/workflows/advisories.yml)
 [![vet](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fvet.json)](../audit/vet)
 [![geiger](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fgeiger.json)](../audit/geiger)
@@ -70,7 +71,7 @@
 | 审计 | 做了什么 | 结果 |
 |---|---|---|
 | 威胁模型 | 来自他人的文本：终端转义序列、文字重排、超出窗口、超长文本；超出范围的尺寸和光标 | 发现并修复 7 个问题；遗留问题见下 |
-| `unsafe` 代码 | 本 crate 禁止使用 | 没有 |
+| `unsafe` 代码 | 本 crate 禁止使用；另有一项检查，确认每个含 `unsafe` 的文件和 C、C++、汇编文件都有对得上的评审 | 没有，所以这项检查无需评审即通过 |
 | 依赖 | 运行和构建时的 40 个 crate：用 cargo-deny 查来源、许可证和已知漏洞，用 cargo-vet 管审计记录 | 没有安全公告；全部 82 个里 27 个有他人的审计，55 个由维护者豁免 |
 | Miri | 在全部四个模块的 27 个单元测试里跑了 26 个，查未定义行为；剩下那个测超长文本，要跑几小时，跑通过一次 | 未发现 |
 | 模糊测试 | 4 个 target，本机每个一小时，每次发版时在 GitHub Actions 上每个四小时：文本宽度、输入框布局、画进 buffer 的输入框、画进 buffer 的窗口和箭头，并检查各自应画出的内容 | 每个一小时共约 7800 万次运行（2026-11-02），没有失败 |

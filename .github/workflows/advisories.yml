@@ -28,6 +28,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # Per project: with vendor/ (an application), restore it first; a library has no
+      # such steps.
       - run: cargo xtask setup deny
       - id: deny
         run: cargo xtask deny --no-record
@@ -70,7 +72,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           # Per project: TASKS in xtask/src/tasks/mod.rs, and audit and pins; the README
           # shows each of them.
-          NAMES: "audit deny vet geiger miri coverage kani fuzz pins"
+          NAMES: "audit review deny vet geiger miri coverage kani fuzz pins"
         run: |
           set -euo pipefail
           set -f
@@ -116,6 +118,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # Per project: with vendor/ (an application), restore it first; a library has no
+      # such steps.
       - env:
           GITHUB_TOKEN: ${{ github.token }}
         run: cargo xtask outdated

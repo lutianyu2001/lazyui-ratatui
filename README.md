@@ -66,6 +66,7 @@ Note: "Lazy" in the name refers to lazygit, not lazy evaluation.
 
 ## Security Audit
 
+[![review](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Freview.json)](audit/review)
 [![deny](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fdeny.json)](https://github.com/lutianyu2001/lazyui-ratatui/actions/workflows/advisories.yml)
 [![vet](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fvet.json)](audit/vet)
 [![geiger](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fgeiger.json)](audit/geiger)
@@ -84,7 +85,7 @@ sizes a terminal should never have.
 | Audit | What was done | Result |
 |---|---|---|
 | Threat model | text from others: terminal escapes, text reordering, overrunning a window, very long text; sizes and cursors out of range | 7 problems found and fixed; what is left is below |
-| `unsafe` code | forbidden in this crate | none |
+| `unsafe` code | forbidden in this crate; a check that every file with `unsafe`, C, C++ or assembly has an up-to-date review | none, so the check passes with nothing to review |
 | Dependencies | 40 crates at run and build time: sources, licenses and known vulnerabilities with cargo-deny, audit records with cargo-vet | no advisory; 27 of all 82 audited by others, 55 exempted by the maintainer |
 | Miri | undefined behavior in 26 of the 27 unit tests of all four modules; the other, of very long text, takes hours and passed once | none found |
 | Fuzzing | 4 targets, an hour each on a workstation and four hours each on GitHub Actions at each release: text widths, a field's layout, a field drawn into a buffer, windows and arrows drawn into a buffer, with what each must draw checked | 78 million runs in an hour each (2026-11-02), no failure |
