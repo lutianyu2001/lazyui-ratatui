@@ -11,7 +11,7 @@
 [![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](../SECURITY.md#ci)
 [![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](../xtask/src/pins.rs)
 
-一个小型组件库，为 [Ratatui](https://ratatui.rs) 提供 lazygit 风格的面板：标有焦点键和名称的圆角窗口、角落注释、窗口之间的箭头，以及可滚动的单行文本框。
+一个基于 lazygit 外观的 [Ratatui](https://ratatui.rs) 小型组件库：标有焦点键和名称的圆角窗口、角落注释、窗口之间的箭头、可滚动的单行文本框、下拉列表、带建议列表的输入框，以及消息弹窗。它不是 lazygit 界面的一比一复刻：lazygit 有的部分照它的样子做，程序还需要的部分则是[自己的特性](#lazygit-之外)。
 
 ## 目录
 
@@ -30,10 +30,10 @@
 
 ## 概述
 
-这些组件补上了 lazygit 风格界面里 Ratatui 自带的 `Block` 和 `Paragraph` 留给程序自己处理的部分：与焦点键对应的窗口名称、底部边框上的注释、窗口之间的箭头，以及随光标滚动的文本框。它们和其他 Ratatui 组件一样绘制到 `Buffer` 上，只依赖 Ratatui 和 unicode-segmentation。
+这些组件补上了 lazygit 外观的界面里 Ratatui 自带的 `Block` 和 `Paragraph` 留给程序自己处理的部分：与焦点键对应的窗口名称、底部边框上的注释、窗口之间的箭头、随光标滚动的文本框、在控件处展开的选项列表、下方带建议列表的输入框，以及屏幕中央的消息弹窗。它们和其他 Ratatui 组件一样绘制到 `Buffer` 上，只依赖 Ratatui 和 unicode-segmentation。
 
 ```text
-╭────────[1] Files─╮   Window::new().name("1", "Files").note("[2 marked]")
+╭─[1] Files────────╮   Window::new().name("1", "Files").note("[2 marked]")
 │                  │
 ╰───────[2 marked]─╯
 
@@ -41,17 +41,60 @@
 ╭─────▼────╮
 
 <56789a>               Field::new(text, cursor).render(area, buf)
+
+◂ English  ▸  en        Choice::new("English").note("en").width(8)
+
+╭─────────────────────╮   Dropdown::new(&items).chosen(1).cursor(2)
+│ ( ) System    auto  │
+│ (*) English   en    │
+│ ( ) 简体中文  zh-CN │
+╰─────────────────────╯
+
+╭  ▾  English   en    ╮   Dropdown::new(&items).chosen(1).cursor(1)
+│ ( ) System    auto  │       .head("English", "en", row)
+│ (*) English   en    │
+│ ( ) 简体中文  zh-CN │
+╰─────────────────────╯
+
+╭─New branch name────────────────────╮   Prompt::new("New branch name", "al", 2)
+│al                                  │       .suggestions("Suggestions", &branches)
+╰────────────────────────────────────╯       .selected(1).focus_suggestions(true)
+╭─Suggestions────────────────────────╮
+│master                              │
+│alpha                               │
+│beta                                │
+╰─────────────────────────────2 of 6─╯
+
+╭─Confirm───────────╮   Message::new("Delete this branch?\nIt is not merged.")
+│Delete this branch?│       .title("Confirm")
+│It is not merged.  │
+╰───────────────────╯
 ```
 
 注：名字里的 "Lazy" 指 lazygit，与惰性求值无关。
 
 ## 功能特性
 
-- 圆角窗口：右上角显示焦点键和名称（`[1] Files`），右下角可加一条注释，两者都使用边框的样式
+- 圆角窗口：左上角显示焦点键和名称（`[1] Files`），与 lazygit 一致，也可以放到右上角（`name_side(Side::Right)`）；右下角可加一条注释，都使用边框的样式
 - 箭头：把一个窗口连到它下方的窗口（`┬`、`│`、`▼`）
 - 单行文本框：文本过长时滚动以保持光标可见，并用高亮的 `<` / `>` 标出被截断的一侧，与 readline 的 horizontal-scroll-mode 相同
+- 用两侧箭头切换的值（`◂ English ▸  en`）：值在一段宽度的正中，上下排列的控件共用这段宽度，箭头就排成两列，值变化时箭头不会移动；后面可带一条暗色的注释
+- 下拉列表：在控件下方展开，下方放不下时改到上方；生效的选项前是 `(*)`，光标所在行高亮，每个选项后可带一条暗色的注释，选项多于行数时滚动并在角落显示 `4/9`。带表头时，列表像组合框一样与控件连成一体：它在控件那一行上的边框显示当前值，前面是 `▾`（`╭  ▾  English  en ╮`）
+- 带建议列表的输入框：位于屏幕中央，位置和大小与 lazygit 相同；上面的窗口里是一行可编辑的文本，下面是左右边缘与它对齐的建议列表，列表随光标滚动并在角落显示 `2 of 15`；拥有焦点的那个窗口用焦点样式画边框
+- 消息弹窗：位于屏幕中央，大小随文本而定；文本在空格处换行，屏幕行数不够时可以滚动
 - 按字素簇计算宽度，与 Ratatui 绘制文本的方式一致，中日韩文字和单个 emoji 能够对齐；终端算法不同的文本在绘制时会被替换，所以组合 emoji 和国旗会显示得朴素一些（见 [SECURITY.md](../SECURITY.md)）
 - 任意尺寸下都安全：区域为空或超出 buffer 时会被裁剪，不会 panic
+
+### lazygit 之外
+
+本库与 lazygit 不同的地方：
+
+- 窗口之间的箭头、两侧带箭头的值和下拉列表，这几样 lazygit 都没有（它的列表是屏幕中央的菜单）
+- 窗口名称可以放到右上角，把边框左端留给程序自己绘制的内容
+- 焦点键和名称之间是一个空格（`[1] Files`），lazygit 在两者之间画的是边框（`[1]─Files`）
+- 文本框用 `<` 和 `>` 标出被截断的一侧，与 readline 相同
+- 消息弹窗可以占满屏幕的高度，lazygit 最多占四分之三
+- 来自别处的文本会先处理成可以安全绘制的形式（见 [SECURITY.md](../SECURITY.md)）
 
 ## 安全审计
 
@@ -189,14 +232,117 @@ assert!(view.left && !view.right);
 assert_eq!((view.shown, view.cursor), ("6789", 5));
 ```
 
+两个箭头之间的值，以及展开后与它连成一体的列表，列表的箭头落在原来左箭头的位置：
+
+```rust
+use lazyui_ratatui::{Choice, Dropdown};
+use ratatui::buffer::Buffer;
+use ratatui::layout::Rect;
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 10);
+let mut buf = Buffer::empty(screen);
+let control = Rect::new(4, 2, 30, 1);
+// 在八格的正中，八格是最长的值的宽度。
+let choice = Choice::new("English").note("en").width(8);
+// 箭头连同旁边的空格接收点击。
+let (back, forward) = choice.arrows(control).expect("room for the arrows");
+assert_eq!((back.x, forward.x), (4, 14));
+choice.render(control, &mut buf);
+
+let items = [("System", "auto"), ("English", "en"), ("简体中文", "zh-CN")];
+let list = Dropdown::new(&items).chosen(1).cursor(1).head("English", "en", control.y);
+let area = list.area(control, screen);
+assert_eq!(area, Rect::new(1, 2, 23, 5));
+list.render(area, &mut buf);
+```
+
+在控件处展开的选项列表。光标由程序自己保存和移动，列表负责给出自己的位置，以及一次点击落在哪个选项上：
+
+```rust
+use lazyui_ratatui::Dropdown;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Position, Rect};
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 10);
+let mut buf = Buffer::empty(screen);
+let items = [("System", "auto"), ("English", "en"), ("简体中文", "zh-CN")];
+// English is in effect, the cursor is on the item after it.
+let list = Dropdown::new(&items).chosen(1).cursor(2);
+// Under the control in row 2, or above it where the screen ends too soon.
+let area = list.area(Rect::new(4, 2, 12, 1), screen);
+assert_eq!(area, Rect::new(4, 3, 23, 5));
+// A click on the list's second row is on English.
+assert_eq!(list.item_at(area, Position::new(8, 5)), Some(1));
+list.render(area, &mut buf);
+```
+
+带建议列表的输入框。文本、两个光标和焦点由程序自己保存；输入框负责给出两个窗口的位置、终端光标的位置，以及一次点击落在哪条建议上：
+
+```rust
+use lazyui_ratatui::Prompt;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Position, Rect};
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 12);
+let mut buf = Buffer::empty(screen);
+let branches = ["master", "alpha", "beta", "delta", "gamma", "eta"];
+// "al" typed, the cursor after it; the suggestions have the focus, on alpha.
+let prompt = Prompt::new("New branch name", "al", 2)
+    .suggestions("Suggestions", &branches)
+    .selected(1)
+    .focus_suggestions(true)
+    .rows(4);
+let areas = prompt.areas(screen);
+// The same left and right edges, the suggestions right under the text.
+assert_eq!(areas.input, Rect::new(1, 2, 38, 3));
+assert_eq!(areas.suggestions, Rect::new(1, 5, 38, 6));
+// A click on the third row of suggestions is on beta.
+assert_eq!(prompt.suggestion_at(screen, Position::new(8, 8)), Some(2));
+// No terminal cursor while the suggestions have the focus; in the text otherwise.
+assert_eq!(prompt.cursor_at(screen), None);
+let typing = prompt.clone().focus_suggestions(false);
+assert_eq!(typing.cursor_at(screen), Some(Position::new(4, 3)));
+prompt.render(screen, &mut buf);
+```
+
+屏幕中央的消息，可用作欢迎页或确认提示：
+
+```rust
+use lazyui_ratatui::Message;
+use ratatui::buffer::Buffer;
+use ratatui::layout::Rect;
+use ratatui::style::{Color, Style};
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 10);
+let mut buf = Buffer::empty(screen);
+let message = Message::new("Delete this branch?\nIt is not merged.")
+    .title("Confirm")
+    .border_style(Style::new().fg(Color::Green));
+// As wide as its longest line and as high as its lines, with the border.
+assert_eq!(message.area(screen), Rect::new(9, 3, 21, 4));
+// All of the text is shown: nothing to scroll.
+assert_eq!(message.overflow(screen), 0);
+message.render(screen, &mut buf);
+```
+
 ## API
 
 | 项 | 说明 |
 |------|-------------|
-| `Window` | 圆角窗口；`name(key, name)`、`note(text)`、`border_style(style)`、`inner(area)` |
+| `Window` | 圆角窗口；`name(key, name)`、`name_side(side)`、`note(text)`、`border_style(style)`、`inner(area)` |
+| `Side` | 窗口名称所在的上方角落：`Left`（默认，与 lazygit 一致）或 `Right` |
 | `arrow_down` | 在第 `x` 列从一个窗口向下画 `┬` / `│` / `▼` 到下一个窗口；`x` 不在两个边框上时什么都不画 |
 | `Field` | 单行文本框；`new(text, cursor)` 的光标是字符索引，`render(area, buf)` 返回终端光标应在的位置 |
 | `FieldView` | `Field::view(text, cursor, width)` 的返回值：可见文本、两侧标记和光标所在列 |
+| `Choice` | 两个箭头之间的值；`new(name)`、`note(text)`、`width(cells)` 是箭头之间的格数、`style(style)`、`note_style(style)`；`arrows(area)` 给出箭头的位置，用于点击 |
+| `Dropdown` | 控件处的选项列表；`new(items)` 接收名称和注释，`chosen(item)`、`cursor(item)`、`head(name, note, row)` 让它在那一行与控件连成一体、`border_style(style)`、`highlight_style(style)`；`area(anchor, screen)` 给出列表的位置，`item_at(area, position)` 给出点击落在哪个选项上，`text_columns(area)` 给出名称和注释各从哪一列开始 |
+| `Prompt` | 屏幕中央的输入框，下方带建议列表；`new(title, text, cursor)` 的光标是字符索引，`suggestions(title, items)`、`selected(item)`、`focus_suggestions(bool)`、`border_style(style)`、`focus_style(style)`、`highlight_style(style)`、`width(cells)`、`rows(rows)`、`gap(rows)`；`areas(screen)` 给出两个窗口的位置，`cursor_at(screen)` 给出终端光标应在的位置，`suggestion_at(screen, position)` 给出点击落在哪条建议上 |
+| `PromptAreas` | `Prompt::areas` 的返回值：`input` 和 `suggestions` 两个窗口 |
+| `Message` | 屏幕中央的窗口，里面是自动换行的文本；`new(text)`、`title(text)`、`border_style(style)`、`style(style)`、`width(cells)`、`scroll(row)`；`area(screen)` 给出窗口的位置，`overflow(screen)` 给出放不下的文本行数 |
 | `text::width` | 字符串在 `Buffer` 里占的格数 |
 | `text::take_width` | 字符串能放进指定格数的最长前缀 |
 | `text::grapheme_width` | 单个字素簇占的格数；控制字符为 0，因为 Ratatui 会跳过它们 |

@@ -5,7 +5,7 @@
 #![no_main]
 
 use lazyui_ratatui::text::{sanitize, width};
-use lazyui_ratatui::{Window, arrow_down};
+use lazyui_ratatui::{Side, Window, arrow_down};
 use lazyui_ratatui_fuzz::{
     AnyBuffer, AnyRect, assert_clean, assert_drawn, assert_kept, corners, text,
 };
@@ -15,9 +15,9 @@ use ratatui::layout::{Position, Rect};
 use ratatui::style::Style;
 use ratatui::widgets::Widget;
 
-/// A text on row `y` of the window drawn on `drawn`: there if it fits beside a `─` and the
-/// corner on each side, and those stay.
-fn check_border(buf: &Buffer, drawn: Rect, y: u16, label: &str) {
+/// A text on row `y` of the window drawn on `drawn`: there, at its `side` end of the row, if
+/// it fits beside a `─` and the corner on each side, and those stay.
+fn check_border(buf: &Buffer, drawn: Rect, y: u16, label: &str, side: Side) {
     if drawn.width < 3 {
         return;
     }
@@ -25,18 +25,22 @@ fn check_border(buf: &Buffer, drawn: Rect, y: u16, label: &str) {
     assert_eq!(buf[(drawn.right() - 2, y)].symbol(), "─", "{drawn:?}: {label:?}");
     let cells = width(label);
     if cells > 0 && cells + 4 <= usize::from(drawn.width) {
-        let x = drawn.right() - 2 - u16::try_from(cells).expect("fits in a window");
+        let x = match side {
+            Side::Left => drawn.x + 2,
+            Side::Right => drawn.right() - 2 - u16::try_from(cells).expect("fits in a window"),
+        };
         assert_drawn(buf, x, y, &sanitize(label));
     }
 }
 
-fuzz_target!(|input: (AnyBuffer, AnyRect, bool, [Vec<u16>; 3], u16, AnyRect, AnyRect)| {
-    let (buffer, area, far, [key, name, note], x, upper, lower) = input;
+fuzz_target!(|input: (AnyBuffer, AnyRect, bool, bool, [Vec<u16>; 3], u16, AnyRect, AnyRect)| {
+    let (buffer, area, far, right, [key, name, note], x, upper, lower) = input;
+    let side = if right { Side::Right } else { Side::Left };
     let mut buf = buffer.buffer();
     let area = area.near(far);
     let (key, name, note) = (text(&key), text(&name), text(&note));
 
-    let window = Window::new().name(&key, &name).note(&note);
+    let window = Window::new().name(&key, &name).name_side(side).note(&note);
     let inner = window.inner(area);
     assert!(inner.x >= area.x && inner.y >= area.y, "{area:?}: {inner:?}");
     assert!(
@@ -58,8 +62,8 @@ fuzz_target!(|input: (AnyBuffer, AnyRect, bool, [Vec<u16>; 3], u16, AnyRect, Any
             ("", name) => name.to_owned(),
             (key, name) => format!("[{key}] {name}"),
         };
-        check_border(&buf, drawn, drawn.y, &label);
-        check_border(&buf, drawn, drawn.bottom() - 1, &note);
+        check_border(&buf, drawn, drawn.y, &label, side);
+        check_border(&buf, drawn, drawn.bottom() - 1, &note, Side::Right);
     }
 
     // On a buffer of its own, with the two windows the arrow joins.

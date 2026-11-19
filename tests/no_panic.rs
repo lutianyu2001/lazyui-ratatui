@@ -5,7 +5,7 @@
 #![allow(clippy::arithmetic_side_effects)]
 
 use lazyui_ratatui::text::{sanitize, take_width, width};
-use lazyui_ratatui::{Field, Window, arrow_down};
+use lazyui_ratatui::{Choice, Dropdown, Field, Message, Prompt, Side, Window, arrow_down};
 use proptest::prelude::*;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Position, Rect};
@@ -110,9 +110,11 @@ proptest! {
     fn windows_stay_in_their_area(
         (mut buf, area) in buffer_and_area(),
         (key, name, note) in (text(), text(), text()),
+        right in any::<bool>(),
     ) {
         let blank = buf.clone();
-        Window::new().name(&key, &name).note(&note).render(area, &mut buf);
+        let side = if right { Side::Right } else { Side::Left };
+        Window::new().name(&key, &name).name_side(side).note(&note).render(area, &mut buf);
         prop_assert_eq!(changed_outside(&blank, &buf, |p| area.contains(p)), []);
         prop_assert_eq!(unclean(&buf), []);
     }
@@ -123,6 +125,32 @@ proptest! {
         arrow_down(&mut buf, x, upper, lower, Style::new());
         let between = |p: Position| p.x == x && p.y >= upper.y && p.y <= lower.y;
         prop_assert_eq!(changed_outside(&blank, &buf, between), []);
+    }
+
+    #[test]
+    fn choices_stay_in_their_first_row(
+        (mut buf, area) in buffer_and_area(),
+        (name, note) in (text(), text()),
+        cells in prop::option::of(0..32usize),
+    ) {
+        let blank = buf.clone();
+        let mut choice = Choice::new(&name).note(&note);
+        if let Some(cells) = cells {
+            choice = choice.width(cells);
+        }
+        choice.clone().render(area, &mut buf);
+        let row = Rect { height: area.height.min(1), ..area };
+        prop_assert_eq!(changed_outside(&blank, &buf, |p| row.contains(p)), []);
+        prop_assert_eq!(unclean(&buf), []);
+        // The arrows are in the part of the row on the screen.
+        let drawn = row.intersection(buf.area);
+        if drawn.is_empty() {
+            prop_assert_eq!(&blank, &buf);
+        }
+        if let Some((back, forward)) = choice.arrows(drawn) {
+            prop_assert_eq!(back.intersection(drawn), back);
+            prop_assert_eq!(forward.intersection(drawn), forward);
+        }
     }
 
     #[test]
@@ -138,6 +166,106 @@ proptest! {
             prop_assert!(drawn.contains(at), "cursor {at:?} outside {drawn:?}");
         }
         prop_assert_eq!(unclean(&buf), []);
+    }
+
+    #[test]
+    fn lists_stay_in_their_area_but_for_the_column_before_it(
+        (mut buf, area) in buffer_and_area(),
+        items in prop::collection::vec((text(), text()), 0..6),
+        (chosen, cursor) in (0..8usize, 0..8usize),
+        (anchor, at) in (rect(), (coord(), coord())),
+        head in prop::option::of((text(), text(), coord())),
+    ) {
+        let items: Vec<(&str, &str)> = items.iter().map(|(a, b)| (a.as_str(), b.as_str())).collect();
+        let mut list = Dropdown::new(&items).chosen(chosen).cursor(cursor);
+        if let Some((name, note, row)) = &head {
+            // On the list's first row as often as anywhere else.
+            list = list.head(name, note, if row % 2 == 0 { area.y } else { *row });
+        }
+        let blank = buf.clone();
+        list.clone().render(area, &mut buf);
+        // Only a wide character cut by the list's left edge goes, in the column before it.
+        let before = |p: Position| p.x.checked_add(1) == Some(area.x) && p.y >= area.y;
+        prop_assert_eq!(changed_outside(&blank, &buf, |p| area.contains(p) || before(p)), []);
+        prop_assert_eq!(unclean(&buf), []);
+        // Where it goes for a control is on the screen, and a click finds an item it has.
+        let placed = list.area(anchor, buf.area);
+        prop_assert_eq!(placed.intersection(buf.area), placed);
+        if let Some(item) = list.item_at(placed, Position::new(at.0, at.1)) {
+            prop_assert!(item < items.len());
+        }
+    }
+
+    #[test]
+    fn prompts_stay_in_their_windows_but_for_the_column_before_them(
+        (mut buf, screen) in buffer_and_area(),
+        (title, input, cursor) in (text(), text(), 0..32usize),
+        list in prop::option::of((text(), prop::collection::vec(text(), 0..6))),
+        (selected, on_list) in (0..8usize, any::<bool>()),
+        (wide, rows, gap) in (0..40u16, 0..6u16, 0..3u16),
+        at in (coord(), coord()),
+    ) {
+        let list = list.as_ref().map(|(title, items)| {
+            (title.as_str(), items.iter().map(String::as_str).collect::<Vec<&str>>())
+        });
+        let mut prompt = Prompt::new(&title, &input, cursor).selected(selected);
+        prompt = prompt.focus_suggestions(on_list).width(wide).rows(rows).gap(gap);
+        if let Some((title, items)) = &list {
+            prompt = prompt.suggestions(title, items);
+        }
+        let blank = buf.clone();
+        prompt.clone().render(screen, &mut buf);
+        // The two windows share their edges, on the part of the screen inside the buffer.
+        let drawn = screen.intersection(buf.area);
+        let areas = prompt.areas(drawn);
+        let (top, under) = (areas.input, areas.suggestions);
+        prop_assert_eq!((top.x, top.width), (under.x, under.width));
+        prop_assert!(under.y >= top.bottom());
+        for window in [top, under] {
+            prop_assert_eq!(window.intersection(drawn), window);
+        }
+        // Only a wide character cut by a window's left edge goes, in the column before it.
+        let kept = |p: Position| [top, under].iter().any(|window| {
+            let rows = window.y..window.bottom();
+            window.contains(p) || (p.x.checked_add(1) == Some(window.x) && rows.contains(&p.y))
+        });
+        prop_assert_eq!(changed_outside(&blank, &buf, kept), []);
+        prop_assert_eq!(unclean(&buf), []);
+        // The cursor is in the text's window, a click finds a suggestion the prompt has.
+        if let Some(cursor) = prompt.cursor_at(drawn) {
+            prop_assert!(!on_list && areas.input.contains(cursor), "cursor {cursor:?}");
+        }
+        let items = list.as_ref().map_or(0, |(_, items)| items.len());
+        let at = Position::new(at.0, at.1);
+        if let Some(suggestion) = prompt.suggestion_at(drawn, at) {
+            prop_assert!(suggestion < items && areas.suggestions.contains(at));
+        }
+    }
+
+    #[test]
+    fn messages_stay_in_their_window_but_for_the_column_before_it(
+        (mut buf, screen) in buffer_and_area(),
+        (title, lines) in (text(), prop::collection::vec(text(), 0..6)),
+        (wide, scroll) in (0..40u16, 0..8usize),
+    ) {
+        let text = lines.join("\n");
+        let message = Message::new(&text).title(&title).width(wide).scroll(scroll);
+        let blank = buf.clone();
+        message.clone().render(screen, &mut buf);
+        let drawn = screen.intersection(buf.area);
+        let area = message.area(drawn);
+        prop_assert_eq!(area.intersection(drawn), area);
+        prop_assert!(area.width <= wide);
+        // Only a wide character cut by the window's left edge goes, in the column before it.
+        let rows = area.y..area.bottom();
+        let before = |p: Position| p.x.checked_add(1) == Some(area.x) && rows.contains(&p.y);
+        prop_assert_eq!(changed_outside(&blank, &buf, |p| area.contains(p) || before(p)), []);
+        prop_assert_eq!(unclean(&buf), []);
+        // A window that holds all its text has nothing to scroll.
+        let (lines, rows) = (text.lines().count(), usize::from(area.height.saturating_sub(2)));
+        if area.width > 2 && message.overflow(drawn) == 0 {
+            prop_assert!(lines <= rows, "{lines} lines in {rows} rows");
+        }
     }
 
     #[test]

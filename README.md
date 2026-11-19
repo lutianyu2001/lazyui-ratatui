@@ -11,9 +11,11 @@
 [![audit](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Faudit.json)](SECURITY.md#ci)
 [![pins](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flutianyu2001%2Flazyui-ratatui%2Fbadges%2Fpins.json)](xtask/src/pins.rs)
 
-A small widget library that brings lazygit-style panels to [Ratatui](https://ratatui.rs):
-rounded windows named with their focus key, corner notes, arrows between windows and
-scrolling one-line text fields.
+A small widget library for [Ratatui](https://ratatui.rs) based on the look of lazygit:
+rounded windows named with their focus key, corner notes, arrows between windows,
+scrolling one-line text fields, drop-down lists, prompts with suggestions and message popups.
+It is not a one-to-one copy of lazygit's interface: it follows lazygit where lazygit has the
+part, and adds [parts of its own](#beyond-lazygit) where a program needs more.
 
 ## Table of Contents
 
@@ -32,14 +34,15 @@ scrolling one-line text fields.
 
 ## Overview
 
-The widgets cover the parts of a lazygit-style screen that Ratatui's own `Block` and
+The widgets cover the parts of a screen in lazygit's style that Ratatui's own `Block` and
 `Paragraph` leave to the program: window names tied to focus keys, notes on the
-bottom border, arrows from one window to another and a text field that scrolls with
-its cursor. They draw into a Ratatui `Buffer` like any other widget and depend only on
+bottom border, arrows from one window to another, a text field that scrolls with
+its cursor, a list of choices that opens at a control, a prompt with suggestions under it
+and a message in the middle of the screen. They draw into a Ratatui `Buffer` like any other widget and depend only on
 Ratatui and unicode-segmentation.
 
 ```text
-╭────────[1] Files─╮   Window::new().name("1", "Files").note("[2 marked]")
+╭─[1] Files────────╮   Window::new().name("1", "Files").note("[2 marked]")
 │                  │
 ╰───────[2 marked]─╯
 
@@ -47,22 +50,79 @@ Ratatui and unicode-segmentation.
 ╭─────▼────╮
 
 <56789a>               Field::new(text, cursor).render(area, buf)
+
+◂ English  ▸  en        Choice::new("English").note("en").width(8)
+
+╭─────────────────────╮   Dropdown::new(&items).chosen(1).cursor(2)
+│ ( ) System    auto  │
+│ (*) English   en    │
+│ ( ) 简体中文  zh-CN │
+╰─────────────────────╯
+
+╭  ▾  English   en    ╮   Dropdown::new(&items).chosen(1).cursor(1)
+│ ( ) System    auto  │       .head("English", "en", row)
+│ (*) English   en    │
+│ ( ) 简体中文  zh-CN │
+╰─────────────────────╯
+
+╭─New branch name────────────────────╮   Prompt::new("New branch name", "al", 2)
+│al                                  │       .suggestions("Suggestions", &branches)
+╰────────────────────────────────────╯       .selected(1).focus_suggestions(true)
+╭─Suggestions────────────────────────╮
+│master                              │
+│alpha                               │
+│beta                                │
+╰─────────────────────────────2 of 6─╯
+
+╭─Confirm───────────╮   Message::new("Delete this branch?\nIt is not merged.")
+│Delete this branch?│       .title("Confirm")
+│It is not merged.  │
+╰───────────────────╯
 ```
 
 Note: "Lazy" in the name refers to lazygit, not lazy evaluation.
 
 ## Features
 
-- Rounded windows with the focus key and name in the top right corner (`[1] Files`)
-  and an optional note in the bottom right corner, both in the border's style
+- Rounded windows with the focus key and name in the top left corner (`[1] Files`), as
+  lazygit has them, or in the top right one (`name_side(Side::Right)`), and an optional
+  note in the bottom right corner, all in the border's style
 - Arrows that join a window to one below it (`┬`, `│`, `▼`)
 - One-line text fields that scroll to keep the cursor visible and mark cut-off text
   with a highlighted `<` / `>`, as readline's horizontal-scroll-mode does
+- Values changed with the arrows beside them (`◂ English ▸  en`): the value in the middle
+  of a width that controls under one another share, so their arrows stand in two columns
+  and none moves when a value changes; a dim note after them
+- Drop-down lists that open under a control, or above it where the screen ends: `(*)`
+  before the choice in effect, the cursor's row highlighted, a dim note after each
+  choice, scrolling with a `4/9` in the corner when the choices outnumber the rows. With
+  a head, the list is joined to its control as a combo box is: its border on the
+  control's row shows the value after a `▾` (`╭  ▾  English  en ╮`)
+- Prompts in the middle of the screen, placed and sized as lazygit's: a window with one
+  line of text to edit and, under it with the same edges, a window of suggestions that
+  scrolls with its cursor and says `2 of 15` in the corner; the window with the focus has
+  its border in the focus style
+- Message popups in the middle of the screen, as large as their text, which is wrapped at
+  spaces and scrolls where the screen has too few rows for it
 - Widths measured per grapheme, the way Ratatui draws text, so CJK text and single
   emoji line up; what terminals measure differently is replaced as it is drawn, so joined
   emoji and flags show plainer (see [SECURITY.md](SECURITY.md))
 - Safe at any size: areas that are empty or reach outside the buffer are clipped
   instead of causing a panic
+
+### Beyond lazygit
+
+Where the library does not follow lazygit:
+
+- Arrows between windows, values between arrows and drop-down lists, none of which lazygit has (its lists are
+  menus in the middle of the screen)
+- A window's name may go in the top right corner, which leaves the left end of the border
+  to what the program draws there
+- The focus key and the name are joined by a space (`[1] Files`) where lazygit draws the
+  border between them (`[1]─Files`)
+- A text field marks what it cuts off with `<` and `>`, as readline does
+- A message may take the screen's whole height, where lazygit stops at three quarters
+- Text from elsewhere is made safe to draw (see [SECURITY.md](SECURITY.md))
 
 ## Security Audit
 
@@ -215,14 +275,121 @@ assert!(view.left && !view.right);
 assert_eq!((view.shown, view.cursor), ("6789", 5));
 ```
 
+A value between its arrows, and its list joined to it when opened, the list's arrow where
+the left one was:
+
+```rust
+use lazyui_ratatui::{Choice, Dropdown};
+use ratatui::buffer::Buffer;
+use ratatui::layout::Rect;
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 10);
+let mut buf = Buffer::empty(screen);
+let control = Rect::new(4, 2, 30, 1);
+// In the middle of eight cells, the longest value's width.
+let choice = Choice::new("English").note("en").width(8);
+// The arrows take clicks, each with the space beside it.
+let (back, forward) = choice.arrows(control).expect("room for the arrows");
+assert_eq!((back.x, forward.x), (4, 14));
+choice.render(control, &mut buf);
+
+let items = [("System", "auto"), ("English", "en"), ("简体中文", "zh-CN")];
+let list = Dropdown::new(&items).chosen(1).cursor(1).head("English", "en", control.y);
+let area = list.area(control, screen);
+assert_eq!(area, Rect::new(1, 2, 23, 5));
+list.render(area, &mut buf);
+```
+
+A list of choices opened at a control. The program keeps the cursor and moves it;
+the list says where it goes and which choice a click is on:
+
+```rust
+use lazyui_ratatui::Dropdown;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Position, Rect};
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 10);
+let mut buf = Buffer::empty(screen);
+let items = [("System", "auto"), ("English", "en"), ("简体中文", "zh-CN")];
+// English is in effect, the cursor is on the item after it.
+let list = Dropdown::new(&items).chosen(1).cursor(2);
+// Under the control in row 2, or above it where the screen ends too soon.
+let area = list.area(Rect::new(4, 2, 12, 1), screen);
+assert_eq!(area, Rect::new(4, 3, 23, 5));
+// A click on the list's second row is on English.
+assert_eq!(list.item_at(area, Position::new(8, 5)), Some(1));
+list.render(area, &mut buf);
+```
+
+A prompt with suggestions. The program keeps the text, both cursors and the focus; the
+prompt says where its two windows go, where the terminal's cursor goes and which
+suggestion a click is on:
+
+```rust
+use lazyui_ratatui::Prompt;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Position, Rect};
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 12);
+let mut buf = Buffer::empty(screen);
+let branches = ["master", "alpha", "beta", "delta", "gamma", "eta"];
+// "al" typed, the cursor after it; the suggestions have the focus, on alpha.
+let prompt = Prompt::new("New branch name", "al", 2)
+    .suggestions("Suggestions", &branches)
+    .selected(1)
+    .focus_suggestions(true)
+    .rows(4);
+let areas = prompt.areas(screen);
+// The same left and right edges, the suggestions right under the text.
+assert_eq!(areas.input, Rect::new(1, 2, 38, 3));
+assert_eq!(areas.suggestions, Rect::new(1, 5, 38, 6));
+// A click on the third row of suggestions is on beta.
+assert_eq!(prompt.suggestion_at(screen, Position::new(8, 8)), Some(2));
+// No terminal cursor while the suggestions have the focus; in the text otherwise.
+assert_eq!(prompt.cursor_at(screen), None);
+let typing = prompt.clone().focus_suggestions(false);
+assert_eq!(typing.cursor_at(screen), Some(Position::new(4, 3)));
+prompt.render(screen, &mut buf);
+```
+
+A message in the middle of the screen, for a welcome page or a question:
+
+```rust
+use lazyui_ratatui::Message;
+use ratatui::buffer::Buffer;
+use ratatui::layout::Rect;
+use ratatui::style::{Color, Style};
+use ratatui::widgets::Widget;
+
+let screen = Rect::new(0, 0, 40, 10);
+let mut buf = Buffer::empty(screen);
+let message = Message::new("Delete this branch?\nIt is not merged.")
+    .title("Confirm")
+    .border_style(Style::new().fg(Color::Green));
+// As wide as its longest line and as high as its lines, with the border.
+assert_eq!(message.area(screen), Rect::new(9, 3, 21, 4));
+// All of the text is shown: nothing to scroll.
+assert_eq!(message.overflow(screen), 0);
+message.render(screen, &mut buf);
+```
+
 ## API
 
 | Item | Description |
 |------|-------------|
-| `Window` | Rounded window; `name(key, name)`, `note(text)`, `border_style(style)`, `inner(area)` |
+| `Window` | Rounded window; `name(key, name)`, `name_side(side)`, `note(text)`, `border_style(style)`, `inner(area)` |
+| `Side` | The top corner a window's name is in: `Left` (the default, as lazygit) or `Right` |
 | `arrow_down` | Draws `┬` / `│` / `▼` at column `x` from one window down to the next; does nothing if `x` is not on both borders |
 | `Field` | One-line text field; `new(text, cursor)` takes the cursor as a char index, `render(area, buf)` returns where the terminal cursor goes |
 | `FieldView` | What `Field::view(text, cursor, width)` returns: the visible text, both markers and the cursor's column |
+| `Choice` | Value between two arrows; `new(name)`, `note(text)`, `width(cells)` between the arrows, `style(style)`, `note_style(style)`; `arrows(area)` says where the arrows are, for clicks |
+| `Dropdown` | List of choices at a control; `new(items)` takes names with notes, `chosen(item)`, `cursor(item)`, `head(name, note, row)` joins it to its control on that row, `border_style(style)`, `highlight_style(style)`; `area(anchor, screen)` says where it goes, `item_at(area, position)` which choice a click is on, `text_columns(area)` where its names and notes start |
+| `Prompt` | Text to edit over a list of suggestions, in the middle of the screen; `new(title, text, cursor)` takes the cursor as a char index, `suggestions(title, items)`, `selected(item)`, `focus_suggestions(bool)`, `border_style(style)`, `focus_style(style)`, `highlight_style(style)`, `width(cells)`, `rows(rows)`, `gap(rows)`; `areas(screen)` says where its two windows go, `cursor_at(screen)` where the terminal cursor goes, `suggestion_at(screen, position)` which suggestion a click is on |
+| `PromptAreas` | What `Prompt::areas` returns: `input` and `suggestions`, the two windows |
+| `Message` | Wrapped text in a window in the middle of the screen; `new(text)`, `title(text)`, `border_style(style)`, `style(style)`, `width(cells)`, `scroll(row)`; `area(screen)` says where it goes, `overflow(screen)` how many rows of text it has no room for |
 | `text::width` | Cells a string takes in a `Buffer` |
 | `text::take_width` | The longest prefix of a string that fits in a number of cells |
 | `text::grapheme_width` | Cells one grapheme takes; 0 for control characters, which Ratatui skips |

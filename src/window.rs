@@ -7,13 +7,25 @@ use ratatui::widgets::{Block, BorderType, Widget};
 
 use crate::text::{sanitize, width};
 
-/// A window with rounded corners, named in its top right corner (`╭──[1] Files─╮`) and
-/// with an optional note in its bottom right one (`╰──[2 marked]─╯`). Both are drawn in
-/// the border's style, bold, when the window is wide enough for them.
+/// The end of a window's top border its name is at.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash)]
+pub enum Side {
+    /// As lazygit names its windows: `╭─[1] Files──╮`.
+    #[default]
+    Left,
+    /// `╭──[1] Files─╮`, which leaves the left end to what a program draws there.
+    Right,
+}
+
+/// A window with rounded corners, named in a top corner (`╭─[1] Files──╮`; the left one
+/// unless [`Window::name_side`] says the right) and with an optional note in its bottom
+/// right one (`╰──[2 marked]─╯`). Both are drawn in the border's style, bold, when the
+/// window is wide enough for them.
 #[derive(Debug, Clone, Default)]
 pub struct Window<'a> {
     key: &'a str,
     name: &'a str,
+    side: Side,
     note: &'a str,
     border: Style,
 }
@@ -23,11 +35,17 @@ impl<'a> Window<'a> {
         Self::default()
     }
 
-    /// The name in the top right corner, after the key that focuses the window
-    /// (`[1] Files`); an empty key leaves just the name.
+    /// The name in a top corner, after the key that focuses the window (`[1] Files`); an
+    /// empty key leaves just the name.
     pub fn name(mut self, key: &'a str, name: &'a str) -> Self {
         self.key = key;
         self.name = name;
+        self
+    }
+
+    /// The top corner the name is in: the left one by default.
+    pub fn name_side(mut self, side: Side) -> Self {
+        self.side = side;
         self
     }
 
@@ -70,27 +88,32 @@ impl Widget for Window<'_> {
             .border_style(self.border)
             .render(area, buf);
         let style = self.border.add_modifier(Modifier::BOLD);
-        corner(buf, area, area.y, &self.label(), style);
+        corner(buf, area, area.y, &self.label(), self.side, style);
         if area.height >= 2 {
-            corner(buf, area, area.bottom().saturating_sub(1), self.note, style);
+            let y = area.bottom().saturating_sub(1);
+            corner(buf, area, y, self.note, Side::Right, style);
         }
     }
 }
 
-/// `text` at the right end of border row `y`, one `─` away from the corner.
-fn corner(buf: &mut Buffer, area: Rect, y: u16, text: &str, style: Style) {
-    if let Some((x, w)) = corner_place(area, width(text)) {
+/// `text` at the `side` end of border row `y`, one `─` away from the corner.
+fn corner(buf: &mut Buffer, area: Rect, y: u16, text: &str, side: Side, style: Style) {
+    if let Some((x, w)) = corner_place(area, width(text), side) {
         buf.set_stringn(x, y, sanitize(text), usize::from(w), style);
     }
 }
 
-/// Where a text `width` cells wide starts on a border of `area`, and its width, if there is
-/// a text and it leaves the corners and a `─` beside each.
-pub(crate) fn corner_place(area: Rect, width: usize) -> Option<(u16, u16)> {
+/// Where a text `width` cells wide starts at the `side` end of a border of `area`, and its
+/// width, if there is a text and it leaves the corners and a `─` beside each.
+pub(crate) fn corner_place(area: Rect, width: usize, side: Side) -> Option<(u16, u16)> {
     let w = u16::try_from(width).ok().filter(|&w| w > 0)?;
     // Not saturating: next to `u16::MAX`, that would let a text run over the corners.
     w.checked_add(4).filter(|&cells| cells <= area.width)?;
-    Some((area.right().saturating_sub(w.saturating_add(2)), w))
+    let x = match side {
+        Side::Left => area.x.saturating_add(2),
+        Side::Right => area.right().saturating_sub(w.saturating_add(2)),
+    };
+    Some((x, w))
 }
 
 /// Joins `upper` to the window `lower` under it with an arrow at column `x`: `┬` on the
@@ -144,8 +167,11 @@ mod tests {
         Window::new().name("1", "Files").note("[2 marked]").render(buf.area, &mut buf);
         assert_eq!(
             rows(&buf),
-            ["╭────────[1] Files─╮", "│                  │", "╰───────[2 marked]─╯"]
+            ["╭─[1] Files────────╮", "│                  │", "╰───────[2 marked]─╯"]
         );
+        let right = Window::new().name("1", "Files").name_side(Side::Right);
+        right.render(buf.area, &mut buf);
+        assert_eq!(rows(&buf)[0], "╭────────[1] Files─╮");
         assert_eq!(Window::new().inner(buf.area), Rect::new(1, 1, 18, 1));
     }
 
@@ -209,21 +235,26 @@ mod tests {
     #[test]
     fn a_text_on_the_border_needs_a_cell_beside_each_corner() {
         let area = Rect::new(3, 0, 10, 2);
-        assert_eq!(corner_place(area, 6), Some((5, 6)));
-        assert_eq!(corner_place(area, 7), None);
-        assert_eq!(corner_place(area, 0), None);
-        assert_eq!(corner_place(area, 1 << 16), None);
+        assert_eq!(corner_place(area, 6, Side::Right), Some((5, 6)));
+        assert_eq!(corner_place(area, 5, Side::Right), Some((6, 5)));
+        assert_eq!(corner_place(area, 5, Side::Left), Some((5, 5)));
+        for side in [Side::Left, Side::Right] {
+            assert_eq!(corner_place(area, 7, side), None);
+            assert_eq!(corner_place(area, 0, side), None);
+            assert_eq!(corner_place(area, 1 << 16, side), None);
+        }
         // A width that with the four cells would pass `u16::MAX`, in the widest area.
         let area = Rect::new(0, 0, u16::MAX, 2);
-        assert_eq!(corner_place(area, 65531), Some((2, 65531)));
-        assert_eq!(corner_place(area, 65532), None);
+        assert_eq!(corner_place(area, 65531, Side::Right), Some((2, 65531)));
+        assert_eq!(corner_place(area, 65531, Side::Left), Some((2, 65531)));
+        assert_eq!(corner_place(area, 65532, Side::Right), None);
     }
 
     #[test]
     fn a_window_one_row_high_has_no_note() {
         let mut buf = Buffer::empty(Rect::new(0, 0, 12, 1));
         Window::new().name("1", "a").note("b").render(buf.area, &mut buf);
-        assert_eq!(rows(&buf), ["╭────[1] a─╮"]);
+        assert_eq!(rows(&buf), ["╭─[1] a────╮"]);
     }
 
     #[test]
@@ -236,6 +267,6 @@ mod tests {
         assert_eq!(buf, blank);
         // A window cut off by the buffer's edge is drawn on the part inside it, as a block.
         files.render(Rect::new(0, 1, 20, 3), &mut buf);
-        assert_eq!(rows(&buf)[1..], ["╭────────[1] Files─╮", "╰───────[2 marked]─╯"]);
+        assert_eq!(rows(&buf)[1..], ["╭─[1] Files────────╮", "╰───────[2 marked]─╯"]);
     }
 }

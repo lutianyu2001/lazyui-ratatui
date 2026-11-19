@@ -46,3 +46,30 @@ path = "fuzz_targets/window.rs"
 test = false
 doc = false
 bench = false
+
+[[bin]]
+name = "choice"
+path = "fuzz_targets/choice.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "dropdown"
+path = "fuzz_targets/dropdown.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "prompt"
+path = "fuzz_targets/prompt.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "message"
+path = "fuzz_targets/message.rs"
+test = false
+doc = false
+bench = false

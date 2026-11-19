@@ -9,7 +9,16 @@ use crate::tasks::limit;
 /// names, and an interface test whose name merely contains one would time out. Where a
 /// package's tests are all integration tests, whose names have no module, BUILD picks
 /// their programs (`-p <crate> --tests`) and `""` runs every test in them.
-const MODULES: &[&str] = &["field::", "text::", "unsteady::", "window::"];
+const MODULES: &[&str] = &[
+    "choice::",
+    "dropdown::",
+    "field::",
+    "message::",
+    "prompt::",
+    "text::",
+    "unsteady::",
+    "window::",
+];
 /// What the tests are built with: `--lib`, or the integration tests (see MODULES).
 pub const BUILD: &[&str] = &["--lib"];
 /// Tests too slow under Miri.

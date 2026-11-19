@@ -14,10 +14,10 @@ are not trusted to be sensible either, since terminals come in any size.
 
 | Attack surface | What holds | What covers it |
 |---|---|---|
-| Terminal escapes in drawn text | C0 and C1 control characters never reach a `Buffer` | fuzz (`text`, `field`, `window`), proptest |
+| Terminal escapes in drawn text | C0 and C1 control characters never reach a `Buffer` | fuzz (`text`, `field`, `window`, `dropdown`, `prompt`, `message`), proptest |
 | Text reordering ("Trojan Source") | U+061C, U+200E/F, U+202A–202E and U+2066–2069 never reach a `Buffer`: Ratatui leaves them out as zero-width graphemes | the same |
 | Text overrunning its place | in the `Buffer`, a text never leaves its area, and a name or note never touches the corners | fuzz, proptest, Kani (the arithmetic) |
-| A terminal measuring text otherwise than Ratatui | what `Field` and `Window` draw goes through `text::sanitize`, which replaces every grapheme whose width was seen to differ, cell for cell; other terminals are not covered, see [Known Remaining Risks](#known-remaining-risks) | measured on tmux 3.4: all 1,112,064 characters, and 400,000 random texts, of which 140,589 disagreed before and none after; fuzz (`text`) |
+| A terminal measuring text otherwise than Ratatui | what `Field`, `Window`, `Choice`, `Dropdown`, `Prompt` and `Message` draw goes through `text::sanitize`, which replaces every grapheme whose width was seen to differ, cell for cell; other terminals are not covered, see [Known Remaining Risks](#known-remaining-risks) | measured on tmux 3.4: all 1,112,064 characters, and 400,000 random texts, of which 140,589 disagreed before and none after; fuzz (`text`) |
 | Sizes and coordinates | any area, empty, off the buffer or past `u16::MAX`, is clipped; nothing panics, overflows or draws outside it | Kani, fuzz; proptest only with rectangles from `Rect::new`; Clippy's `arithmetic_side_effects` |
 | A cursor out of range | any `usize` cursor is accepted; the column stays in the field and off the markers, never falls as the cursor moves right, and what is under it is shown if the field can hold it | Kani (the arithmetic), fuzz |
 | Very long text | time is linear in the text: under 80 ms per MB, per field or window, per frame, in a release build; `text::sanitize` under 80 ms per MB | measured from 1 to 8 MB, with text of many shapes, including one 4 MB grapheme |
@@ -43,7 +43,9 @@ redirects, host keys, fallbacks, retries and queues, names joined into paths, ex
 - **A field's cursor can be off the buffer.** With nothing to draw on, `Field::render` returns the
   area's corner, which a program should not pass on unchecked.
 - **What is already in the buffer stays.** A field clears no cells, and a wide character left of
-  a window or a marker makes Ratatui's diff skip the cell after it.
+  a window or a marker makes Ratatui's diff skip the cell after it. A drop-down list, a prompt
+  and a message are the exception: each clears its windows, and blanks a wide character that
+  reaches into one from the cell before, the one cell a widget here changes outside its area.
 - **A field has no password mode.** `Field` draws what it is given, and its `Debug` output prints
   it: a program with a secret to edit passes a masked copy.
 - **Long text is drawn every frame.** Its cost is linear, not bounded: a program that shows
@@ -70,7 +72,7 @@ itself, is not covered unless it goes through `text::sanitize`.
 | `deny` | sources, licenses, duplicate versions and known vulnerabilities of the dependencies; the fuzz workspace's vulnerabilities and sources | stable |
 | `vet` | every dependency has an audit on record, or an exemption | stable |
 | `geiger` | how much `unsafe` code the dependencies have | stable |
-| `miri` | undefined behavior in the unit tests of all modules (`field::`, `text::`, `unsteady::`, `window::`), which run Ratatui's and its dependencies' `unsafe` code; one test of very long text is left out, as it takes hours under Miri | nightly |
+| `miri` | undefined behavior in the unit tests of all modules (`choice::`, `dropdown::`, `field::`, `message::`, `prompt::`, `text::`, `unsteady::`, `window::`), which run Ratatui's and its dependencies' `unsafe` code; one test of very long text is left out, as it takes hours under Miri | nightly |
 | `coverage` | branches the tests do not reach | nightly |
 | `kani` | the proofs in `src/proofs.rs`: the layout arithmetic, for every value of the integers | Kani's own |
 | `fuzz` | the four targets below, an hour each on a workstation, four hours each on GitHub Actions | nightly |
@@ -91,6 +93,10 @@ the emoji blocks and the characters that join into graphemes (`fuzz/src/lib.rs`)
 | `view` | any text, cursor and width | what is shown fits with its markers and is a piece of the text cut between graphemes; a marker means something visible is cut off on that side, and with room for what is under the cursor and both markers, whatever is cut off gets one; the cursor stays in the field, off the markers, at the start of its grapheme, among the text shown, in the column of the text before it, and what is under it is shown if the field can hold it |
 | `field` | any text and cursor, any buffer and area | no panic; nothing is drawn off the area's first row; the cells hold what `Field::view` says, sanitized, each grapheme in its place and the markers highlighted, and the rest of the row keeps its text; the cursor goes where `view` says; no control character gets into a buffer |
 | `window` | any key, name and note, any buffers and areas, any arrow | no panic; nothing is drawn off the area, or off the arrow's column; `inner` stays in the area; the corners and the `─` beside them stay, and a text that fits is there in its place, sanitized; an arrow is made of `┬`, `│` and `▼` and leaves the corners of both windows alone; no control character gets into a buffer |
+| `choice` | any value and note, with or without any width, any buffer and area | no panic; nothing is drawn off the area's first row; the arrows are where `arrows` says, in the area, and nothing is drawn where there is no room for them; a value that fits is in the middle between them, sanitized; the note is there whole, two cells after the arrow, or the cells there stay as they were; no control character gets into a buffer |
+| `dropdown` | any items, chosen item and cursor, any buffers, areas and controls, over any text | no panic; nothing is drawn off the area but in the column before it, where only a wide character cut by the list's edge is blanked; the corners stay; each row shown starts with the mark of the item a click on it finds; the list goes on the screen and on none of its control's rows; no control character gets into a buffer |
+| `prompt` | any title, text and cursor, with or without any suggestions, any cursor among them, focus, width, rows and gap, any buffers and screens, over any text | no panic; nothing is drawn off the two windows but in the column before them, where only a wide character cut by a window's edge is blanked; the windows have the same left and right edges, the suggestions under the text, both on the screen; their corners and side borders stay; the text is drawn as `Field::view` says, sanitized, and the cursor goes where it says, only while the text has the focus; each row of suggestions holds, sanitized, the one a click on it finds, highlighted only under the cursor of a focused list; the rows shown follow one another, the cursor's among them, none left empty for one; the cursor's place is in the bottom border; no control character gets into a buffer |
+| `message` | any title and lines of text, any width and scroll, any buffers and screens, over any text | no panic; nothing is drawn off the window but in the column before it, where only a wide character cut by the window's edge is blanked; the window is on the screen and no wider than asked; its corners and side borders stay; a text that needs no wrapping is there line by line, sanitized, from the row scrolled to, in a window with no more rows than lines; a window that leaves text out is as high as the screen; scrolling past the last screenful draws that one; no control character gets into a buffer |
 
 Areas and buffers are written without `Rect::new`, so their right and bottom edges may lie past
 `u16::MAX`, and some of each input keeps them next to it. Non-BMP text is limited to the emoji
@@ -101,7 +107,10 @@ of the buffers' reach here: Kani and a unit test cover them.
 
 The proofs cover what depends only on integers, so they hold for **every** value of those
 integers, with no bound on them: where a name goes on a border, the rows of an arrow, how a
-scrolled field divides its cells and where its cursor goes. They do not cover text: `Field::view`
+scrolled field divides its cells and where its cursor goes, where the arrows of a value are, where a drop-down list goes for its
+control, joined to it or not, and which of its items it shows, how wide a popup is and where in the middle of the screen
+it goes, that the two windows of a prompt share their edges on the screen, and which rows of a
+message are shown. They do not cover text (how a message wraps its lines is text): `Field::view`
 on real text goes through the tables of unicode-segmentation and unicode-width, and a proof on
 just 3 ASCII characters ran out 15 minutes at 7 GB, so text is left to fuzzing and property tests.
 That the crate's calls on a `Buffer` stay inside it is covered by fuzzing, not by the proofs.
