@@ -1,0 +1,17 @@
+# all as git blobs (2)
+d42925abf34abee42bd6db21f654fa819b9b7017	src/choice.rs
+417efa3151bfe9c31119e0e51a7b2d4dcca960ef	src/dropdown.rs
+61af57931742e539a899316db5baead04a1212ab	src/field.rs
+dece71804c54c388362f051dc995734b1536f74a	src/lib.rs
+e1a311970ee3d012e07b7ab2e3e59fc7c74433a8	src/message.rs
+4e5704a351a48484f5f8a70818246bece9b6e2f9	src/prompt.rs
+afc7ebfaece059e12fa85df153c93926e81485d4	src/proofs.rs
+a4ee52fdb9ff7da9b89c099367639a13974ec8c0	src/text.rs
+df11b59d439fb872d6f6c4278f0b9d3e38440ada	src/unsteady.rs
+d3b8097b004fbb07169b531ebd6612f4cd439c37	src/window.rs
+f4a25b887331ec3b4552533ca6f90fd2e1fd882c	tests/no_panic.rs
+ac78511f060add0b42e8fb0fb2215e05ec7af1a4	xtask/Cargo.toml
+a6f8aca22c3d1df0dc48cab0ed34f57f0467c607	xtask/src/main.rs
+dbe9b7f3a3f62dd52638c3472415a7ac56febf64	xtask/src/run.rs
+99be9d68384cd1c6cbe0852e7c1e54a34b8fcbe3	xtask/src/tasks/mod.rs
+896bb32961ddcc3ef1abae9179d631d6631688ec	xtask/src/tasks/review.rs

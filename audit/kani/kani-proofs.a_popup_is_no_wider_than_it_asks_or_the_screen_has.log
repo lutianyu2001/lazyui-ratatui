@@ -1,0 +1,167 @@
+$ cargo kani --lib --harness proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has --exact -Z unstable-options --harness-timeout 1800s
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+Checking harness proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has...
+CBMC 6.11.0 (cbmc-6.11.0)
+CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/37d8605fb8674167/out/lazyui_ratatui-37d8605fb8674167__RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs50a_popup_is_no_wider_than_it_asks_or_the_screen_has.out
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 16 object bits, 48 offset bits (user-specified)
+Starting Bounded Model Checking
+Runtime Symex: 0.0116868s
+size of program expression: 769 steps
+slicing removed 381 assignments
+Generated 50 VCC(s), 14 remaining after simplification
+Runtime Postprocess Equation: 0.000131839s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.00158625s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 1.3022e-05s
+Solving with CaDiCaL 3.0.0
+1145 variables, 2437 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.00030987s
+Runtime decision procedure: 0.00201613s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+1146 variables, 2438 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.00589876s
+Runtime decision procedure: 0.00595823s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+1147 variables, 2439 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.00350958s
+Runtime decision procedure: 0.00357553s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+1148 variables, 2440 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 0.0172451s
+Runtime decision procedure: 0.0172847s
+
+RESULTS:
+Check 1: proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has.assertion.1
+	 - Status: SUCCESS
+	 - Description: "assertion failed: width <= asked && width <= screen"
+	 - Location: src/proofs.rs:221:5 in function proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has
+
+Check 2: proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has.assertion.2
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: src/proofs.rs:223:36 in function proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has
+
+Check 3: proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has.assertion.3
+	 - Status: SUCCESS
+	 - Description: "assertion failed: screen < 2 || width <= screen - 2"
+	 - Location: src/proofs.rs:223:5 in function proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has
+
+Check 4: proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has.assertion.4
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:224:8 in function proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has
+
+Check 5: proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has.assertion.5
+	 - Status: SUCCESS
+	 - Description: "assertion failed: width == asked"
+	 - Location: src/proofs.rs:225:9 in function proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has
+
+Check 6: proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has.assertion.6
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:228:31 in function proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has
+
+Check 7: proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has.assertion.7
+	 - Status: SUCCESS
+	 - Description: "assertion failed: width == asked || u32::from(width) + 6 >= u32::from(screen)"
+	 - Location: src/proofs.rs:228:5 in function proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has
+
+Check 8: core::num::<impl u16>::saturating_mul.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:2585:19 in function core::num::<impl u16>::saturating_mul
+
+Check 9: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 10: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 11: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 12: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 13: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 14: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 15: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 16: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 17: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 18: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 19: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 20: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+
+SUMMARY:
+ ** 0 of 20 failed
+
+VERIFICATION:- SUCCESSFUL
+Verification Time: 0.087869175s
+
+Manual Harness Summary:
+Complete - 1 successfully verified harnesses, 0 failures, 1 total.

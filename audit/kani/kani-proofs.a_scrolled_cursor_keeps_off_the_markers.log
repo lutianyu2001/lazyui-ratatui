@@ -1,6 +1,7 @@
 $ cargo kani --lib --harness proofs::a_scrolled_cursor_keeps_off_the_markers --exact -Z unstable-options --harness-timeout 1800s
 Kani Rust Verifier 0.68.0 (cargo plugin)
 CBMC 6.11.0
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 warning: use of an unstable feature
  --> <crate attribute>:1:12
   |
@@ -9,72 +10,71 @@ warning: use of an unstable feature
   |
   = note: requested on the command line with `--force-warn unstable-features`
 
-[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
 Checking harness proofs::a_scrolled_cursor_keeps_off_the_markers...
 CBMC 6.11.0 (cbmc-6.11.0)
 CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
-Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/7f9af8fe40a055d4/out/lazyui_ratatui-7f9af8fe40a055d4__RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs39a_scrolled_cursor_keeps_off_the_markers.out
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/54a182e22087db06/out/lazyui_ratatui-54a182e22087db06__RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs39a_scrolled_cursor_keeps_off_the_markers.out
 Generating GOTO Program
 Adding CPROVER library (x86_64)
 Removal of function pointers and virtual functions
 Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
-Runtime Symex: 0.0133478s
+Runtime Symex: 0.0109289s
 size of program expression: 710 steps
 slicing removed 286 assignments
 Generated 10 VCC(s), 10 remaining after simplification
-Runtime Postprocess Equation: 0.000268084s
+Runtime Postprocess Equation: 0.000134789s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.00519466s
+Runtime Convert SSA: 0.00415105s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 1.0139e-05s
+Runtime Post-process: 5.281e-06s
 Solving with CaDiCaL 3.0.0
 4792 variables, 15533 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.00103707s
-Runtime decision procedure: 0.0065298s
+Runtime Solver: 0.000528815s
+Runtime decision procedure: 0.004815s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 4793 variables, 15534 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 24.0359s
-Runtime decision procedure: 24.036s
+Runtime Solver: 22.2904s
+Runtime decision procedure: 22.2905s
 
 RESULTS:
 Check 1: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.1
 	 - Status: SUCCESS
 	 - Description: "attempt to subtract with overflow"
-	 - Location: src/proofs.rs:115:40 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+	 - Location: src/proofs.rs:124:40 in function proofs::a_scrolled_cursor_keeps_off_the_markers
 
 Check 2: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.2
 	 - Status: SUCCESS
 	 - Description: "assertion failed: left <= column && column < w - right"
-	 - Location: src/proofs.rs:115:5 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+	 - Location: src/proofs.rs:124:5 in function proofs::a_scrolled_cursor_keeps_off_the_markers
 
 Check 3: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.3
 	 - Status: SUCCESS
 	 - Description: "attempt to subtract with overflow"
-	 - Location: src/proofs.rs:118:26 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+	 - Location: src/proofs.rs:127:26 in function proofs::a_scrolled_cursor_keeps_off_the_markers
 
 Check 4: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.4
 	 - Status: SUCCESS
 	 - Description: "attempt to subtract with overflow"
-	 - Location: src/proofs.rs:118:26 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+	 - Location: src/proofs.rs:127:26 in function proofs::a_scrolled_cursor_keeps_off_the_markers
 
 Check 5: proofs::a_scrolled_cursor_keeps_off_the_markers.assertion.5
 	 - Status: SUCCESS
 	 - Description: "assertion failed: under <= w - right - column"
-	 - Location: src/proofs.rs:118:9 in function proofs::a_scrolled_cursor_keeps_off_the_markers
+	 - Location: src/proofs.rs:127:9 in function proofs::a_scrolled_cursor_keeps_off_the_markers
 
 
 SUMMARY:
  ** 0 of 5 failed
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 24.122814s
+Verification Time: 22.357725s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.

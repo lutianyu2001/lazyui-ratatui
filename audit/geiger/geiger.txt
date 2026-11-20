@@ -10,7 +10,7 @@ Symbols:
 
 Functions  Expressions  Impls  Traits  Methods  Dependency
 
-0/0        0/0          0/0    0/0     0/0      :) lazyui-ratatui 0.2.0
+0/0        0/0          0/0    0/0     0/0      :) lazyui-ratatui 0.3.0
 0/0        0/0          0/0    0/0     0/0      ?  |-- ratatui 0.30.2
 0/0        0/0          0/0    0/0     0/0      ?  |   |-- instability 0.3.14
 0/0        0/0          0/0    0/0     0/0      ?  |   |   |-- darling 0.24.1

@@ -20,7 +20,7 @@ warning: Found the following unsupported constructs:
 Checking harness proofs::an_arrow_joins_the_borders_of_both_windows...
 CBMC 6.11.0 (cbmc-6.11.0)
 CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
-Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/b8bf08fd0dd603f7/out/lazyui_ratatui-b8bf08fd0dd603f7__RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.out
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/e0dab72625e1fda1/out/lazyui_ratatui-e0dab72625e1fda1__RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.out
 Generating GOTO Program
 Adding CPROVER library (x86_64)
 Removal of function pointers and virtual functions
@@ -28,193 +28,193 @@ Generic Property Instrumentation
 Running with 16 object bits, 48 offset bits (user-specified)
 Starting Bounded Model Checking
 aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 633 column 5 function std::option::Option::<(u16, u16)>::is_some thread 0
-aborting path on assume(false) at file src/proofs.rs line 62 column 23 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
-Unwinding loop _RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 1 file src/proofs.rs line 62 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
-Unwinding loop _RNvNtCsbyr6YJhzVem_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 2 file src/proofs.rs line 62 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
-Runtime Symex: 0.143652s
+aborting path on assume(false) at file src/proofs.rs line 71 column 23 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
+Unwinding loop _RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 1 file src/proofs.rs line 71 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
+Unwinding loop _RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs42an_arrow_joins_the_borders_of_both_windows.0 iteration 2 file src/proofs.rs line 71 column 9 function proofs::an_arrow_joins_the_borders_of_both_windows thread 0
+Runtime Symex: 0.128042s
 size of program expression: 6064 steps
 slicing removed 3864 assignments
 Generated 439 VCC(s), 22 remaining after simplification
-Runtime Postprocess Equation: 0.00268059s
+Runtime Postprocess Equation: 0.00149461s
 Passing problem to propositional reduction
 converting SSA
-Runtime Convert SSA: 0.021651s
+Runtime Convert SSA: 0.0160116s
 Running propositional reduction
 Post-processing
-Runtime Post-process: 9.788e-06s
+Runtime Post-process: 8.216e-06s
 Solving with CaDiCaL 3.0.0
 19667 variables, 38364 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0440399s
-Runtime decision procedure: 0.0663111s
+Runtime Solver: 0.0416061s
+Runtime decision procedure: 0.0581887s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 19668 variables, 38365 clauses
 SAT checker: instance is SATISFIABLE
-Runtime Solver: 0.0159342s
-Runtime decision procedure: 0.0163201s
+Runtime Solver: 0.0133839s
+Runtime decision procedure: 0.0136962s
 Running propositional reduction
 Solving with CaDiCaL 3.0.0
 19669 variables, 38366 clauses
 SAT checker: instance is UNSATISFIABLE
-Runtime Solver: 0.36583s
-Runtime decision procedure: 0.366018s
+Runtime Solver: 0.33763s
+Runtime decision procedure: 0.337771s
 
 RESULTS:
-Check 1: std::fmt::Arguments::<'_>::from_str.assertion.1
-	 - Status: UNREACHABLE
-	 - Description: "attempt to shift left with overflow"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/mod.rs:820:38 in function std::fmt::Arguments::<'_>::from_str
-
-Check 2: std::ptr::drop_in_place::<[ratatui::prelude::Rect]>.safety_check.1
-	 - Status: SUCCESS
-	 - Description: "misaligned pointer to reference cast: address must be a multiple of its type's alignment"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:843:24 in function std::ptr::drop_in_place::<[ratatui::prelude::Rect]>
-
-Check 3: std::ptr::drop_in_place::<[ratatui::prelude::Rect]>.safety_check.2
-	 - Status: SUCCESS
-	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:843:24 in function std::ptr::drop_in_place::<[ratatui::prelude::Rect]>
-
-Check 4: <usize as std::slice::SliceIndex<[std::mem::MaybeUninit<ratatui::prelude::Rect>]>>::get_unchecked.assume.1
-	 - Status: SUCCESS
-	 - Description: "Rust intrinsic assumption failed"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:218:13 in function <usize as std::slice::SliceIndex<[std::mem::MaybeUninit<ratatui::prelude::Rect>]>>::get_unchecked
-
-Check 5: core::num::<impl usize>::unchecked_add.arithmetic_overflow.1
-	 - Status: SUCCESS
-	 - Description: "attempt to compute `unchecked_add` which would overflow"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:1013:17 in function core::num::<impl usize>::unchecked_add
-
-Check 6: kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>.safety_check.1
+Check 1: kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>.safety_check.1
 	 - Status: SUCCESS
 	 - Description: "Offset in bytes overflows isize"
 	 - Location: library/kani/src/lib.rs:57:1 in function kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>
 
-Check 7: kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>.safety_check.2
+Check 2: kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>.safety_check.2
 	 - Status: SUCCESS
 	 - Description: "Offset result address must equal original pointer address plus offset"
 	 - Location: library/kani/src/lib.rs:57:1 in function kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>
 
-Check 8: kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>.safety_check.3
+Check 3: kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>.safety_check.3
 	 - Status: SUCCESS
 	 - Description: "Offset result and original pointer must point to the same allocation"
 	 - Location: library/kani/src/lib.rs:57:1 in function kani::rustc_intrinsics::offset::<std::mem::MaybeUninit<ratatui::prelude::Rect>, *mut std::mem::MaybeUninit<ratatui::prelude::Rect>, usize>
 
-Check 9: proofs::an_arrow_joins_the_borders_of_both_windows.cover.1
+Check 4: proofs::an_arrow_joins_the_borders_of_both_windows.cover.1
 	 - Status: SATISFIED
 	 - Description: "cover condition: ends.is_some()"
-	 - Location: src/proofs.rs:57:5 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:66:5 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 10: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.1
+Check 5: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.1
 	 - Status: SUCCESS
 	 - Description: "attempt to add with overflow"
-	 - Location: src/proofs.rs:59:20 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:68:20 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 11: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.2
+Check 6: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.2
 	 - Status: SUCCESS
 	 - Description: "assertion failed: top + 1 == upper.bottom()"
-	 - Location: src/proofs.rs:59:9 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:68:9 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 12: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.3
+Check 7: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.3
 	 - Status: SUCCESS
 	 - Description: "assertion failed: upper.height > 0 && lower.height > 0"
-	 - Location: src/proofs.rs:60:9 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:69:9 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 13: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.4
+Check 8: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.4
 	 - Status: SUCCESS
 	 - Description: "assertion failed: bottom == lower.y"
-	 - Location: src/proofs.rs:61:9 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:70:9 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 14: proofs::an_arrow_joins_the_borders_of_both_windows.unreachable.1
+Check 9: proofs::an_arrow_joins_the_borders_of_both_windows.unreachable.1
 	 - Status: SUCCESS
 	 - Description: "unreachable code"
-	 - Location: src/proofs.rs:62:23 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:71:23 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 15: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.5
+Check 10: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.5
 	 - Status: SUCCESS
 	 - Description: "attempt to add with overflow"
-	 - Location: src/proofs.rs:65:37 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:74:37 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 16: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.6
+Check 11: proofs::an_arrow_joins_the_borders_of_both_windows.assertion.6
 	 - Status: SUCCESS
 	 - Description: "assertion failed: window.x < x && x + 1 < window.right()"
-	 - Location: src/proofs.rs:65:13 in function proofs::an_arrow_joins_the_borders_of_both_windows
+	 - Location: src/proofs.rs:74:13 in function proofs::an_arrow_joins_the_borders_of_both_windows
 
-Check 17: std::option::Option::<usize>::map::<ratatui::prelude::Rect, {closure@std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>]>::next::{closure#0}}>.unreachable.1
+Check 12: std::option::Option::<usize>::map::<ratatui::prelude::Rect, {closure@std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>]>::next::{closure#0}}>.unreachable.1
 	 - Status: SUCCESS
 	 - Description: "unreachable code"
 	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1162:15 in function std::option::Option::<usize>::map::<ratatui::prelude::Rect, {closure@std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>]>::next::{closure#0}}>
 
-Check 18: std::ops::index_range::IndexRange::len.arithmetic_overflow.1
-	 - Status: SUCCESS
-	 - Description: "attempt to compute `unchecked_sub` which would overflow"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/index_range.rs:52:18 in function std::ops::index_range::IndexRange::len
-
-Check 19: std::panic::Location::<'_>::caller.unsupported_construct.1
-	 - Status: SUCCESS
-	 - Description: "caller_location is not currently supported by Kani. Please post your example at https://github.com/model-checking/kani/issues/374"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic/location.rs:181:9 in function std::panic::Location::<'_>::caller
-
-Check 20: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>.safety_check.1
-	 - Status: SUCCESS
-	 - Description: "misaligned pointer to reference cast: address must be a multiple of its type's alignment"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:693:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>
-
-Check 21: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>.safety_check.2
-	 - Status: SUCCESS
-	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:693:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>
-
-Check 22: kani::mem::cbmc::same_allocation.unsupported_construct.1
-	 - Status: SUCCESS
-	 - Description: "Kani does not support reasoning about pointer to unallocated memory"
-	 - Location: library/kani/src/lib.rs:57:1 in function kani::mem::cbmc::same_allocation
-
-Check 23: std::option::Option::<(u16, u16)>::is_some.unreachable.1
-	 - Status: SUCCESS
-	 - Description: "unreachable code"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:633:5 in function std::option::Option::<(u16, u16)>::is_some
-
-Check 24: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>.safety_check.1
-	 - Status: SUCCESS
-	 - Description: "misaligned pointer to reference cast: address must be a multiple of its type's alignment"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:647:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>
-
-Check 25: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>.safety_check.2
-	 - Status: SUCCESS
-	 - Description: "dereference failure: pointer invalid"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:647:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>
-
-Check 26: <usize as kani::rustc_intrinsics::ToISize>::to_isize.unreachable.1
+Check 13: <usize as kani::rustc_intrinsics::ToISize>::to_isize.unreachable.1
 	 - Status: SUCCESS
 	 - Description: "unreachable code"
 	 - Location: library/kani_core/src/models.rs:203:17 in function <usize as kani::rustc_intrinsics::ToISize>::to_isize
 
-Check 27: <usize as kani::rustc_intrinsics::ToISize>::to_isize.safety_check.1
+Check 14: <usize as kani::rustc_intrinsics::ToISize>::to_isize.safety_check.1
 	 - Status: SUCCESS
 	 - Description: "Offset value overflows isize"
 	 - Location: library/kani/src/lib.rs:57:1 in function <usize as kani::rustc_intrinsics::ToISize>::to_isize
 
-Check 28: <usize as kani::rustc_intrinsics::ToISize>::to_isize.assertion.1
+Check 15: <usize as kani::rustc_intrinsics::ToISize>::to_isize.assertion.1
 	 - Status: SUCCESS
 	 - Description: "internal error: entered unreachable code"
 	 - Location: library/kani/src/lib.rs:57:1 in function <usize as kani::rustc_intrinsics::ToISize>::to_isize
 
-Check 29: std::ptr::drop_in_place::<std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>; 2]>>.safety_check.1
+Check 16: core::num::<impl usize>::unchecked_add.arithmetic_overflow.1
+	 - Status: SUCCESS
+	 - Description: "attempt to compute `unchecked_add` which would overflow"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:1013:17 in function core::num::<impl usize>::unchecked_add
+
+Check 17: std::ptr::drop_in_place::<[ratatui::prelude::Rect]>.safety_check.1
+	 - Status: SUCCESS
+	 - Description: "misaligned pointer to reference cast: address must be a multiple of its type's alignment"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:843:24 in function std::ptr::drop_in_place::<[ratatui::prelude::Rect]>
+
+Check 18: std::ptr::drop_in_place::<[ratatui::prelude::Rect]>.safety_check.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:843:24 in function std::ptr::drop_in_place::<[ratatui::prelude::Rect]>
+
+Check 19: core::panicking::panic_nounwind_fmt::runtime.unsupported_construct.1
+	 - Status: SUCCESS
+	 - Description: "call to foreign "Rust" function `_RNvCskSgPeDzUGbv_7___rustc17rust_begin_unwind` is not currently supported by Kani. Please post your example at https://github.com/model-checking/kani/issues/new/choose"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panicking.rs:110:17 in function core::panicking::panic_nounwind_fmt::runtime
+
+Check 20: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>.safety_check.1
+	 - Status: SUCCESS
+	 - Description: "misaligned pointer to reference cast: address must be a multiple of its type's alignment"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:647:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>
+
+Check 21: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>.safety_check.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:647:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked::<usize>
+
+Check 22: std::panic::Location::<'_>::caller.unsupported_construct.1
+	 - Status: SUCCESS
+	 - Description: "caller_location is not currently supported by Kani. Please post your example at https://github.com/model-checking/kani/issues/374"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic/location.rs:181:9 in function std::panic::Location::<'_>::caller
+
+Check 23: kani::mem::cbmc::same_allocation.unsupported_construct.1
+	 - Status: SUCCESS
+	 - Description: "Kani does not support reasoning about pointer to unallocated memory"
+	 - Location: library/kani/src/lib.rs:57:1 in function kani::mem::cbmc::same_allocation
+
+Check 24: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>.safety_check.1
+	 - Status: SUCCESS
+	 - Description: "misaligned pointer to reference cast: address must be a multiple of its type's alignment"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:693:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>
+
+Check 25: core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>.safety_check.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs:693:18 in function core::slice::<impl [std::mem::MaybeUninit<ratatui::prelude::Rect>]>::get_unchecked_mut::<std::ops::index_range::IndexRange>
+
+Check 26: <usize as std::slice::SliceIndex<[std::mem::MaybeUninit<ratatui::prelude::Rect>]>>::get_unchecked.assume.1
+	 - Status: SUCCESS
+	 - Description: "Rust intrinsic assumption failed"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:218:13 in function <usize as std::slice::SliceIndex<[std::mem::MaybeUninit<ratatui::prelude::Rect>]>>::get_unchecked
+
+Check 27: std::ops::index_range::IndexRange::len.arithmetic_overflow.1
+	 - Status: SUCCESS
+	 - Description: "attempt to compute `unchecked_sub` which would overflow"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/index_range.rs:52:18 in function std::ops::index_range::IndexRange::len
+
+Check 28: std::option::Option::<(u16, u16)>::is_some.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:633:5 in function std::option::Option::<(u16, u16)>::is_some
+
+Check 29: std::fmt::Arguments::<'_>::from_str.assertion.1
+	 - Status: UNREACHABLE
+	 - Description: "attempt to shift left with overflow"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/mod.rs:820:38 in function std::fmt::Arguments::<'_>::from_str
+
+Check 30: std::ptr::drop_in_place::<std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>; 2]>>.safety_check.1
 	 - Status: SUCCESS
 	 - Description: "misaligned pointer to reference cast: address must be a multiple of its type's alignment"
 	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:843:24 in function std::ptr::drop_in_place::<std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>; 2]>>
 
-Check 30: std::ptr::drop_in_place::<std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>; 2]>>.safety_check.2
+Check 31: std::ptr::drop_in_place::<std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>; 2]>>.safety_check.2
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
 	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:843:24 in function std::ptr::drop_in_place::<std::array::iter::iter_inner::PolymorphicIter<[std::mem::MaybeUninit<ratatui::prelude::Rect>; 2]>>
-
-Check 31: core::panicking::panic_nounwind_fmt::runtime.unsupported_construct.1
-	 - Status: SUCCESS
-	 - Description: "call to foreign "Rust" function `_RNvCskSgPeDzUGbv_7___rustc17rust_begin_unwind` is not currently supported by Kani. Please post your example at https://github.com/model-checking/kani/issues/new/choose"
-	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panicking.rs:110:17 in function core::panicking::panic_nounwind_fmt::runtime
 
 Check 32: std::ptr::read::<ratatui::prelude::Rect>.pointer_dereference.1
 	 - Status: SUCCESS
@@ -249,302 +249,302 @@ Check 37: std::ptr::read::<ratatui::prelude::Rect>.pointer_dereference.6
 Check 38: window::arrow_ends::{closure#0}.pointer_dereference.1
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 39: window::arrow_ends::{closure#0}.pointer_dereference.2
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 40: window::arrow_ends::{closure#0}.pointer_dereference.3
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 41: window::arrow_ends::{closure#0}.pointer_dereference.4
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 42: window::arrow_ends::{closure#0}.pointer_dereference.5
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 43: window::arrow_ends::{closure#0}.pointer_dereference.6
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 44: window::arrow_ends::{closure#0}.pointer_dereference.7
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 45: window::arrow_ends::{closure#0}.pointer_dereference.8
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 46: window::arrow_ends::{closure#0}.pointer_dereference.9
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 47: window::arrow_ends::{closure#0}.pointer_dereference.10
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 48: window::arrow_ends::{closure#0}.pointer_dereference.11
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 49: window::arrow_ends::{closure#0}.pointer_dereference.12
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:114:32 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:137:32 in function window::arrow_ends::{closure#0}
 
 Check 50: window::arrow_ends::{closure#0}.pointer_dereference.13
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 51: window::arrow_ends::{closure#0}.pointer_dereference.14
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 52: window::arrow_ends::{closure#0}.pointer_dereference.15
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 53: window::arrow_ends::{closure#0}.pointer_dereference.16
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 54: window::arrow_ends::{closure#0}.pointer_dereference.17
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 55: window::arrow_ends::{closure#0}.pointer_dereference.18
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 56: window::arrow_ends::{closure#0}.pointer_dereference.19
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 57: window::arrow_ends::{closure#0}.pointer_dereference.20
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 58: window::arrow_ends::{closure#0}.pointer_dereference.21
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 59: window::arrow_ends::{closure#0}.pointer_dereference.22
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 60: window::arrow_ends::{closure#0}.pointer_dereference.23
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 61: window::arrow_ends::{closure#0}.pointer_dereference.24
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:115:9 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:9 in function window::arrow_ends::{closure#0}
 
 Check 62: window::arrow_ends::{closure#0}.pointer_dereference.25
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 63: window::arrow_ends::{closure#0}.pointer_dereference.26
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 64: window::arrow_ends::{closure#0}.pointer_dereference.27
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 65: window::arrow_ends::{closure#0}.pointer_dereference.28
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 66: window::arrow_ends::{closure#0}.pointer_dereference.29
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 67: window::arrow_ends::{closure#0}.pointer_dereference.30
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 68: window::arrow_ends::{closure#0}.pointer_dereference.31
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 69: window::arrow_ends::{closure#0}.pointer_dereference.32
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 70: window::arrow_ends::{closure#0}.pointer_dereference.33
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 71: window::arrow_ends::{closure#0}.pointer_dereference.34
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 72: window::arrow_ends::{closure#0}.pointer_dereference.35
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 73: window::arrow_ends::{closure#0}.pointer_dereference.36
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:115:20 in function window::arrow_ends::{closure#0}
+	 - Location: src/window.rs:138:20 in function window::arrow_ends::{closure#0}
 
 Check 74: window::arrow_ends::{closure#1}.pointer_dereference.1
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 75: window::arrow_ends::{closure#1}.pointer_dereference.2
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 76: window::arrow_ends::{closure#1}.pointer_dereference.3
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 77: window::arrow_ends::{closure#1}.pointer_dereference.4
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 78: window::arrow_ends::{closure#1}.pointer_dereference.5
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 79: window::arrow_ends::{closure#1}.pointer_dereference.6
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 80: window::arrow_ends::{closure#1}.pointer_dereference.7
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 81: window::arrow_ends::{closure#1}.pointer_dereference.8
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 82: window::arrow_ends::{closure#1}.pointer_dereference.9
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 83: window::arrow_ends::{closure#1}.pointer_dereference.10
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 84: window::arrow_ends::{closure#1}.pointer_dereference.11
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 85: window::arrow_ends::{closure#1}.pointer_dereference.12
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:120:25 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:25 in function window::arrow_ends::{closure#1}
 
 Check 86: window::arrow_ends::{closure#1}.pointer_dereference.13
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 87: window::arrow_ends::{closure#1}.pointer_dereference.14
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 88: window::arrow_ends::{closure#1}.pointer_dereference.15
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 89: window::arrow_ends::{closure#1}.pointer_dereference.16
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 90: window::arrow_ends::{closure#1}.pointer_dereference.17
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 91: window::arrow_ends::{closure#1}.pointer_dereference.18
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 92: window::arrow_ends::{closure#1}.pointer_dereference.19
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer NULL"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 93: window::arrow_ends::{closure#1}.pointer_dereference.20
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer invalid"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 94: window::arrow_ends::{closure#1}.pointer_dereference.21
 	 - Status: SUCCESS
 	 - Description: "dereference failure: deallocated dynamic object"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 95: window::arrow_ends::{closure#1}.pointer_dereference.22
 	 - Status: SUCCESS
 	 - Description: "dereference failure: dead object"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 96: window::arrow_ends::{closure#1}.pointer_dereference.23
 	 - Status: SUCCESS
 	 - Description: "dereference failure: pointer outside object bounds"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 97: window::arrow_ends::{closure#1}.pointer_dereference.24
 	 - Status: SUCCESS
 	 - Description: "dereference failure: invalid integer address"
-	 - Location: src/window.rs:120:55 in function window::arrow_ends::{closure#1}
+	 - Location: src/window.rs:143:55 in function window::arrow_ends::{closure#1}
 
 Check 98: std::option::Option::<(u16, u16)>::is_some.pointer_dereference.1
 	 - Status: SUCCESS
@@ -914,7 +914,7 @@ SUMMARY:
 
 
 VERIFICATION:- SUCCESSFUL
-Verification Time: 0.9044597s
+Verification Time: 0.798292s
 
 Manual Harness Summary:
 Complete - 1 successfully verified harnesses, 0 failures, 1 total.

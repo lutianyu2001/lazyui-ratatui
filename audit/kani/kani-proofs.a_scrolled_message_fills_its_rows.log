@@ -1,0 +1,188 @@
+$ cargo kani --lib --harness proofs::a_scrolled_message_fills_its_rows --exact -Z unstable-options --harness-timeout 1800s
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+Checking harness proofs::a_scrolled_message_fills_its_rows...
+CBMC 6.11.0 (cbmc-6.11.0)
+CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/f91eb10a0b6ec9f2/out/lazyui_ratatui-f91eb10a0b6ec9f2__RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs33a_scrolled_message_fills_its_rows.out
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 16 object bits, 48 offset bits (user-specified)
+Starting Bounded Model Checking
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 660 column 15 function std::option::Option::<usize>::is_some_and::<{closure@src/proofs.rs:286:45: 286:50}> thread 0
+Runtime Symex: 0.0105391s
+size of program expression: 659 steps
+slicing removed 308 assignments
+Generated 28 VCC(s), 10 remaining after simplification
+Runtime Postprocess Equation: 0.000117475s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.00238716s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 5.358e-06s
+Solving with CaDiCaL 3.0.0
+2652 variables, 7959 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.000586366s
+Runtime decision procedure: 0.00308044s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+2653 variables, 7960 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.000471306s
+Runtime decision procedure: 0.000520998s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+2654 variables, 7961 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.0221993s
+Runtime decision procedure: 0.0222502s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+2655 variables, 7962 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 0.542943s
+Runtime decision procedure: 0.542994s
+
+RESULTS:
+Check 1: proofs::a_scrolled_message_fills_its_rows.assertion.1
+	 - Status: SUCCESS
+	 - Description: "assertion failed: first <= scroll && first <= lines"
+	 - Location: src/proofs.rs:282:5 in function proofs::a_scrolled_message_fills_its_rows
+
+Check 2: proofs::a_scrolled_message_fills_its_rows.assertion.2
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:284:27 in function proofs::a_scrolled_message_fills_its_rows
+
+Check 3: proofs::a_scrolled_message_fills_its_rows.assertion.3
+	 - Status: SUCCESS
+	 - Description: "assertion failed: first == 0 || first + rows <= lines"
+	 - Location: src/proofs.rs:284:5 in function proofs::a_scrolled_message_fills_its_rows
+
+Check 4: proofs::a_scrolled_message_fills_its_rows.assertion.4
+	 - Status: SUCCESS
+	 - Description: "assertion failed: first == scroll"
+	 - Location: src/proofs.rs:287:9 in function proofs::a_scrolled_message_fills_its_rows
+
+Check 5: std::option::Option::<usize>::is_some_and::<{closure@src/proofs.rs:286:45: 286:50}>.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:660:15 in function std::option::Option::<usize>::is_some_and::<{closure@src/proofs.rs:286:45: 286:50}>
+
+Check 6: core::num::<impl usize>::checked_add.arithmetic_overflow.1
+	 - Status: SUCCESS
+	 - Description: "attempt to compute `unchecked_add` which would overflow"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:942:31 in function core::num::<impl usize>::checked_add
+
+Check 7: proofs::a_scrolled_message_fills_its_rows::{closure#0}.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: src/proofs.rs:286:58 in function proofs::a_scrolled_message_fills_its_rows::{closure#0}
+
+Check 8: proofs::a_scrolled_message_fills_its_rows::{closure#0}.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: src/proofs.rs:286:58 in function proofs::a_scrolled_message_fills_its_rows::{closure#0}
+
+Check 9: proofs::a_scrolled_message_fills_its_rows::{closure#0}.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: src/proofs.rs:286:58 in function proofs::a_scrolled_message_fills_its_rows::{closure#0}
+
+Check 10: proofs::a_scrolled_message_fills_its_rows::{closure#0}.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: src/proofs.rs:286:58 in function proofs::a_scrolled_message_fills_its_rows::{closure#0}
+
+Check 11: proofs::a_scrolled_message_fills_its_rows::{closure#0}.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: src/proofs.rs:286:58 in function proofs::a_scrolled_message_fills_its_rows::{closure#0}
+
+Check 12: proofs::a_scrolled_message_fills_its_rows::{closure#0}.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: src/proofs.rs:286:58 in function proofs::a_scrolled_message_fills_its_rows::{closure#0}
+
+Check 13: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 14: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 15: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 16: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 17: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 18: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 19: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 20: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 21: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 22: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 23: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+Check 24: std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for usize>::lt
+
+
+SUMMARY:
+ ** 0 of 24 failed
+
+VERIFICATION:- SUCCESSFUL
+Verification Time: 0.60927904s
+
+Manual Harness Summary:
+Complete - 1 successfully verified harnesses, 0 failures, 1 total.

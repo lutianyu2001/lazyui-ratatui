@@ -1,0 +1,219 @@
+$ cargo kani --lib --harness proofs::the_arrows_of_a_choice_stay_in_its_area --exact -Z unstable-options --harness-timeout 1800s
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+Checking harness proofs::the_arrows_of_a_choice_stay_in_its_area...
+CBMC 6.11.0 (cbmc-6.11.0)
+CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/4d95b2a5566ab448/out/lazyui_ratatui-4d95b2a5566ab448__RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs39the_arrows_of_a_choice_stay_in_its_area.out
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 16 object bits, 48 offset bits (user-specified)
+Starting Bounded Model Checking
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs line 1162 column 15 function std::option::Option::<u16>::map::<u16, {closure@src/choice.rs:120:34: 120:40}> thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs line 1594 column 15 function std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or thread 0
+aborting path on assume(false) at file src/proofs.rs line 191 column 1 function proofs::the_arrows_of_a_choice_stay_in_its_area thread 0
+Runtime Symex: 0.0295735s
+size of program expression: 1693 steps
+slicing removed 905 assignments
+Generated 88 VCC(s), 22 remaining after simplification
+Runtime Postprocess Equation: 0.000292388s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.00395467s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 7.844e-06s
+Solving with CaDiCaL 3.0.0
+4225 variables, 9104 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.000359669s
+Runtime decision procedure: 0.00447562s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+4226 variables, 9105 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.00155661s
+Runtime decision procedure: 0.0016261s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+4227 variables, 9106 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 0.195594s
+Runtime decision procedure: 0.195659s
+
+RESULTS:
+Check 1: proofs::the_arrows_of_a_choice_stay_in_its_area.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: src/proofs.rs:191:1 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 2: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.1
+	 - Status: SUCCESS
+	 - Description: "assertion failed: area.width < 4"
+	 - Location: src/proofs.rs:202:9 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 3: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.2
+	 - Status: SUCCESS
+	 - Description: "assertion failed: usize::from(cells) <= wanted"
+	 - Location: src/proofs.rs:195:9 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 4: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.3
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:196:49 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 5: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.4
+	 - Status: SUCCESS
+	 - Description: "assertion failed: usize::from(cells) == wanted || cells + 4 == area.width"
+	 - Location: src/proofs.rs:196:9 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 6: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.5
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:199:27 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 7: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.6
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:199:27 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 8: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.7
+	 - Status: SUCCESS
+	 - Description: "assertion failed: after == area.x + 2 + cells"
+	 - Location: src/proofs.rs:199:9 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 9: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.8
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:200:17 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 10: proofs::the_arrows_of_a_choice_stay_in_its_area.assertion.9
+	 - Status: SUCCESS
+	 - Description: "assertion failed: after + 2 <= area.right()"
+	 - Location: src/proofs.rs:200:9 in function proofs::the_arrows_of_a_choice_stay_in_its_area
+
+Check 11: std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:1594:15 in function std::result::Result::<u16, std::num::TryFromIntError>::unwrap_or
+
+Check 12: core::num::<impl u16>::checked_sub.arithmetic_overflow.1
+	 - Status: SUCCESS
+	 - Description: "attempt to compute `unchecked_sub` which would overflow"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/uint_macros.rs:1096:31 in function core::num::<impl u16>::checked_sub
+
+Check 13: std::option::Option::<u16>::map::<u16, {closure@src/choice.rs:120:34: 120:40}>.unreachable.1
+	 - Status: SUCCESS
+	 - Description: "unreachable code"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1162:15 in function std::option::Option::<u16>::map::<u16, {closure@src/choice.rs:120:34: 120:40}>
+
+Check 14: choice::between::{closure#0}.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: src/choice.rs:120:59 in function choice::between::{closure#0}
+
+Check 15: choice::between::{closure#0}.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: src/choice.rs:120:59 in function choice::between::{closure#0}
+
+Check 16: choice::between::{closure#0}.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: src/choice.rs:120:59 in function choice::between::{closure#0}
+
+Check 17: choice::between::{closure#0}.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: src/choice.rs:120:59 in function choice::between::{closure#0}
+
+Check 18: choice::between::{closure#0}.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: src/choice.rs:120:59 in function choice::between::{closure#0}
+
+Check 19: choice::between::{closure#0}.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: src/choice.rs:120:59 in function choice::between::{closure#0}
+
+Check 20: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 21: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 22: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 23: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 24: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 25: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 26: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 27: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 28: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 29: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 30: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 31: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+
+SUMMARY:
+ ** 0 of 31 failed
+
+VERIFICATION:- SUCCESSFUL
+Verification Time: 0.34359446s
+
+Manual Harness Summary:
+Complete - 1 successfully verified harnesses, 0 failures, 1 total.

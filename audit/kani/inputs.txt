@@ -1,16 +1,21 @@
-# Rust as tokens, the rest as git blobs, own versions left out (1)
+# Rust as tokens, the rest as git blobs, own versions and unread metadata left out (2)
 4408eff3db9961c1a2cbdc28625bd3973635e831	.cargo/config.toml
 27d7b427ea8e727a3dac12a6507892d73108ca80	Cargo.lock
-944e9e9402537ccc630ed94ea480cfa698f9e3ea	Cargo.toml
+66a087792ccf8e7b43fcb60d28fff2008a54ca6d	Cargo.toml
+9ec55b3b621dbc75fc68817cd51b96e407d3c94c	rust-toolchain.toml
+9ce279c3e50d46483afc6e982b4ae297646f5776	src/choice.rs
+8e428a3da55e5a23d1ad17a0affcff7d040041f5	src/dropdown.rs
 306cd6be8b262b48e545289eb55a72e84972498b	src/field.rs
-a455453c9680aca1af83762a81bd454e535dcc42	src/lib.rs
-33b9a8fd85cd7461005883c5af88e1ffc180d325	src/proofs.rs
+df6127f2aa9095e0fc0f0e02b7388f9890076940	src/lib.rs
+b4df33f421d263687eb305f90bb8a77331ffb190	src/message.rs
+3fd1e4f8d30c4add3ab9b65759721c4c5df26897	src/prompt.rs
+97d5dcd4cefcc06c762589aa6f03243696e23a45	src/proofs.rs
 e06ef9767e1e6a9ceb0ab5f714ce17a44f2d0600	src/text.rs
 8d6af9e3e6432acdc2b85d3e091c2d13bb2b3a87	src/unsteady.rs
-39384da4678f00de9093f51132214f561c3ce45e	src/window.rs
-d3d6e453c0de06a3910ca18df4433d43373d5135	xtask/Cargo.toml
+22bd80c9e88ee57654b5dcfa8af7087e3fc00d4c	src/window.rs
+3be71d21ba05f2ecf8060b30e9b2efdae1e67735	xtask/Cargo.toml
 f5e7771338b995fd205bb65d4431b97548b3a597	xtask/src/json.rs
-58477b7d7a00e28a5110a4ff4e43a59272e261d8	xtask/src/main.rs
+36d1c05f4ec34521bd78288ee04c6075eaea16c6	xtask/src/main.rs
 c1930b545baab252c81e949bf4b04144be5c14e9	xtask/src/run.rs
 91d5aadbe3fde494e5b9124903a857f722045199	xtask/src/tasks/kani.rs
-c329af61b0d22bfc28e08fd733e1e82a48e64a37	xtask/src/tasks/mod.rs
+f99282057651525184b0c6a36daf7467e28b8689	xtask/src/tasks/mod.rs

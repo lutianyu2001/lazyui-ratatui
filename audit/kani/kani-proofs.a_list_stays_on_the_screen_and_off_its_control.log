@@ -1,0 +1,406 @@
+$ cargo kani --lib --harness proofs::a_list_stays_on_the_screen_and_off_its_control --exact -Z unstable-options --harness-timeout 1800s
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+warning: Found the following unsupported constructs:
+             - caller_location (1)
+             - foreign function (1)
+         
+         Verification will fail if one or more of these constructs is reachable.
+         See https://model-checking.github.io/kani/rust-feature-support.html for more details.
+
+Checking harness proofs::a_list_stays_on_the_screen_and_off_its_control...
+CBMC 6.11.0 (cbmc-6.11.0)
+CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/f05cd446245a6517/out/lazyui_ratatui-f05cd446245a6517__RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs46a_list_stays_on_the_screen_and_off_its_control.out
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 16 object bits, 48 offset bits (user-specified)
+Starting Bounded Model Checking
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs line 2356 column 5 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs line 2641 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs line 177 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs line 2356 column 5 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs line 2641 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs line 177 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp thread 0
+Runtime Symex: 0.0703179s
+size of program expression: 4117 steps
+slicing removed 2110 assignments
+Generated 173 VCC(s), 14 remaining after simplification
+Runtime Postprocess Equation: 0.00074028s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.00868575s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 6.192e-06s
+Solving with CaDiCaL 3.0.0
+8738 variables, 21839 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.0261596s
+Runtime decision procedure: 0.0351702s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+8739 variables, 21840 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 0.90638s
+Runtime decision procedure: 0.906459s
+
+RESULTS:
+Check 1: proofs::a_list_stays_on_the_screen_and_off_its_control.assertion.1
+	 - Status: SUCCESS
+	 - Description: "assertion failed: list.width <= w && list.height <= h"
+	 - Location: src/proofs.rs:135:5 in function proofs::a_list_stays_on_the_screen_and_off_its_control
+
+Check 2: proofs::a_list_stays_on_the_screen_and_off_its_control.cover.1
+	 - Status: SATISFIED
+	 - Description: "cover condition: !list.is_empty()"
+	 - Location: src/proofs.rs:136:5 in function proofs::a_list_stays_on_the_screen_and_off_its_control
+
+Check 3: proofs::a_list_stays_on_the_screen_and_off_its_control.assertion.2
+	 - Status: SUCCESS
+	 - Description: "assertion failed: list.intersection(screen) == list"
+	 - Location: src/proofs.rs:138:9 in function proofs::a_list_stays_on_the_screen_and_off_its_control
+
+Check 4: proofs::a_list_stays_on_the_screen_and_off_its_control.assertion.3
+	 - Status: SUCCESS
+	 - Description: "assertion failed: list.y >= anchor.bottom() || list.bottom() <= anchor.y"
+	 - Location: src/proofs.rs:140:9 in function proofs::a_list_stays_on_the_screen_and_off_its_control
+
+Check 5: std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime.assertion.1
+	 - Status: SUCCESS
+	 - Description: "This is a placeholder message; Kani doesn't support message formatted at runtime"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2356:5 in function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime
+
+Check 6: ratatui::prelude::Rect::new.assertion.1
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:180:21 in function ratatui::prelude::Rect::new
+
+Check 7: ratatui::prelude::Rect::new.assertion.2
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:181:22 in function ratatui::prelude::Rect::new
+
+Check 8: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 9: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 10: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 11: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 12: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 13: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 14: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 15: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 16: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 17: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 18: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 19: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:136:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 20: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.13
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 21: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.14
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 22: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.15
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 23: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.16
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 24: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.17
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 25: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.18
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 26: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.19
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 27: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.20
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 28: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.21
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 29: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.22
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 30: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.23
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 31: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.24
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:138:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 32: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.25
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 33: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.26
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 34: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.27
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 35: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.28
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 36: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.29
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 37: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.30
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 38: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.31
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 39: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.32
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 40: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.33
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 41: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.34
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 42: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.35
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 43: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.36
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:140:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 44: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.37
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 45: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.38
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 46: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.39
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 47: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.40
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 48: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.41
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 49: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.42
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 50: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.43
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 51: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.44
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 52: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.45
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 53: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.46
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 54: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.47
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 55: <ratatui::prelude::Rect as std::cmp::PartialEq>::eq.pointer_dereference.48
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:142:5 in function <ratatui::prelude::Rect as std::cmp::PartialEq>::eq
+
+Check 56: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 57: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 58: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 59: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 60: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 61: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 62: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 63: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 64: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 65: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 66: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 67: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+
+SUMMARY:
+ ** 0 of 66 failed
+
+ ** 1 of 1 cover properties satisfied
+
+
+VERIFICATION:- SUCCESSFUL
+Verification Time: 1.1809585s
+
+Manual Harness Summary:
+Complete - 1 successfully verified harnesses, 0 failures, 1 total.

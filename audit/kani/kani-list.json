@@ -3,19 +3,30 @@
   "file-version": "0.1",
   "standard-harnesses": {
     "src/proofs.rs": [
+      "proofs::a_joined_list_is_whole_where_the_screen_has_room",
+      "proofs::a_joined_list_stays_on_the_screen_at_its_controls_row",
+      "proofs::a_list_is_whole_where_the_screen_has_room",
+      "proofs::a_list_stays_on_the_screen_and_off_its_control",
+      "proofs::a_popup_is_no_wider_than_it_asks_or_the_screen_has",
+      "proofs::a_popup_stays_on_the_screen_in_its_middle",
+      "proofs::a_prompt_is_whole_where_the_screen_has_room",
       "proofs::a_scrolled_cursor_keeps_off_the_markers",
       "proofs::a_scrolled_field_uses_its_cells_exactly",
+      "proofs::a_scrolled_list_shows_its_cursor",
+      "proofs::a_scrolled_message_fills_its_rows",
       "proofs::a_text_on_the_border_leaves_the_corners_alone",
       "proofs::an_arrow_is_drawn_when_nothing_stops_it",
       "proofs::an_arrow_joins_the_borders_of_both_windows",
       "proofs::an_arrow_stays_on_the_screen",
-      "proofs::the_cursor_goes_on_the_field"
+      "proofs::the_arrows_of_a_choice_stay_in_its_area",
+      "proofs::the_cursor_goes_on_the_field",
+      "proofs::the_windows_of_a_prompt_share_their_edges_on_the_screen"
     ]
   },
   "contract-harnesses": {},
   "contracts": [],
   "totals": {
-    "standard-harnesses": 7,
+    "standard-harnesses": 18,
     "contract-harnesses": 0,
     "functions-under-contract": 0
   }

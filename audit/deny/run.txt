@@ -1,6 +1,6 @@
 result: succeeded
-started: 2026-11-05 03:38 UTC
+started: 2026-11-19 23:56 UTC
 seconds: 1
-commit: 96da251a997c2432ee195ab77e920c2d3fdbcbb3
+commit: f14fb8de5d03b2572a5a2e918ef558d50edf681c
 args: 
 tools: cargo-deny 0.20.2

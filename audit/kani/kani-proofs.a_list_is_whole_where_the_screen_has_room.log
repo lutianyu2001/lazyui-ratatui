@@ -1,0 +1,233 @@
+$ cargo kani --lib --harness proofs::a_list_is_whole_where_the_screen_has_room --exact -Z unstable-options --harness-timeout 1800s
+Kani Rust Verifier 0.68.0 (cargo plugin)
+CBMC 6.11.0
+warning: use of an unstable feature
+ --> <crate attribute>:1:12
+  |
+1 | #![feature(register_tool)]
+  |            ^^^^^^^^^^^^^
+  |
+  = note: requested on the command line with `--force-warn unstable-features`
+
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+warning: Found the following unsupported constructs:
+             - caller_location (1)
+             - foreign function (1)
+         
+         Verification will fail if one or more of these constructs is reachable.
+         See https://model-checking.github.io/kani/rust-feature-support.html for more details.
+
+Checking harness proofs::a_list_is_whole_where_the_screen_has_room...
+CBMC 6.11.0 (cbmc-6.11.0)
+CBMC version 6.11.0 (cbmc-6.11.0) 64-bit x86_64 linux
+Reading GOTO program from file ./target/kani/x86_64-unknown-linux-gnu/debug/build/lazyui-ratatui/e635c9ecfb5c44a5/out/lazyui_ratatui-e635c9ecfb5c44a5__RNvNtCsheNjRQJfCZs_14lazyui_ratatui6proofs41a_list_is_whole_where_the_screen_has_room.out
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 16 object bits, 48 offset bits (user-specified)
+Starting Bounded Model Checking
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs line 2356 column 5 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs line 2641 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs line 177 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs line 2356 column 5 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics/mod.rs line 2641 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic thread 0
+aborting path on assume(false) at file ~/.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/panic.rs line 177 column 9 function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp thread 0
+Runtime Symex: 0.0804101s
+size of program expression: 4557 steps
+slicing removed 2173 assignments
+Generated 201 VCC(s), 18 remaining after simplification
+Runtime Postprocess Equation: 0.000884531s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 0.0112749s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 7.451e-06s
+Solving with CaDiCaL 3.0.0
+11903 variables, 30306 clauses
+SAT checker: instance is SATISFIABLE
+Runtime Solver: 0.0416411s
+Runtime decision procedure: 0.0533431s
+Running propositional reduction
+Solving with CaDiCaL 3.0.0
+11904 variables, 30307 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 0.539024s
+Runtime decision procedure: 0.539131s
+
+RESULTS:
+Check 1: ratatui::prelude::Rect::new.assertion.1
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:180:21 in function ratatui::prelude::Rect::new
+
+Check 2: ratatui::prelude::Rect::new.assertion.2
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: ../../../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ratatui-core-0.1.2/src/layout/rect.rs:181:22 in function ratatui::prelude::Rect::new
+
+Check 3: std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime.assertion.1
+	 - Status: SUCCESS
+	 - Description: "This is a placeholder message; Kani doesn't support message formatted at runtime"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2356:5 in function std::cmp::impls::<impl std::cmp::Ord for u16>::clamp::do_panic::runtime
+
+Check 4: proofs::a_list_is_whole_where_the_screen_has_room.assertion.1
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: src/proofs.rs:150:27 in function proofs::a_list_is_whole_where_the_screen_has_room
+
+Check 5: proofs::a_list_is_whole_where_the_screen_has_room.assertion.2
+	 - Status: SUCCESS
+	 - Description: "attempt to subtract with overflow"
+	 - Location: src/proofs.rs:150:62 in function proofs::a_list_is_whole_where_the_screen_has_room
+
+Check 6: proofs::a_list_is_whole_where_the_screen_has_room.assertion.3
+	 - Status: SUCCESS
+	 - Description: "assertion failed: (list.width, list.height) == (w, h)"
+	 - Location: src/proofs.rs:153:5 in function proofs::a_list_is_whole_where_the_screen_has_room
+
+Check 7: proofs::a_list_is_whole_where_the_screen_has_room.assertion.4
+	 - Status: SUCCESS
+	 - Description: "assertion failed: list.y == anchor.bottom() == h <= below || h == 0"
+	 - Location: src/proofs.rs:155:5 in function proofs::a_list_is_whole_where_the_screen_has_room
+
+Check 8: proofs::a_list_is_whole_where_the_screen_has_room.assertion.5
+	 - Status: SUCCESS
+	 - Description: "attempt to add with overflow"
+	 - Location: src/proofs.rs:156:8 in function proofs::a_list_is_whole_where_the_screen_has_room
+
+Check 9: proofs::a_list_is_whole_where_the_screen_has_room.assertion.6
+	 - Status: SUCCESS
+	 - Description: "assertion failed: list.x == anchor.x"
+	 - Location: src/proofs.rs:157:9 in function proofs::a_list_is_whole_where_the_screen_has_room
+
+Check 10: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 11: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 12: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 13: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 14: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 15: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:50 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 16: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 17: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 18: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 19: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 20: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 21: std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2192:59 in function std::cmp::impls::<impl std::cmp::PartialOrd for u16>::lt
+
+Check 22: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.1
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:54 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 23: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.2
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:54 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 24: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.3
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:54 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 25: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.4
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:54 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 26: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.5
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:54 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 27: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.6
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:54 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 28: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.7
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer NULL"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:63 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 29: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.8
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer invalid"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:63 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 30: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.9
+	 - Status: SUCCESS
+	 - Description: "dereference failure: deallocated dynamic object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:63 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 31: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.10
+	 - Status: SUCCESS
+	 - Description: "dereference failure: dead object"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:63 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 32: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.11
+	 - Status: SUCCESS
+	 - Description: "dereference failure: pointer outside object bounds"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:63 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+Check 33: std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq.pointer_dereference.12
+	 - Status: SUCCESS
+	 - Description: "dereference failure: invalid integer address"
+	 - Location: ../../../.rustup/toolchains/nightly-2026-08-21-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs:2153:63 in function std::cmp::impls::<impl std::cmp::PartialEq for u16>::eq
+
+
+SUMMARY:
+ ** 0 of 33 failed
+
+VERIFICATION:- SUCCESSFUL
+Verification Time: 0.9582209s
+
+Manual Harness Summary:
+Complete - 1 successfully verified harnesses, 0 failures, 1 total.
