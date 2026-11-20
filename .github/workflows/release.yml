@@ -22,6 +22,27 @@ env:
   VENDOR: false
 
 jobs:
+  # Whether the tag is a pre-release: one that ends in -alpha, -beta, -rc, -pre, -preview or -dev,
+  # with or without a number after it (v1.2.0-rc.1, v1.2.0-rc1; in a sidestream fork
+  # v0.8.2-mod.2-rc.1, while v0.8.2-mod.2 is a release). A pre-release is built as a release is and gets a GitHub pre-release with its files,
+  # to download and try: it goes to no registry or package repository, and starts no other workflow.
+  kind:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions: {}
+    outputs:
+      prerelease: ${{ steps.kind.outputs.prerelease }}
+    steps:
+      - id: kind
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if printf '%s\n' "$TAG" | grep -Eq -- '-(alpha|beta|rc|pre|preview|dev)\.?[0-9]*$'; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
   # The project's ci.yml, its checks and tests: a release goes out only when they pass.
   # ./ rather than $/, which actionlint 1.7.12 does not know yet.
   ci: # zizmor: ignore[self-repository]
@@ -30,7 +51,7 @@ jobs:
   # Checks the package the way crates.io will build it, with neither a secret nor a token that can
   # write: the dry run builds it, running the dependencies' build scripts and procedural macros.
   build:
-    needs: ci
+    needs: [kind, ci]
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -41,10 +62,12 @@ jobs:
       - name: Check that the tag matches the version
         env:
           TAG: ${{ github.ref_name }}
+          PRERELEASE: ${{ needs.kind.outputs.prerelease }}
         run: |
           version=$(cargo metadata --no-deps --format-version 1 \
             | python3 -c 'import json, os, sys; print(next(p["version"] for p in json.load(sys.stdin)["packages"] if p["name"] == os.environ["CRATE"]))')
-          if [ "v$version" != "$TAG" ]; then
+          # A pre-release keeps the version of the release it leads to.
+          if [ "$PRERELEASE" != true ] && [ "v$version" != "$TAG" ]; then
             echo "tag $TAG doesn't match version $version" >&2
             exit 1
           fi
@@ -63,7 +86,9 @@ jobs:
           fi
 
   crates-io:
-    needs: build
+    needs: [kind, build]
+    # Not for a pre-release, nor the jobs that wait for this one.
+    if: needs.kind.outputs.prerelease != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     environment: crates-io
@@ -96,7 +121,9 @@ jobs:
           fi
 
   github-release:
-    needs: crates-io
+    needs: [kind, crates-io]
+    # Also when the jobs before it were skipped for a pre-release; never after one that failed.
+    if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -108,8 +135,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
+          PRERELEASE: ${{ needs.kind.outputs.prerelease }}
         run: |
-          gh release create "$TAG" -R "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" --generate-notes
+          gh release create "$TAG" -R "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" --generate-notes --prerelease="$PRERELEASE"
           # Per project: with the security audit's verify.yml, which a release made with this
-          # token would not start on its own.
-          gh workflow run verify.yml -R "$GITHUB_REPOSITORY" --ref "$TAG"
+          # token would not start on its own. A pre-release is not audited.
+          if [ "$PRERELEASE" != true ]; then
+            gh workflow run verify.yml -R "$GITHUB_REPOSITORY" --ref "$TAG"
+          fi
